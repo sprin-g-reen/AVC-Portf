@@ -27,7 +27,7 @@ app.secret_key = "MustBeChangedInProduction"
 @app.route('/')
 def index():
     try:
-        with open('content/reviews.json', 'r') as f:
+        with open('content/reviews.json', 'r', encoding='utf-8') as f:
             all_reviews = json.load(f)
     except FileNotFoundError:
         all_reviews = []
@@ -55,7 +55,7 @@ def gallery():
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():        
-    with open('content.json', 'r') as f:
+    with open('content.json', 'r', encoding='utf-8') as f:
         content = json.load(f)['contact.html']
 
     return render_template('contact.html', content=content)
@@ -67,7 +67,7 @@ def faq():
 @app.route('/testimonials')
 def testimonials():
     try:
-        with open('content/reviews.json', 'r') as f:
+        with open('content/reviews.json', 'r', encoding='utf-8') as f:
             all_reviews = json.load(f)
     except FileNotFoundError:
         all_reviews = []
@@ -90,7 +90,7 @@ def testimonials():
 @app.route('/shop')
 def shop():
     try:
-        with open('content/shop.json', 'r') as f:
+        with open('content/shop.json', 'r', encoding='utf-8') as f:
             products_dict = json.load(f)
             all_products = [{"id": k, **v} for k, v in products_dict.items()]
     except FileNotFoundError:
@@ -190,7 +190,7 @@ def search_api():
         return jsonify([])
     
     try:
-        with open('content/shop.json', 'r') as f:
+        with open('content/shop.json', 'r', encoding='utf-8') as f:
             products_dict = json.load(f)
     except FileNotFoundError:
         return jsonify([])
