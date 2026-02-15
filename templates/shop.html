@@ -69,8 +69,35 @@
                                         {% endif %}
                                     </div>
 
-                                    <div class="ul-product-img">
-                                        <img src="{{ product.image_path }}" alt="{{ product.image_alt }}" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='/static/images/logo.png'">
+                                    <div class="ul-product-img" data-product-id="{{ product.id }}">
+                                        <img class="product-main-img" src="/static/{{ product.image_path }}" alt="{{ product.image_alt }}" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='/static/images/logo.png'">
+
+                                        {% if product.images %}
+                                        <div class="product-color-controls" style="margin-top:8px;">
+                                            <div style="font-size:12px; color:#666; margin-bottom:6px;">
+                                                Available in {{ product.images|length }} color{% if product.images|length > 1 %}s{% endif %}: 
+                                                <span style="font-weight:500;">
+                                                    {% for img in product.images %}
+                                                        {{ img.color|title }}{% if not loop.last %},&nbsp;{% endif %}
+                                                    {% endfor %}
+                                                </span>
+                                            </div>
+                                            <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                                                <button type="button" class="show-colors-btn btn btn-primary btn-sm" data-product-id="{{ product.id }}" style="font-size:12px;">View Colors</button>
+                                                <span class="selected-color-name" id="selected-color-{{ product.id }}" style="font-weight:600; font-size:13px;"></span>
+                                            </div>
+
+                                            <form class="color-variants" id="color-variants-{{ product.id }}" style="display:none; gap:6px; margin-top:8px; flex-wrap:wrap;">
+                                                {% for img in product.images %}
+                                                <label style="display:inline-flex; align-items:center; gap:4px; cursor:pointer;" title="{{ img.color }}">
+                                                    <input type="radio" name="product-color-{{ product.id }}" hidden data-image="/static/{{ img.image_path }}" data-color="{{ img.color }}">
+                                                    <span style="width:20px;height:20px;border-radius:50%;border:1px solid #ccc; background-color:{{ img.color }};"></span>
+                                                    <span style="font-size:11px; white-space:nowrap;">{{ img.color|title }}</span>
+                                                </label>
+                                                {% endfor %}
+                                            </form>
+                                        </div>
+                                        {% endif %}
                                     </div>
 
                                     <div class="ul-product-txt">
@@ -129,6 +156,57 @@
 
     <!-- custom JS -->
     <script src="/static/js/main.js"></script>
+    <script>
+    function capitalizeWords(str) {
+        if (!str) return '';
+        return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    }
+
+    // Product listing color toggle and swap
+    document.addEventListener('DOMContentLoaded', function() {
+        // toggle variants visibility
+        document.querySelectorAll('.show-colors-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const id = btn.getAttribute('data-product-id');
+                const form = document.getElementById('color-variants-' + id);
+                if (!form) return;
+                const isHidden = form.style.display === 'none' || form.style.display === '';
+                form.style.display = isHidden ? 'flex' : 'none';
+                btn.textContent = isHidden ? 'Hide Colors' : 'View Colors';
+            });
+        });
+
+        // swatch click -> swap main image and show color name
+        document.querySelectorAll('.color-variants').forEach(form => {
+            form.addEventListener('change', function(e) {
+                const input = e.target.closest('label')?.querySelector('input[type=radio]');
+                if (!input) return;
+                const imgSrc = input.dataset.image;
+                const colorName = input.dataset.color;
+                // find parent card main image
+                const card = input.closest('.ul-product-img');
+                if (card) {
+                    const mainImg = card.querySelector('.product-main-img');
+                    if (mainImg && imgSrc) mainImg.src = imgSrc;
+                    const pid = card.getAttribute('data-product-id');
+                    const nameEl = document.getElementById('selected-color-' + pid);
+                    if (nameEl) nameEl.textContent = capitalizeWords(colorName);
+                }
+            });
+        });
+
+        // Initialize first color display
+        document.querySelectorAll('.color-variants').forEach(form => {
+            const firstInput = form.querySelector('input[type=radio]');
+            if (firstInput && firstInput.dataset.color) {
+                const pid = form.id.replace('color-variants-', '');
+                const nameEl = document.getElementById('selected-color-' + pid);
+                if (nameEl) nameEl.textContent = capitalizeWords(firstInput.dataset.color);
+            }
+        });
+    });
+    </script>
 </body>
 
 </html>

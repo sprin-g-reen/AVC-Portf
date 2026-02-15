@@ -457,7 +457,7 @@
                 }
             </style>
             <script>
-            // UX: Show success message and prevent actual submit
+            // Send Contact Us message directly to WhatsApp
             document.addEventListener('DOMContentLoaded', function () {
                 var form = document.querySelector('.ul-nwsltr-subs-form');
                 if (form) {
@@ -465,11 +465,24 @@
                         e.preventDefault();
                         if (form.checkValidity()) {
                             form.classList.add('was-validated');
-                            form.reset();
-                            document.querySelector('.ul-nwsltr-success').classList.remove('d-none');
-                            setTimeout(function() {
-                                document.querySelector('.ul-nwsltr-success').classList.add('d-none');
-                            }, 4000);
+                            var name = document.getElementById('nwsltr-name')?.value?.trim() || '';
+                            var email = document.getElementById('nwsltr-email')?.value?.trim() || '';
+                            var phone = document.getElementById('nwsltr-phone')?.value?.trim() || '';
+                            var priority = document.getElementById('nwsltr-priority')?.value || '';
+                            var category = document.getElementById('nwsltr-category')?.value || '';
+                            var message = document.getElementById('nwsltr-message')?.value?.trim() || '';
+
+                            var whatsappNumber = "{{ content.whatsapp }}".replace(/\D/g, '');
+                            var whatsappText =
+                                "New Contact Us Enquiry%0A" +
+                                "Name: " + encodeURIComponent(name) + "%0A" +
+                                "Email: " + encodeURIComponent(email) + "%0A" +
+                                "Phone: " + encodeURIComponent(phone) + "%0A" +
+                                "Priority: " + encodeURIComponent(priority) + "%0A" +
+                                "Category: " + encodeURIComponent(category) + "%0A" +
+                                "Message: " + encodeURIComponent(message);
+
+                            window.open("https://wa.me/" + whatsappNumber + "?text=" + whatsappText, "_blank");
                         } else {
                             form.classList.add('was-validated');
                         }

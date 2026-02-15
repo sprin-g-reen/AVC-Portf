@@ -51,7 +51,39 @@ def about():
 
 @app.route('/gallery')
 def gallery():
-    return render_template('gallery.html')
+    try:
+        with open('content/shop.json', 'r', encoding='utf-8') as f:
+            products_dict = json.load(f)
+    except FileNotFoundError:
+        products_dict = {}
+
+    all_gallery_images = []
+    for product in products_dict.values():
+        for image in product.get('images', []):
+            image_path = image.get('image_path')
+            if not image_path:
+                continue
+            all_gallery_images.append({
+                'path': image_path,
+                'color': image.get('color', product.get('name', 'Product'))
+            })
+
+    page = request.args.get('page', 1, type=int)
+    per_page = 12
+    total_images = len(all_gallery_images)
+    total_pages = max(1, (total_images + per_page - 1) // per_page)
+    page = max(1, min(page, total_pages))
+
+    start_idx = (page - 1) * per_page
+    end_idx = start_idx + per_page
+    current_gallery_images = all_gallery_images[start_idx:end_idx]
+
+    return render_template(
+        'gallery.html',
+        gallery_images=current_gallery_images,
+        current_page=page,
+        total_pages=total_pages
+    )
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():        
@@ -128,7 +160,7 @@ def shop_details():
         
         if product is None:
             flash('Product not found', 'error')
-            return render_template('404.html'), 404
+            return redirect(url_for('shop')), 404
 
         # Process extended sizes if available
         if 'extended_sizes' in product:
@@ -143,19 +175,23 @@ def shop_details():
                 }
             }
 
+        # For each color, list all images in the color's folder
+        product['color_images'] = {}
         if 'images' in product and len(product['images']) > 0:
             product['available_colors'] = [img['color'] for img in product['images']]
+            for img in product['images']:
+                color = img['color']
+                folder = os.path.join('static', 'abc_upload', product['name'], color)
+                try:
+                    files = [f for f in os.listdir(folder) if f.lower().endswith(('.png','.jpg','.jpeg','.webp'))]
+                    # Sort so main color image is first if possible
+                    files.sort(key=lambda x: (x.lower() != f"{color}.png", x))
+                    product['color_images'][color] = [f"abc_upload/{product['name']}/{color}/{f}" for f in files]
+                except Exception:
+                    product['color_images'][color] = []
         else:
             product['available_colors'] = []
-        
-        
-        product['images'] = []
-        for file in os.listdir(f'static/shop/{product_id}'):
-            if file.endswith('.png'):
-                product['images'].append({
-                    'image_path': f'/shop/{product_id}/{file}',
-                    'image_alt': file.split('.')[0]
-                })
+            product['color_images'] = {}
             
         # Ensure product has all required fields
         required_fields = ['name', 'desc', 'description', 'price', 'image_path', 'image_alt']
@@ -172,13 +208,16 @@ def shop_details():
 
     except FileNotFoundError:
         app.logger.error('Shop data file not found')
-        return render_template('500.html', error="Product data unavailable"), 500
+        flash('Product data unavailable', 'error')
+        return redirect(url_for('shop')), 500
     except json.JSONDecodeError:
         app.logger.error('Invalid shop data format')
-        return render_template('500.html', error="Invalid product data"), 500
+        flash('Invalid product data', 'error')
+        return redirect(url_for('shop')), 500
     except Exception as e:
         app.logger.error(f'Unexpected error: {str(e)}')
-        return render_template('500.html', error="An unexpected error occurred"), 500
+        flash('An unexpected error occurred', 'error')
+        return redirect(url_for('shop')), 500
 
 @app.route('/search/api')
 def search_api():

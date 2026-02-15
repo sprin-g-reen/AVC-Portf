@@ -34,6 +34,38 @@
         height: 100%;
         object-fit: contain; /* keep image aspect ratio without cropping */
       }
+
+      .color-variants {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .color-name-chip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 36px;
+        padding: 8px 14px;
+        border: 1px solid #d4d7de;
+        border-radius: 999px;
+        background: #fff;
+        color: #273043;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1;
+        letter-spacing: 0.2px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      #color-variants label.selected .color-name-chip {
+        border-color: #0a58ca;
+        background: #eef4ff;
+        color: #0a58ca;
+        box-shadow: 0 0 0 1px rgba(10, 88, 202, 0.08);
+      }
     </style>
 </head>
 
@@ -70,10 +102,10 @@
                         <div class="col">
                             <div class="ul-product-details-img">
                                 <div class="ul-product-details-img-slider swiper">
-                                    <div class="swiper-wrapper">
-                                        <!-- single img -->
-                                        {% for image in product.images %}
-                                        <div class="swiper-slide"><img src="/static/{{ image.image_path }}" alt="{{ image.image_alt }}" loading="lazy" decoding="async"></div>
+                                    <div class="swiper-wrapper" id="color-image-slider">
+                                        {% set first_color = product.images[0].color %}
+                                        {% for img_path in product.color_images[first_color] %}
+                                        <div class="swiper-slide"><img src="{{ url_for('static', filename=img_path) }}" alt="{{ first_color }}" loading="lazy" decoding="async"></div>
                                         {% endfor %}
                                     </div>
 
@@ -92,6 +124,12 @@
 
                                 <!-- product title -->
                                 <h3 class="ul-product-details-title">{{ product.name }}</h3>
+
+                                <!-- product model (show original/alt name if available) -->
+                                <div class="ul-product-model" style="margin-top:6px;color:#555;">
+                                    <strong>Model:</strong>
+                                    <span>{{ product.image_alt or product.name }}</span>
+                                </div>
 
                                 <!-- product description -->
                                 <p class="ul-product-details-descr">{{ product.desc }}</p>
@@ -136,32 +174,25 @@
                                     </div>
                                     {% endif %}
 
-                                    <!-- {% if product.images %}
+                                    {% if product.images %}
                                     <div class="ul-product-details-option ul-product-details-colors">
-                                        <span class="title">Color</span>
-                                        <form action="#" class="variants">
+                                        <div style="margin-bottom:12px; padding:10px; background:#f8f9fa; border-radius:6px;">
+                                            <span style="font-size:14px; font-weight:600;">Selected Color: </span>
+                                            <span id="selected-color-name" style="font-weight:600; font-size:14px;"></span>
+                                        </div>
+
+                                        <button type="button" id="show-colors-btn" class="btn btn-primary btn-sm" style="margin-bottom:12px;">
+                                            <i class="flaticon-check-mark" style="margin-right:5px;"></i> Available
+                                        </button>
+
+                                        <form action="#" class="variants color-variants" id="color-variants" style="display:none; padding:10px; background:#f8fafc; border:1px solid #e9edf3; border-radius:10px;">
                                             {% for color in product.images %}
-                                            <label for="ul-product-details-color-{{ color.color }}">
-                                                <input type="radio" name="product-color" 
-                                                       id="ul-product-details-color-{{ color.color }}" 
-                                                       {% if loop.first %}checked{% endif %}
-                                                       hidden 
-                                                       data-image="/static{{ color.image_path }}"
-                                                       onchange="updateProductImage(this)">
-                                                <span class="color-btn" style="background-color: {{ color.color }}; border: 1px solid black;"></span>
+                                            <label for="ul-product-details-color-{{ loop.index }}" style="display:inline-flex;" title="{{ color.color }}">
+                                                <input type="radio" name="product-color" id="ul-product-details-color-{{ loop.index }}" {% if loop.first %}checked{% endif %} hidden data-color="{{ color.color }}" onchange="updateProductImage(this)">
+                                                <span class="color-name-chip">{{ color.color|title }}</span>
                                             </label>
                                             {% endfor %}
                                         </form>
-                                    </div>
-                                    {% endif %} -->
-
-                                    {% if product.colors_available %}
-                                    <div class="ul-product-details-option">
-                                        <span class="title">Available Colors</span>
-                                        <p>{{ product.colors_available }}</p>
-                                        {% if product.custom_color %}
-                                        <p class="text-sm text-gray-600">{{ product.custom_color }}</p>
-                                        {% endif %}
                                     </div>
                                     {% endif %}
                                 </div>
@@ -288,15 +319,77 @@
 
     <script>
     function updateProductImage(input) {
-        const imagePath = input.dataset.image;
-        const sliderImages = document.querySelectorAll('.ul-product-details-img-slider .swiper-slide img');
-        if (sliderImages.length > 0) {
-            sliderImages[0].src = imagePath;
+        if (!input) return;
+        const colorName = input.dataset.color;
+        // mark selected swatch
+        document.querySelectorAll('#color-variants label').forEach(lbl => lbl.classList.remove('selected'));
+        const lbl = input.closest('label');
+        if (lbl) lbl.classList.add('selected');
+
+        // show selected color name with proper capitalization
+        const nameEl = document.getElementById('selected-color-name');
+        if (nameEl) {
+            nameEl.textContent = capitalizeWords(colorName) || '';
         }
+
+        // update image slider with all images for this color
+        const colorImages = window.colorImagesByColor || {};
+        const images = colorImages[colorName] || [];
+        const slider = document.getElementById('color-image-slider');
+        if (slider) {
+            slider.innerHTML = images.map(imgPath => `<div class="swiper-slide"><img src="/static/${imgPath}" alt="${colorName}" loading="lazy" decoding="async"></div>`).join('');
+        }
+
+        reinitializeProductSwiper();
+    }
+
+    function capitalizeWords(str) {
+        if (!str) return '';
+        return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    }
+
+    function reinitializeProductSwiper() {
+        if (typeof Swiper === 'undefined') return;
+
+        if (window.ulProductDetailsSwiper && typeof window.ulProductDetailsSwiper.destroy === 'function') {
+            window.ulProductDetailsSwiper.destroy(true, true);
+        }
+
+        window.ulProductDetailsSwiper = new Swiper(".ul-product-details-img-slider", {
+            slidesPerView: 1,
+            loop: true,
+            autoplay: { delay: 3000 },
+            spaceBetween: 0,
+            navigation: {
+                nextEl: "#ul-product-details-img-slider-nav .next",
+                prevEl: "#ul-product-details-img-slider-nav .prev"
+            }
+        });
     }
 
     // Add error handling for images
     document.addEventListener('DOMContentLoaded', function() {
+        // Expose color images mapping to JS
+        window.colorImagesByColor = {{ product.color_images|tojson }};
+
+        // Toggle color swatches with Available button
+        const btn = document.getElementById('show-colors-btn');
+        const variants = document.getElementById('color-variants');
+        if (btn && variants) {
+            btn.addEventListener('click', function() {
+                if (variants.style.display === 'none' || variants.style.display === '') {
+                    variants.style.display = 'flex';
+                } else {
+                    variants.style.display = 'none';
+                }
+            });
+        }
+        // No toggle button for color variants; swatches always visible
+
+        // initialize selected color (if any)
+        const selected = document.querySelector('#color-variants input[type=radio]:checked');
+        if (selected) updateProductImage(selected);
+
         const images = document.querySelectorAll('img');
         images.forEach(img => {
             img.onerror = function() {

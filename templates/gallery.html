@@ -16,204 +16,240 @@
 
     <!-- custom CSS -->
     <link rel="stylesheet" href="/static/css/style.css">
+
+    <style>
+        .album .responsive-container-block {
+            min-height: 75px;
+            height: fit-content;
+            width: 100%;
+            padding: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 auto;
+            justify-content: flex-start;
+        }
+
+        .album .responsive-container-block.bg {
+            max-width: 1320px;
+            justify-content: space-between;
+        }
+
+        .album .img {
+            width: 100%;
+            margin-bottom: 20px;
+            border: 3px solid #e0e0e0;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: all 0.3s ease;
+        }
+
+        .album .img:hover {
+            border-color: #007bff;
+            transform: scale(1.02);
+        }
+
+        .album .responsive-container-block.img-cont {
+            flex-direction: column;
+            max-width: 33.3%;
+        }
+
+        /* ===== PREMIUM PAGINATION STYLE ===== */
+
+.pagination {
+    gap: 10px;
+}
+
+.pagination .page-link {
+    border: 1px solid #e0e0e0;
+    background: #ffffff;
+    color: #333;
+    padding: 8px 16px;
+    font-weight: 500;
+    border-radius: 50px;   /* Rounded pill */
+    transition: all 0.25s ease;
+}
+
+.pagination .page-link:hover {
+    background: #111;
+    color: #fff;
+    border-color: #111;
+    transform: translateY(-2px);
+}
+
+.pagination .page-item.active .page-link {
+    background: #111;
+    color: #fff;
+    border-color: #111;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.pagination .page-item.disabled .page-link {
+    background: #f5f5f5;
+    color: #bbb;
+    pointer-events: none;
+}
+
+.pagination .dots {
+    border: none;
+    background: transparent;
+    color: #999;
+    font-weight: 600;
+}
+
+
+    </style>
 </head>
 
 <body>
-    <!-- SIDEBAR SECTION START -->
-    {% include 'header.html' %}
-    <main>
-        <!-- BREADCRUMB SECTION START -->
-        <div class="ul-container">
-            <div class="ul-breadcrumb">
-                <h2 class="ul-breadcrumb-title">Gallery</h2>
-                <div class="ul-breadcrumb-nav">
-                    <a href="/"><i class="flaticon-home"></i> Home</a>
-                    <i class="flaticon-arrow-point-to-right"></i>
-                    <span class="current-page">Gallery</span>
-                </div>
+
+{% include 'header.html' %}
+
+<main>
+
+    <!-- BREADCRUMB -->
+    <div class="ul-container">
+        <div class="ul-breadcrumb">
+            <h2 class="ul-breadcrumb-title">Gallery</h2>
+            <div class="ul-breadcrumb-nav">
+                <a href="/"><i class="flaticon-home"></i> Home</a>
+                <i class="flaticon-arrow-point-to-right"></i>
+                <span class="current-page">Gallery</span>
             </div>
         </div>
-        <style>
-            .album .responsive-container-block {
-                min-height: 75px;
-                height: fit-content;
-                width: 100%;
-                padding-top: 10px;
-                padding-right: 10px;
-                padding-bottom: 10px;
-                padding-left: 10px;
-                display: flex;
-                flex-wrap: wrap;
-                margin-top: 0px;
-                margin-right: auto;
-                margin-bottom: 0px;
-                margin-left: auto;
-                justify-content: flex-start;
-            }
+    </div>
 
-            .album .responsive-container-block.bg {
-                max-width: 1320px;
-                margin: 0 0 0 0;
-                justify-content: space-between;
-            }
+    <!-- GALLERY SECTION -->
+    <section class="ul-reviews overflow-hidden py-5">
+        <div class="container">
 
-            .album .img {
-                width: 100%;
-                margin: 0 0 20px 0;
-            }
-
-            .album #i9rb {
-                color: black;
-            }
-
-            .album #ir6i {
-                color: black;
-            }
-
-            .album #ikz3b {
-                color: black;
-            }
-
-            .album .responsive-container-block.img-cont {
-                flex-direction: column;
-                max-width: 33.3%;
-                min-height: auto;
-                margin: 0 0 0 0;
-                height: 100%;
-            }
-
-            .album #ipix {
-                color: black;
-            }
-
-            .album #ipzoh {
-                color: black;
-            }
-
-            .album #ig5q8 {
-                color: black;
-            }
-
-            .album #imtzl {
-                color: black;
-            }
-
-            .album #i53es {
-                color: black;
-            }
-
-            .album .img.img-big {
-                height: 50%;
-                margin: 0 0 16px 0;
-            }
-
-            @media (max-width: 1024px) {
-                .album .img {
-                    margin: 0 0 18px 0;
-                }
-            }
-
-            @media (max-width: 768px) {
-                .album .img {
-                    max-width: 32.5%;
-                    margin: 0 0 0 0;
-                }
-
-                .album .responsive-container-block.bg {
-                    flex-direction: column;
-                }
-
-                .album .responsive-container-block.img-cont {
-                    max-width: 100%;
-                    flex-direction: row;
-                    justify-content: space-between;
-                }
-
-                .album .img.img-big {
-                    max-width: 49%;
-                    margin: 0 0 0 0;
-                }
-            }
-
-            @media (max-width: 500px) {
-                .album .img {
-                    max-width: 94%;
-                    margin: 0 0 25px 0;
-                }
-
-                .album .responsive-container-block.img-cont {
-                    flex-direction: column;
-                    align-items: center;
-                    padding: 10px 10px 10px 10px;
-                }
-
-                .album .img.img-big {
-                    max-width: 94%;
-                    margin: 0 0 25px 0;
-                }
-
-                .album .img.img-last {
-                    margin: 0 0 5px 0;
-                }
-            }
-        </style>
-
-        <section class="ul-reviews overflow-hidden py-5">
-            <div class="container">
-                <div class="ul-section-heading text-center justify-content-center mb-5">
-                    <div>
-                        <span class="ul-section-sub-title">Gallery</span>
-                        <h2 class="ul-section-title">Our Work Showcase</h2>
-                        <p class="ul-reviews-heading-descr">Explore our portfolio and see the quality and creativity we bring to every project.</p>
-                    </div>
-                </div>
-                <div class="album">
-                    <div class="responsive-container-block bg">
-                        <div class="responsive-container-block img-cont">
-                            <img class="img"
-                                src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/PP5.4.svg">
-                            <img class="img"
-                                src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/PP5.5.svg">
-                            <img class="img img-last"
-                                src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/PP5.6.svg">
-                        </div>
-                        <div class="responsive-container-block img-cont">
-                            <img class="img img-big"
-                                src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/PP5.11.svg">
-                            <img class="img img-big img-last"
-                                src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/PP5.10.svg">
-                        </div>
-                        <div class="responsive-container-block img-cont">
-                            <img class="img"
-                                src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/PP5.7.svg">
-                            <img class="img"
-                                src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/PP5.8.svg">
-                            <img class="img"
-                                src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/PP5.9.svg">
-                        </div>
-                    </div>
-                </div>
+            <div class="ul-section-heading text-center mb-5">
+                <span class="ul-section-sub-title">Gallery</span>
+                <h2 class="ul-section-title">Our Work Showcase</h2>
+                <p class="ul-reviews-heading-descr">
+                    Explore our portfolio and see the quality and creativity we bring to every project.
+                </p>
             </div>
-        </section>
-    </main>
 
-    <!-- FOOTER SECTION START -->
-    {% include 'footer.html' %}
-    <!-- FOOTER SECTION END -->
+            <div class="album">
+                <div class="responsive-container-block bg">
 
-    <!-- libraries JS -->
-    <script src="/static/vendor/bootstrap/bootstrap.bundle.min.js"></script>
-    <script src="/static/vendor/splide/splide.min.js"></script>
-    <script src="/static/vendor/splide/splide-extension-auto-scroll.min.js"></script>
-    <script src="/static/vendor/swiper/swiper-bundle.min.js"></script>
-    <script src="/static/vendor/slim-select/slimselect.min.js"></script>
-    <script src="/static/vendor/animate-wow/wow.min.js"></script>
-    <script src="/static/vendor/splittype/index.min.js"></script>
-    <script src="/static/vendor/mixitup/mixitup.min.js"></script>
-    <script src="/static/vendor/fslightbox/fslightbox.js"></script>
+                    {% for image in gallery_images %}
+                    <div class="responsive-container-block img-cont">
+                        <img class="img"
+                             src="{{ url_for('static', filename=image.path) }}"
+                             alt="{{ image.color }}"
+                             loading="lazy">
+                    </div>
+                    {% endfor %}
 
-    <!-- custom JS -->
-    <script src="/static/js/main.js"></script>
+                </div>
+
+                <!-- ===== PROFESSIONAL AMAZON-STYLE PAGINATION ===== -->
+<div class="text-center mt-5">
+
+    <!-- Page Info -->
+    <p class="mb-3 text-muted fw-medium">
+        Page {{ current_page }} of {{ total_pages }}
+    </p>
+
+    <nav aria-label="Gallery page navigation">
+        <ul class="pagination justify-content-center">
+
+            <!-- Previous -->
+            <li class="page-item {% if current_page == 1 %}disabled{% endif %}">
+                <a class="page-link"
+                   href="{{ url_for('gallery', page=current_page-1) }}"
+                   onclick="scrollToTop()">
+                    ‹
+                </a>
+            </li>
+
+            {% set start_page = current_page - 2 if current_page > 2 else 1 %}
+            {% set end_page = current_page + 2 if current_page + 2 <= total_pages else total_pages %}
+
+            {% if start_page > 1 %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="{{ url_for('gallery', page=1) }}"
+                       onclick="scrollToTop()">1</a>
+                </li>
+                {% if start_page > 2 %}
+                <li class="page-item disabled">
+                    <span class="page-link dots">...</span>
+                </li>
+                {% endif %}
+            {% endif %}
+
+            {% for p in range(start_page, end_page + 1) %}
+            <li class="page-item {% if p == current_page %}active{% endif %}">
+                <a class="page-link"
+                   href="{{ url_for('gallery', page=p) }}"
+                   onclick="scrollToTop()">
+                    {{ p }}
+                </a>
+            </li>
+            {% endfor %}
+
+            {% if end_page < total_pages %}
+                {% if end_page < total_pages - 1 %}
+                <li class="page-item disabled">
+                    <span class="page-link dots">...</span>
+                </li>
+                {% endif %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="{{ url_for('gallery', page=total_pages) }}"
+                       onclick="scrollToTop()">
+                        {{ total_pages }}
+                    </a>
+                </li>
+            {% endif %}
+
+            <!-- Next -->
+            <li class="page-item {% if current_page == total_pages %}disabled{% endif %}">
+                <a class="page-link"
+                   href="{{ url_for('gallery', page=current_page+1) }}"
+                   onclick="scrollToTop()">
+                    ›
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+</div>
+<!-- ===== END ===== -->
+
+
+
+            </div>
+        </div>
+    </section>
+
+</main>
+
+{% include 'footer.html' %}
+
+<!-- libraries JS -->
+<script src="/static/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="/static/vendor/splide/splide.min.js"></script>
+<script src="/static/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="/static/vendor/slim-select/slimselect.min.js"></script>
+<script src="/static/vendor/animate-wow/wow.min.js"></script>
+<script src="/static/vendor/splittype/index.min.js"></script>
+<script src="/static/vendor/mixitup/mixitup.min.js"></script>
+<script src="/static/vendor/fslightbox/fslightbox.js"></script>
+
+<!-- custom JS -->
+<script src="/static/js/main.js"></script>
+<script>
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+</script>
+
+
 </body>
-
 </html>

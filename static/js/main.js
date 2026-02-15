@@ -219,7 +219,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (document.querySelector(".ul-product-details-img-slider")) {
-      new Swiper(".ul-product-details-img-slider", {
+      window.ulProductDetailsSwiper = new Swiper(".ul-product-details-img-slider", {
         slidesPerView: 1,
         loop: true,
         autoplay: { delay: 3000 },
