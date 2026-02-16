@@ -49,6 +49,9 @@
             <div class="ul-header-bottom-wrapper">
                 <!-- header left -->
                 <div class="header-bottom-left">
+                    <button type="button" class="ul-mobile-nav-toggle" aria-label="Toggle navigation" aria-controls="site-navigation" aria-expanded="false">
+                        <i class="flaticon-hamburger"></i>
+                    </button>
                     <div class="logo-container">
                         <a href="/" class="d-inline-block"><img src="/static/img/logo.png" alt="logo" class="logo"></a>
                     </div>
@@ -474,9 +477,67 @@
                             }
                         }
 
+                        .ul-mobile-nav-toggle {
+                            display: none;
+                        }
+
+                        @media (max-width: 991px) {
+                            .ul-mobile-nav-toggle {
+                                display: inline-flex;
+                                align-items: center;
+                                justify-content: center;
+                                width: 42px;
+                                height: 42px;
+                                border: 1px solid var(--ul-border-color);
+                                border-radius: 8px;
+                                background: var(--ul-white);
+                                color: var(--ul-primary);
+                                font-size: 18px;
+                                flex-shrink: 0;
+                                order: 1;
+                            }
+
+                            .ul-header-bottom-wrapper {
+                                flex-direction: column;
+                                align-items: flex-start;
+                                gap: 12px;
+                            }
+
+                            .ul-header-bottom .header-bottom-left {
+                                width: 100%;
+                                flex-wrap: wrap;
+                                align-items: center;
+                                gap: 12px;
+                            }
+
+                            .logo-container {
+                                order: 2;
+                                flex: 1;
+                                display: flex;
+                                justify-content: center;
+                            }
+
+                            .ul-header-search-wrapper {
+                                order: 3;
+                                flex: 0 0 100%;
+                                width: 100%;
+                                max-width: 100%;
+                                min-width: 0;
+                            }
+
+                            .ul-header-nav-wrapper,
+                            .to-go-to-sidebar-in-mobile {
+                                width: 100%;
+                            }
+
+                            .ul-header-nav.is-open {
+                                display: flex;
+                            }
+                        }
+
                         @media (max-width: 480px) {
                             .ul-header-search-wrapper {
-                                min-width: 200px;
+                                min-width: 0;
                             }
                         }
 
@@ -492,7 +553,7 @@
                 <!-- header nav -->
                 <div class=" ul-header-nav-wrapper">
                     <div class="to-go-to-sidebar-in-mobile">
-                        <nav class="ul-header-nav">
+                        <nav class="ul-header-nav" id="site-navigation">
                             <a href="/" class="{{ 'active' if request.path == '/' }}">Home</a>
                         
                             <div class="has-sub-menu has-mega-menu {{ 'active' if request.path.startswith('/shop') }}">

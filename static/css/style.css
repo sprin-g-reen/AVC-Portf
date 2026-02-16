@@ -317,6 +317,26 @@ button {
 .ul-breadcrumb-nav a:hover {
   color: var(--ul-primary);
 }
+@media screen and (max-width: 767px) {
+  .ul-breadcrumb {
+    padding: 32px 14px;
+  }
+  .ul-breadcrumb-title {
+    margin-bottom: 12px;
+  }
+  .ul-breadcrumb-nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 6px;
+    column-gap: 8px;
+    line-height: 1.35;
+  }
+  .ul-breadcrumb-nav .current-page {
+    flex: 0 1 auto;
+    text-align: inherit;
+    word-break: break-word;
+  }
+}
 
 .ul-sidebar {
   position: fixed;

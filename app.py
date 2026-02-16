@@ -4,6 +4,7 @@ from threading import Thread
 from helpers import send_email_admin
 import json
 import os
+import random
 
 app = Flask(__name__)
 
@@ -58,15 +59,53 @@ def gallery():
         products_dict = {}
 
     all_gallery_images = []
+    seen_paths = set()
+    allowed_ext = ('.png', '.jpg', '.jpeg', '.webp', '.gif')
+
     for product in products_dict.values():
-        for image in product.get('images', []):
-            image_path = image.get('image_path')
-            if not image_path:
-                continue
-            all_gallery_images.append({
-                'path': image_path,
-                'color': image.get('color', product.get('name', 'Product'))
-            })
+        product_name = product.get('name', '').strip()
+        discovered_any = False
+
+        # Prefer filesystem discovery so every image in abc_upload is included.
+        if product_name:
+            base_folder = os.path.join(app.static_folder, 'abc_upload', product_name)
+            if os.path.isdir(base_folder):
+                for color in sorted(os.listdir(base_folder), key=lambda x: x.lower()):
+                    color_folder = os.path.join(base_folder, color)
+                    if not os.path.isdir(color_folder):
+                        continue
+
+                    image_files = [
+                        f for f in os.listdir(color_folder)
+                        if os.path.isfile(os.path.join(color_folder, f)) and f.lower().endswith(allowed_ext)
+                    ]
+                    for file_name in sorted(image_files, key=lambda x: x.lower()):
+                        rel_path = f"abc_upload/{product_name}/{color}/{file_name}".replace("\\", "/")
+                        if rel_path in seen_paths:
+                            continue
+                        seen_paths.add(rel_path)
+                        all_gallery_images.append({
+                            'path': rel_path,
+                            'color': color
+                        })
+                        discovered_any = True
+
+        # Fallback to JSON images if folder discovery found nothing.
+        if not discovered_any:
+            for image in product.get('images', []):
+                image_path = image.get('image_path')
+                if not image_path:
+                    continue
+                if image_path in seen_paths:
+                    continue
+                seen_paths.add(image_path)
+                all_gallery_images.append({
+                    'path': image_path,
+                    'color': image.get('color', product.get('name', 'Product'))
+                })
+
+    # Randomize order so colors are mixed in gallery.
+    random.shuffle(all_gallery_images)
 
     page = request.args.get('page', 1, type=int)
     per_page = 12

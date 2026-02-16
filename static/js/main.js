@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const mobileMenuContent = document.querySelector(".to-go-to-sidebar-in-mobile");
   const headerNavMobileWrapper = document.querySelector(".ul-sidebar-header-nav-wrapper");
   const headerNavOgWrapper = document.querySelector(".ul-header-nav-wrapper");
+  const inlineMobileNavToggle = document.querySelector(".ul-mobile-nav-toggle");
+  const headerNavMobile = document.querySelector(".ul-header-nav");
 
   function updateMenuPosition() {
     if (!mobileMenuContent || !headerNavMobileWrapper || !headerNavOgWrapper) return;
@@ -30,14 +32,37 @@ document.addEventListener("DOMContentLoaded", () => {
   if (opener && sidebar) opener.addEventListener("click", () => sidebar.classList.add("active"));
   if (closer && sidebar) closer.addEventListener("click", () => sidebar.classList.remove("active"));
 
+  // Inline mobile nav fallback for pages without sidebar markup
+  if (inlineMobileNavToggle && headerNavMobile) {
+    const syncInlineMobileNav = () => {
+      if (window.innerWidth >= 992) {
+        headerNavMobile.classList.remove("is-open");
+        inlineMobileNavToggle.setAttribute("aria-expanded", "false");
+      }
+    };
+
+    inlineMobileNavToggle.addEventListener("click", () => {
+      const isOpen = headerNavMobile.classList.toggle("is-open");
+      inlineMobileNavToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    });
+
+    syncInlineMobileNav();
+    window.addEventListener("resize", syncInlineMobileNav);
+  }
+
   // Menu dropdown/submenu in mobile
-  const headerNavMobile = document.querySelector(".ul-header-nav");
   if (headerNavMobile) {
     const items = headerNavMobile.querySelectorAll(".has-sub-menu");
     items.forEach((item) => {
-      if (window.innerWidth < 992) {
-        item.addEventListener("click", () => item.classList.toggle("active"));
-      }
+      const trigger = item.querySelector(":scope > a");
+      if (!trigger) return;
+
+      trigger.addEventListener("click", (e) => {
+        if (window.innerWidth < 992) {
+          e.preventDefault();
+          item.classList.toggle("active");
+        }
+      });
     });
   }
 
