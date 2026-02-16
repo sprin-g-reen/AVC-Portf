@@ -13,9 +13,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const headerNavOgWrapper = document.querySelector(".ul-header-nav-wrapper");
   const inlineMobileNavToggle = document.querySelector(".ul-mobile-nav-toggle");
   const headerNavMobile = document.querySelector(".ul-header-nav");
+  const useSidebarMenu = Boolean(opener && sidebar && headerNavMobileWrapper && headerNavOgWrapper && !inlineMobileNavToggle);
 
   function updateMenuPosition() {
-    if (!mobileMenuContent || !headerNavMobileWrapper || !headerNavOgWrapper) return;
+    if (!mobileMenuContent || !headerNavOgWrapper) return;
+    if (!useSidebarMenu) {
+      if (!headerNavOgWrapper.contains(mobileMenuContent)) {
+        headerNavOgWrapper.appendChild(mobileMenuContent);
+      }
+      return;
+    }
+
     if (window.innerWidth < 992) {
       if (!headerNavMobileWrapper.contains(mobileMenuContent)) {
         headerNavMobileWrapper.appendChild(mobileMenuContent);
