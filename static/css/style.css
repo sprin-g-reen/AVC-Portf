@@ -36,7 +36,7 @@ CSS INDEX
 24. Contact Page
 
 */
-@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 :root {
   --black: #000;
   --white: #fff;
@@ -45,7 +45,7 @@ CSS INDEX
   /* --ul-secondary: #FFA31A; */
   --ul-secondary: rgba(0, 9, 91, 0.5);
   --ul-gradient: linear-gradient(90deg, var(--ul-primary) 0%, var(--ul-secondary) 100%);
-  --font-primary: "Jost", sans-serif;
+  --font-primary: "Poppins", sans-serif;
 }
 
 html {
@@ -54,6 +54,7 @@ html {
 
 body {
   font-family: var(--font-primary);
+  font-size: 16px;
   margin: auto;
   overflow: hidden;
 }
@@ -77,6 +78,7 @@ a:hover {
 }
 
 p {
+  font-size: clamp(15px, 0.95vw, 18px);
   line-height: 1.75;
 }
 
@@ -289,21 +291,23 @@ button {
 
 .ul-breadcrumb {
   background-color: #FEF4F6;
-  border-radius: clamp(20px, 2.1vw, 40px);
-  padding: clamp(41px, 3.73vw, 71px) 15px;
+  border-radius: 16px;
+  margin: 0 clamp(15px, 13.4vw, 255px);
+  padding: clamp(24px, 2.3vw, 40px) 16px;
   text-align: center;
 }
 .ul-breadcrumb-title {
   font-weight: 600;
-  font-size: clamp(22px, 1.58vw, 30px);
+  font-size: clamp(28px, 2vw, 38px);
   color: var(--black);
   line-height: 1.3;
+  margin-bottom: 10px;
 }
 .ul-breadcrumb-nav {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: clamp(13px, 0.84vw, 16px);
+  font-size: clamp(14px, 0.9vw, 16px);
   color: var(--black);
   gap: clamp(7px, 0.53vw, 10px);
 }
@@ -335,6 +339,16 @@ button {
     flex: 0 1 auto;
     text-align: inherit;
     word-break: break-word;
+  }
+}
+@media screen and (max-width: 1399px) {
+  .ul-breadcrumb {
+    margin: 0 clamp(15px, 5.4vw, 255px);
+  }
+}
+@media screen and (max-width: 1199px) {
+  .ul-breadcrumb {
+    margin: 0 clamp(15px, 3.15vw, 255px);
   }
 }
 
@@ -2081,74 +2095,85 @@ button {
 
 .ul-footer {
   background-color: var(--black);
+  color: var(--white);
 }
 .ul-footer-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: clamp(22px, 1.58vw, 30px);
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  align-items: start;
+  gap: clamp(20px, 1.37vw, 26px);
   padding: clamp(40px, 4.2vw, 80px) 0 clamp(25px, 2.63vw, 50px);
 }
 @media screen and (max-width: 991px) {
   .ul-footer-top {
-    flex-wrap: wrap;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
-.ul-footer-top > * {
-  flex-shrink: 0;
-  flex: 16.6666666667%;
-}
-@media screen and (max-width: 991px) {
-  .ul-footer-top > * {
-    flex: auto;
-  }
-}
-@media screen and (max-width: 575px) {
-  .ul-footer-top > * {
-    flex: 25%;
+@media screen and (max-width: 767px) {
+  .ul-footer-top {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 @media screen and (max-width: 479px) {
-  .ul-footer-top > * {
-    flex: 33.3333333333%;
+  .ul-footer-top {
+    grid-template-columns: 1fr;
   }
 }
 .ul-footer-top-widget-title {
   font-weight: 600;
-  font-size: clamp(20px, 1.26vw, 24px);
+  font-size: clamp(16px, 1.05vw, 20px);
   color: var(--white);
-  margin-bottom: clamp(10px, 0.89vw, 17px);
+  margin-bottom: clamp(8px, 0.63vw, 12px);
 }
 .ul-footer-top-widget-links {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: clamp(1px, 0.21vw, 4px);
+  gap: clamp(5px, 0.42vw, 8px);
 }
 .ul-footer-top-widget-links a {
   display: inline-block;
   color: #A1A1A1;
-  font-size: clamp(13px, 0.84vw, 16px);
+  font-size: clamp(13px, 0.74vw, 14px);
+  line-height: 1.45;
 }
 .ul-footer-top-widget-links a:hover {
   color: var(--ul-primary);
 }
 .ul-footer-middle {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr auto;
+  align-items: center;
   padding: clamp(25px, 2.1vw, 40px) 0;
-  gap: clamp(22px, 1.58vw, 30px);
+  gap: clamp(20px, 1.58vw, 30px);
   border: solid rgba(255, 255, 255, 0.25);
   border-width: 1px 0;
-  flex-wrap: wrap;
+}
+@media screen and (max-width: 991px) {
+  .ul-footer-middle {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+}
+.ul-footer-middle-widget.footer-brand {
+  justify-self: end;
+}
+@media screen and (max-width: 991px) {
+  .ul-footer-middle-widget.footer-brand {
+    justify-self: start;
+  }
+}
+.ul-footer-middle-widget-content {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
 }
 .ul-footer-middle-widget-title {
-  font-size: clamp(17px, 1.05vw, 20px);
+  font-size: clamp(15px, 0.95vw, 18px);
   font-weight: 500;
   line-height: 110%;
   color: var(--white);
-  margin-bottom: clamp(12px, 1.58vw, 30px);
+  margin-bottom: clamp(8px, 0.84vw, 16px);
 }
 .ul-footer-middle-widget .app-links,
 .ul-footer-middle-widget .social-links {
@@ -2197,14 +2222,45 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: clamp(25px, 2.1vw, 40px) 0;
+  padding: clamp(18px, 1.58vw, 30px) 0;
   flex-wrap: wrap;
   gap: 15px;
+  text-align: center;
+}
+@media screen and (max-width: 767px) {
+  .ul-footer-bottom {
+    justify-content: center;
+  }
+}
+.ul-footer-bottom img {
+  max-height: 28px;
+  width: auto;
 }
 .ul-footer-bottom .copyright-txt {
   margin-bottom: 0;
-  font-size: clamp(13px, 0.84vw, 16px);
+  font-size: clamp(12px, 0.74vw, 14px);
   color: #676666;
+}
+
+/* Keep footer in desktop layout on mobile when desktop mode is enforced */
+@media screen and (max-width: 991px) {
+  .ul-footer-top {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .ul-footer-middle {
+    grid-template-columns: 1.2fr 1fr auto;
+    align-items: center;
+  }
+
+  .ul-footer-middle-widget.footer-brand {
+    justify-self: end;
+  }
+
+  .ul-footer-bottom {
+    justify-content: space-between;
+    text-align: left;
+  }
 }
 
 .ul-inner-products-wrapper .ul-product {
@@ -3822,3 +3878,4 @@ button {
   background-color: var(--black);
   color: var(--ul-primary);
 }/*# sourceMappingURL=style.css.map */
+

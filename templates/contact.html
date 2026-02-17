@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1200">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
     <!-- libraries CSS -->
@@ -455,6 +455,30 @@
                         padding: 2rem;
                     }
                 }
+
+                /* Keep desktop-style contact layout on mobile */
+                @media (max-width: 991px) {
+                    .contact-grid {
+                        grid-template-columns: repeat(3, minmax(250px, 300px)) !important;
+                        gap: 2rem !important;
+                        padding: 0 2rem !important;
+                    }
+
+                    .ul-nwsltr-subs-form .row {
+                        display: flex;
+                        flex-wrap: wrap;
+                    }
+
+                    .ul-nwsltr-subs-form .col-md-6 {
+                        flex: 0 0 50%;
+                        max-width: 50%;
+                    }
+
+                    .ul-nwsltr-subs-form .col-md-3 {
+                        flex: 0 0 25%;
+                        max-width: 25%;
+                    }
+                }
             </style>
             <script>
             // Send Contact Us message directly to WhatsApp
@@ -514,3 +538,4 @@
 </body>
 
 </html>
+

@@ -4,6 +4,14 @@ document.addEventListener("DOMContentLoaded", () => {
   if (preloader) preloader.style.display = 'none';
   document.body.style.position = 'static';
 
+  // In forced desktop-mode on mobile, prevent carried horizontal offset across pages.
+  if (window.innerWidth < 992) {
+    const bodyMinWidth = parseFloat(window.getComputedStyle(document.body).minWidth || "0");
+    if (bodyMinWidth >= 1200) {
+      window.scrollTo(0, 0);
+    }
+  }
+
   // HEADER NAV IN MOBILE
   const sidebar = document.querySelector(".ul-sidebar");
   const opener = document.querySelector(".ul-header-sidebar-opener");
@@ -60,13 +68,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Menu dropdown/submenu in mobile
   if (headerNavMobile) {
+    const isDesktopModeForcedOnMobile = () => {
+      if (!inlineMobileNavToggle) return false;
+      return window.getComputedStyle(inlineMobileNavToggle).display === "none";
+    };
+
     const items = headerNavMobile.querySelectorAll(".has-sub-menu");
     items.forEach((item) => {
       const trigger = item.querySelector(":scope > a");
       if (!trigger) return;
 
       trigger.addEventListener("click", (e) => {
-        if (window.innerWidth < 992) {
+        if (window.innerWidth < 992 && !isDesktopModeForcedOnMobile()) {
           e.preventDefault();
           item.classList.toggle("active");
         }

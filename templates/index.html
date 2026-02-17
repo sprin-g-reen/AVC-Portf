@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1200">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ABC - Apparel Branding Company</title>
 
     <!-- libraries CSS -->
@@ -16,6 +16,43 @@
 
     <!-- custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .ul-banner.single-hero {
+            display: block;
+        }
+        .ul-banner.single-hero .ul-banner-slider-wrapper {
+            width: 100%;
+            background: transparent;
+        }
+        .ul-banner.single-hero .ul-banner-slider-wrapper::before,
+        .ul-banner.single-hero .ul-banner-slider-wrapper::after {
+            display: none;
+        }
+        .ul-banner.single-hero .ul-banner-slider {
+            max-width: 100%;
+            width: 100%;
+        }
+        .ul-banner.single-hero .ul-banner-slide-img img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .ul-products .ul-inner-container {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .ul-service-card .row {
+            row-gap: 1.5rem;
+        }
+        .ul-service-image img {
+            width: 100% !important;
+            height: auto !important;
+            max-width: 610px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
 </head>
 
 <body>
@@ -24,7 +61,7 @@
         <!-- BANNER SECTION START -->
         <div class="overflow-hidden">
             <div class="ul-container">
-                <section class="ul-banner">
+                <section class="ul-banner single-hero">
                     <div class="ul-banner-slider-wrapper">
                         <div class="ul-banner-slider swiper">
                             <div class="swiper-wrapper">
@@ -101,24 +138,6 @@
                         </div>
                     </div>
 
-                    <div class="ul-banner-img-slider-wrapper">
-                        <div class="ul-banner-img-slider swiper overflow-visible">
-                            <div class="swiper-wrapper">
-                                <div class="swiper-slide">
-                                    <img src="/static/hero_min/1.png" alt="Banner Image">
-                                </div>
-                                <div class="swiper-slide">
-                                    <img src="/static/hero_min/2.png" alt="Banner Image">
-                                </div>
-                                <div class="swiper-slide">
-                                    <img src="/static/hero_min/3.png" alt="Banner Image">
-                                </div>
-                                <div class="swiper-slide">
-                                    <img src="/static/hero_min/4.png" alt="Banner Image">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </section>
             </div>
         </div>
@@ -410,7 +429,7 @@
 
         <!-- REVIEWS SECTION START -->
         <section class="ul-reviews overflow-hidden py-5">
-            <div class="container">
+            <div class="ul-container">
                 <div class="ul-section-heading text-center justify-content-center mb-5">
                     <div>
                         <span class="ul-section-sub-title">Customer Reviews</span>
@@ -790,3 +809,4 @@
     <script src="{{ url_for('static', filename='js/countdown.js') }}"></script>
 </body>
 </html>
+

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1200">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop {{ product.name }}</title>
 
     <!-- libraries CSS -->
@@ -19,20 +19,164 @@
 
     <!-- page-specific fixes: keep product images in a fixed aspect ratio and prevent distortion -->
     <style>
+      .platform-product-page {
+        font-family: "Poppins", sans-serif;
+      }
+
+      .platform-top-grid {
+        align-items: flex-start !important;
+      }
+
+      .platform-sticky-left {
+        position: sticky;
+        top: 110px;
+      }
+
+      .platform-sticky-left .ul-product-details-img {
+        height: calc(100vh - 130px);
+      }
+
+      .platform-sticky-left .ul-product-details-img .swiper {
+        height: 100%;
+      }
+
+      .platform-sticky-left .ul-product-details-img .swiper-slide {
+        min-height: 100%;
+        max-height: 100%;
+      }
+
+      .platform-scroll-right {
+        max-height: calc(100vh - 130px);
+        overflow-y: auto;
+        padding-right: 0;
+        scrollbar-gutter: stable;
+      }
+
+      .platform-scroll-right::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .platform-scroll-right::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+      }
+
       .ul-product-details-img .swiper {
         width: 100%;
+        border: 1px solid #d5d9d9;
+        border-radius: 10px;
+        background: #fff;
+        padding: 8px;
+      }
+      .ul-product-details-img .swiper-wrapper {
+        align-items: center;
       }
       .ul-product-details-img .swiper-slide {
-        aspect-ratio: 1 / 1; /* square container; change to 4 / 3 if preferred */
+        min-height: 320px;
+        max-height: 520px;
         display: flex;
         align-items: center;
         justify-content: center;
         background: #fff;
+        padding: 4px;
       }
       .ul-product-details-img .swiper-slide img {
         width: 100%;
         height: 100%;
-        object-fit: contain; /* keep image aspect ratio without cropping */
+        max-width: none;
+        max-height: none;
+        object-fit: contain;
+      }
+
+      .platform-main-info {
+        border: 1px solid #e8e8e8;
+        border-radius: 12px;
+        background: #fff;
+        padding: 20px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .platform-main-info .ul-product-details-title {
+        font-size: 32px;
+        line-height: 1.25;
+        margin-bottom: 6px;
+      }
+
+      .platform-meta-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+        color: #5f6368;
+        font-size: 14px;
+      }
+
+      .platform-meta-pill {
+        border: 1px solid #e2e5ea;
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-weight: 500;
+      }
+
+      .platform-divider {
+        border: 0;
+        border-top: 1px solid #e7e7e7;
+        margin: 12px 0 16px;
+      }
+
+      .ul-product-details-price.platform-price {
+        color: var(--ul-primary);
+        font-size: 30px;
+        font-weight: 700;
+      }
+
+      .ul-product-details-descr.platform-short-desc {
+        color: #333;
+        font-size: 16px;
+        line-height: 1.65;
+      }
+
+      .platform-main-info .ul-product-details-option {
+        align-items: flex-start;
+      }
+
+      .platform-size-option {
+        display: block;
+      }
+
+      .platform-size-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px 24px;
+      }
+
+      .platform-size-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-width: 0;
+      }
+
+      .platform-size-group .title {
+        display: block;
+        font-size: 15px;
+        font-weight: 600;
+        line-height: 1.35;
+      }
+
+      .platform-main-info .ul-product-details-sizes .variants {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .platform-main-info .ul-product-details-sizes .size-btn {
+        width: auto;
+        min-width: 40px;
+        height: 34px;
+        aspect-ratio: auto;
+        padding: 0 10px;
       }
 
       .color-variants {
@@ -66,6 +210,142 @@
         color: #0a58ca;
         box-shadow: 0 0 0 1px rgba(10, 88, 202, 0.08);
       }
+
+      .platform-buy-box {
+        border: 1px solid #e8e8e8;
+        border-radius: 12px;
+        background: #fff;
+        padding: 16px;
+        margin-top: 16px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .platform-buy-price {
+        color: var(--ul-primary);
+        font-size: 30px;
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 8px;
+      }
+
+      .platform-stock {
+        color: #0b8f3a;
+        font-size: 17px;
+        margin-bottom: 14px;
+      }
+
+      .platform-delivery-note {
+        color: #565959;
+        font-size: 14px;
+        margin-bottom: 14px;
+      }
+
+      .platform-btn {
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 14px;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .platform-btn-primary {
+        background: var(--ul-primary);
+        border-color: var(--ul-primary);
+        color: #fff;
+      }
+
+      .platform-btn-primary:hover {
+        background: #000;
+        border-color: #000;
+        color: #fff;
+      }
+
+      .platform-btn-secondary {
+        background: #fff;
+        border-color: var(--ul-primary);
+        color: var(--ul-primary);
+      }
+
+      .platform-btn-secondary:hover {
+        background: var(--ul-primary);
+        color: #fff;
+      }
+
+
+      .platform-description-box {
+        border: 1px solid #e6e8ec;
+        border-radius: 12px;
+        padding: 18px 20px;
+        background: #fff;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .platform-description-box h4 {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 12px;
+      }
+
+      .platform-description-box ul {
+        list-style: disc;
+        padding-left: 22px;
+        margin: 0;
+      }
+
+      .platform-description-box li {
+        margin-bottom: 8px;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 991px) {
+        .ul-inner-page-container {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+        .platform-product-page {
+          min-width: 1080px;
+        }
+        .platform-top-grid {
+          flex-wrap: nowrap;
+        }
+        .platform-top-grid > .col {
+          flex: 0 0 50% !important;
+          max-width: 50% !important;
+        }
+        .platform-sticky-left {
+          position: sticky;
+          top: 110px;
+        }
+        .platform-sticky-left .ul-product-details-img {
+          height: calc(100vh - 130px);
+        }
+        .platform-sticky-left .ul-product-details-img .swiper {
+          height: 100%;
+        }
+        .platform-sticky-left .ul-product-details-img .swiper-slide {
+          min-height: 100%;
+          max-height: 100%;
+        }
+        .platform-scroll-right {
+          max-height: calc(100vh - 130px);
+          overflow-y: auto;
+          padding-right: 0;
+        }
+      }
+      @media (max-width: 767px) {
+        .platform-product-page {
+          min-width: 1020px;
+        }
+        .platform-size-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
     </style>
 </head>
 
@@ -95,11 +375,11 @@
 
         <!-- MAIN CONTENT SECTION START -->
         <div class="ul-inner-page-container">
-            <div class="ul-product-details">
+            <div class="ul-product-details platform-product-page">
                 <div class="ul-product-details-top">
-                    <div class="row ul-bs-row row-cols-lg-2 row-cols-1 align-items-center">
+                    <div class="row ul-bs-row row-cols-lg-2 row-cols-1 platform-top-grid">
                         <!-- img -->
-                        <div class="col">
+                        <div class="col platform-sticky-left">
                             <div class="ul-product-details-img">
                                 <div class="ul-product-details-img-slider swiper">
                                     <div class="swiper-wrapper" id="color-image-slider">
@@ -118,12 +398,15 @@
                         </div>
 
                         <!-- txt -->
-                        <div class="col">
-                            <div class="ul-product-details-txt">
-                                <span class="ul-product-details-price"> <i class="flaticon-tag"></i> {{ product.price }}</span>
-
-                                <!-- product title -->
+                        <div class="col platform-scroll-right">
+                            <div class="ul-product-details-txt platform-main-info">
                                 <h3 class="ul-product-details-title">{{ product.name }}</h3>
+                                <div class="platform-meta-row">
+                                    <span class="platform-meta-pill">Premium Apparel</span>
+                                    <span>Bulk orders supported</span>
+                                </div>
+                                <hr class="platform-divider">
+                                <span class="ul-product-details-price platform-price"> {{ product.price }}</span>
 
                                 <!-- product model (show original/alt name if available) -->
                                 <div class="ul-product-model" style="margin-top:6px;color:#555;">
@@ -132,33 +415,39 @@
                                 </div>
 
                                 <!-- product description -->
-                                <p class="ul-product-details-descr">{{ product.desc }}</p>
+                                <p class="ul-product-details-descr platform-short-desc">{{ product.desc }}</p>
 
                                 <!-- product options -->
                                 <div class="ul-product-details-options">
                                     {% if product.get('all_sizes') %}
-                                    <div class="col ul-product-details-option ul-product-details-sizes">
-                                        <span class="title">Regular Sizes ({{ product.all_sizes.regular.moq }})</span>
-                                        <form class="variants">
-                                            {% for size in product.all_sizes.regular.sizes %}
-                                            <label for="ul-product-details-size-{{ size }}">
-                                                <input type="radio" name="product-size" id="ul-product-details-size-{{ size }}" {% if loop.first %}checked{% endif %} hidden>
-                                                <span class="size-btn">{{ size }}</span>
-                                            </label>
-                                            {% endfor %}
-                                        </form>
-                                        
-                                        {% if product.all_sizes.extended and product.all_sizes.extended.sizes %}
-                                        <span class="title mt-3">Extended Sizes ({{ product.all_sizes.extended.moq }})</span>
-                                        <form class="variants">
-                                            {% for size in product.all_sizes.extended.sizes %}
-                                            <label for="ul-product-details-size-ext-{{ size }}">
-                                                <input type="radio" name="product-size" id="ul-product-details-size-ext-{{ size }}" hidden>
-                                                <span class="size-btn">{{ size }}</span>
-                                            </label>
-                                            {% endfor %}
-                                        </form>
-                                        {% endif %}
+                                    <div class="ul-product-details-option ul-product-details-sizes platform-size-option">
+                                        <div class="platform-size-grid">
+                                            <div class="platform-size-group">
+                                                <span class="title">Regular Sizes ({{ product.all_sizes.regular.moq }})</span>
+                                                <form class="variants">
+                                                    {% for size in product.all_sizes.regular.sizes %}
+                                                    <label for="ul-product-details-size-{{ size }}">
+                                                        <input type="radio" name="product-size" id="ul-product-details-size-{{ size }}" {% if loop.first %}checked{% endif %} hidden>
+                                                        <span class="size-btn">{{ size }}</span>
+                                                    </label>
+                                                    {% endfor %}
+                                                </form>
+                                            </div>
+
+                                            {% if product.all_sizes.extended and product.all_sizes.extended.sizes %}
+                                            <div class="platform-size-group">
+                                                <span class="title">Extended Sizes ({{ product.all_sizes.extended.moq }})</span>
+                                                <form class="variants">
+                                                    {% for size in product.all_sizes.extended.sizes %}
+                                                    <label for="ul-product-details-size-ext-{{ size }}">
+                                                        <input type="radio" name="product-size" id="ul-product-details-size-ext-{{ size }}" hidden>
+                                                        <span class="size-btn">{{ size }}</span>
+                                                    </label>
+                                                    {% endfor %}
+                                                </form>
+                                            </div>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                     {% else %}
                                     <div class="ul-product-details-option ul-product-details-sizes">
@@ -181,11 +470,7 @@
                                             <span id="selected-color-name" style="font-weight:600; font-size:14px;"></span>
                                         </div>
 
-                                        <button type="button" id="show-colors-btn" class="btn btn-primary btn-sm" style="margin-bottom:12px;">
-                                            <i class="flaticon-check-mark" style="margin-right:5px;"></i> Available
-                                        </button>
-
-                                        <form action="#" class="variants color-variants" id="color-variants" style="display:none; padding:10px; background:#f8fafc; border:1px solid #e9edf3; border-radius:10px;">
+                                        <form action="#" class="variants color-variants" id="color-variants" style="display:flex; padding:10px; background:#f8fafc; border:1px solid #e9edf3; border-radius:10px;">
                                             {% for color in product.images %}
                                             <label for="ul-product-details-color-{{ loop.index }}" style="display:inline-flex;" title="{{ color.color }}">
                                                 <input type="radio" name="product-color" id="ul-product-details-color-{{ loop.index }}" {% if loop.first %}checked{% endif %} hidden data-color="{{ color.color }}" onchange="updateProductImage(this)">
@@ -230,56 +515,18 @@
 
 
                                 <!-- product actions -->
-                                <div class="ul-product-details-actions">
-                                    <div class="left">
-                                        <div class="ul-product-details-actions flex space-x-4 mt-4">
-                                            <a href="https://wa.me/91{{ phone_number }}?text=Hello%2C%20I%20would%20like%20to%20inquire%20about%20the%20product%20at%20{{ url_for('shop_details', id=product.id, _external=True) }}." class="btn btn-primary premium-btn bg-[#00095b] text-white hover:bg-[#0056b3] transition duration-300 shadow-lg rounded-lg px-6 py-3 flex items-center">
-                                                <span class="icon mr-2"><i class="flaticon-chat"></i></span> Connect with Us
-                                            </a>
-                                            <a href="tel:+91{{ phone_number }}" class="btn btn-secondary premium-btn bg-[#FFA31A] text-black hover:bg-[#ff8c00] transition duration-300 shadow-lg rounded-lg px-6 py-3 flex items-center">
-                                                <span class="icon mr-2"><i class="flaticon-phone-call"></i></span> Speak to Our Expert
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="share-options">
-                                        <button onclick="shareOnFacebook()"><i class="flaticon-facebook-app-symbol"></i></button>
-                                        <button onclick="shareOnTwitter()"><i class="flaticon-twitter"></i></button>
-                                        <button onclick="shareOnLinkedIn()"><i class="flaticon-linkedin-big-logo"></i></button>
-                                        <a href="#" onclick="shareOnYouTube()"><i class="flaticon-youtube"></i></a>
-                                        <button onclick="openShareMenu()"><i class="flaticon-share"></i> Share</button>
-                                    </div>
+                                <div class="platform-buy-box">
+                                    <div class="platform-buy-price">{{ product.price }}</div>
+                                    <div class="platform-stock">In stock</div>
+                                    <div class="platform-delivery-note">Bulk-ready apparel with dependable turnaround support.</div>
+                                    <a href="https://wa.me/91{{ phone_number }}?text=Hello%2C%20I%20would%20like%20to%20inquire%20about%20the%20product%20at%20{{ url_for('shop_details', id=product.id, _external=True) }}." class="platform-btn platform-btn-primary">
+                                        <span class="icon"><i class="flaticon-chat"></i></span>&nbsp; Connect with Us
+                                    </a>
+                                    <a href="tel:+91{{ phone_number }}" class="platform-btn platform-btn-secondary">
+                                        <span class="icon"><i class="flaticon-phone-call"></i></span>&nbsp; Speak to Our Expert
+                                    </a>
                                     <script>
-                                        function shareOnFacebook() {
-                                            const url = "{{ url_for('shop_details', id=product.id, _external=True) }}";
-                                            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
-                                        }
-                                        function shareOnTwitter() {
-                                            const url = "{{ url_for('shop_details', id=product.id, _external=True) }}";
-                                            window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=Check%20out%20this%20product!`, '_blank');
-                                        }
-                                        function shareOnLinkedIn() {
-                                            const url = "{{ url_for('shop_details', id=product.id, _external=True) }}";
-                                            window.open(`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(url)}`, '_blank');
-                                        }
-                                        function shareOnYouTube() {
-                                            const url = "{{ url_for('shop_details', id=product.id, _external=True) }}";
-                                            alert('Share this product on YouTube: ' + url);
-                                        }
-                                        function openShareMenu() {
-                                            const url = "{{ url_for('shop_details', id=product.id, _external=True) }}";
-                                            if (navigator.share) {
-                                                navigator.share({
-                                                    title: 'Check out this product!',
-                                                    url: url
-                                                }).then(() => {
-                                                    console.log('Share successful');
-                                                }).catch((error) => {
-                                                    console.error('Error sharing:', error);
-                                                });
-                                            } else {
-                                                alert('Sharing not supported on this browser. Please copy the link: ' + url);
-                                            }
-                                        }
+                                        // Share controls removed by request.
                                     </script>
                                 </div>
                             </div>
@@ -291,7 +538,17 @@
                     <!-- description -->
                     <div class="ul-product-details-long-descr-wrapper">
                         <h3 class="ul-product-details-inner-title">Item Description</h3>
-                        <p style="text-align: justify;">{{ product.description }}</p>
+                        <div class="platform-description-box">
+                            <h4>About this item</h4>
+                            <ul>
+                                {% for point in product.description.split('.') %}
+                                    {% set clean_point = point.strip() %}
+                                    {% if clean_point %}
+                                        <li>{{ clean_point }}.</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
                     </div>
 
                 </div>
@@ -372,20 +629,6 @@
         // Expose color images mapping to JS
         window.colorImagesByColor = {{ product.color_images|tojson }};
 
-        // Toggle color swatches with Available button
-        const btn = document.getElementById('show-colors-btn');
-        const variants = document.getElementById('color-variants');
-        if (btn && variants) {
-            btn.addEventListener('click', function() {
-                if (variants.style.display === 'none' || variants.style.display === '') {
-                    variants.style.display = 'flex';
-                } else {
-                    variants.style.display = 'none';
-                }
-            });
-        }
-        // No toggle button for color variants; swatches always visible
-
         // initialize selected color (if any)
         const selected = document.querySelector('#color-variants input[type=radio]:checked');
         if (selected) updateProductImage(selected);
@@ -401,3 +644,4 @@
 </body>
 
 </html>
+

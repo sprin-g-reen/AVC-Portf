@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 
 html {
@@ -7,6 +7,7 @@ html {
 
 body {
     font-family: var(--font-primary);
+    font-size: 16px;
     // max-width: 1920px;
     margin: auto;
     overflow: hidden;
@@ -32,6 +33,7 @@ a {
 }
 
 p {
+    font-size: clamp(15px, 0.95vw, 18px);
     line-height: 1.75;
 }
 
@@ -218,3 +220,4 @@ button {
         margin: clamp(40px, 4.20vw, 80px) clamp(15px, 3.15vw, 255px);
     }
 }
+
