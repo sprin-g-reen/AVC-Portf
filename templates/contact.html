@@ -82,11 +82,11 @@
                                     </select>
                                     <div class="invalid-feedback">Please select a category.</div>
                                 </div>
-                                <div class="col-12"></div>
+                                <div class="col-12">
                                     <textarea name="message" id="nwsltr-message" rows="3" placeholder="Your Message" required aria-label="Your Message"></textarea>
                                     <div class="invalid-feedback">Please enter your message.</div>
                                 </div>
-                                <div class="col-12"></div>
+                                <div class="col-12">
                                     <button type="submit" class="btn btn-primary">Send Message <i class="flaticon-up-right-arrow"></i></button>
                                 </div>
                             </div>
@@ -456,27 +456,20 @@
                     }
                 }
 
-                /* Keep desktop-style contact layout on mobile */
                 @media (max-width: 991px) {
-                    .contact-grid {
-                        grid-template-columns: repeat(3, minmax(250px, 300px)) !important;
-                        gap: 2rem !important;
-                        padding: 0 2rem !important;
-                    }
-
                     .ul-nwsltr-subs-form .row {
                         display: flex;
                         flex-wrap: wrap;
                     }
 
                     .ul-nwsltr-subs-form .col-md-6 {
-                        flex: 0 0 50%;
-                        max-width: 50%;
+                        flex: 0 0 100%;
+                        max-width: 100%;
                     }
 
                     .ul-nwsltr-subs-form .col-md-3 {
-                        flex: 0 0 25%;
-                        max-width: 25%;
+                        flex: 0 0 50%;
+                        max-width: 50%;
                     }
                 }
             </style>
@@ -513,7 +506,7 @@
                     });
                 }
             });
-        </script></div>
+        </script>
         </section>
         
     </main>

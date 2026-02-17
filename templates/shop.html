@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1200">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
     <!-- libraries CSS -->
@@ -33,6 +33,39 @@
         object-fit: contain; /* keep natural aspect without cropping */
         display: block;
       }
+
+      /* Strong mobile override for shop grid */
+      @media (max-width: 991px) {
+        .ul-shop-products-grid {
+          display: grid !important;
+          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          gap: 12px !important;
+        }
+
+        .ul-shop-products-grid > .col {
+          width: auto !important;
+          max-width: none !important;
+          flex: unset !important;
+          padding: 0 !important;
+        }
+
+        .ul-product {
+          height: 100% !important;
+          padding: 12px !important;
+          border-radius: 12px !important;
+        }
+
+        .ul-product-title a {
+          font-size: 15px !important;
+          line-height: 1.35 !important;
+        }
+      }
+
+      @media (max-width: 575px) {
+        .ul-shop-products-grid {
+          grid-template-columns: 1fr !important;
+        }
+      }
     </style>
 </head>
 
@@ -56,7 +89,7 @@
                 <div class="row ul-bs-row flex-column-reverse flex-md-row">
                     <!-- right products container -->
                     <div class="col-12">
-                        <div class="row ul-bs-row row-cols-lg-4 row-cols-sm-3 row-cols-2 row-cols-xxs-1">
+                        <div class="row ul-bs-row row-cols-lg-4 row-cols-sm-3 row-cols-2 row-cols-xxs-1 ul-shop-products-grid">
                             {% for product in products %}
                             <!-- product card -->
                             <div class="col">
