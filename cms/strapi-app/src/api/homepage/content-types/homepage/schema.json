@@ -1,0 +1,60 @@
+{
+  "kind": "collectionType",
+  "collectionName": "homepages",
+  "info": {
+    "singularName": "homepage",
+    "pluralName": "homepages",
+    "displayName": "homepage"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "hero_images": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "hero_subtitle": {
+      "type": "string"
+    },
+    "hero_title": {
+      "type": "string"
+    },
+    "hero_price_text": {
+      "type": "string"
+    },
+    "hero_price_value": {
+      "type": "string"
+    },
+    "hero_cta_text": {
+      "type": "string"
+    },
+    "hero_cta_link": {
+      "type": "string"
+    },
+    "exclusive_offer_subtitle": {
+      "type": "string"
+    },
+    "exclusive_offer_title": {
+      "type": "string"
+    },
+    "exclusive_offer_cta_text": {
+      "type": "string"
+    },
+    "exclusive_offer_cta_link": {
+      "type": "string"
+    },
+    "common": {
+      "type": "component",
+      "component": "service-item.common",
+      "repeatable": true
+    }
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "kind": "collectionType",
+  "collectionName": "products",
+  "info": {
+    "singularName": "product",
+    "pluralName": "products",
+    "displayName": "product"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "blocks"
+    },
+    "image": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "color": {
+      "type": "component",
+      "component": "text.color",
+      "repeatable": true
+    },
+    "desc": {
+      "type": "text"
+    },
+    "price": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "image_path": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "extended_moq": {
+      "type": "string"
+    },
+    "discount": {
+      "type": "string"
+    },
+    "colors_available": {
+      "type": "string"
+    },
+    "custom_color": {
+      "type": "string"
+    },
+    "delivery_time": {
+      "type": "string"
+    },
+    "image_alt": {
+      "type": "string"
+    },
+    "external_id": {
+      "type": "string",
+      "unique": true
+    },
+    "images": {
+      "type": "component",
+      "component": "text.image-item",
+      "repeatable": true
+    },
+    "extended_sizes": {
+      "type": "json"
+    },
+    "sizes": {
+      "type": "json"
+    },
+    "keywords": {
+      "type": "json"
+    },
+    "decorations": {
+      "type": "json"
+    },
+    "instructions": {
+      "type": "json"
+    },
+    "product_details": {
+      "type": "json"
+    }
+  }
+}

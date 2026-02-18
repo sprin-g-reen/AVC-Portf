@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_text_image_items",
+  "info": {
+    "displayName": "image_item"
+  },
+  "options": {},
+  "attributes": {
+    "color": {
+      "type": "string"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "image_alt": {
+      "type": "string"
+    },
+    "Sizes": {
+      "type": "json"
+    }
+  },
+  "config": {}
+}
