@@ -65,65 +65,21 @@
                     <div class="ul-banner-slider-wrapper">
                         <div class="ul-banner-slider swiper">
                             <div class="swiper-wrapper">
-                                <!-- single slide -->
-                                <div class="swiper-slide ul-banner-slide">
+                                {% for hero_image in home_content.hero_images %}
+                                <div class="swiper-slide ul-banner-slide{% if loop.index == 2 %} ul-banner-slide--2{% elif loop.index == 3 %} ul-banner-slide--3{% endif %}">
                                     <div class="ul-banner-slide-img">
-                                        <img src="/static/hero_mac/1.png" alt="Banner Image">
+                                        <img src="{{ hero_image }}" alt="Banner Image">
                                     </div>
                                     <div class="ul-banner-slide-txt">
-                                        <span class="ul-banner-slide-sub-title">Perfect for Summer Evenings</span>
-                                        <h1 class="ul-banner-slide-title">Casual and Stylish for All Seasons</h1>
-                                        <p class="ul-banner-slide-price">Starting From <span class="price">$129</span>
+                                        <span class="ul-banner-slide-sub-title">{{ home_content.hero_subtitle }}</span>
+                                        <h1 class="ul-banner-slide-title">{{ home_content.hero_title }}</h1>
+                                        <p class="ul-banner-slide-price">{{ home_content.hero_price_text }} <span class="price">{{ home_content.hero_price_value }}</span>
                                         </p>
-                                        <a href="shop.html" class="ul-btn">SHOP NOW <i
+                                        <a href="{{ home_content.hero_cta_link }}" class="ul-btn">{{ home_content.hero_cta_text }} <i
                                                 class="flaticon-up-right-arrow"></i></a>
                                     </div>
                                 </div>
-
-                                <!-- single slide -->
-                                <div class="swiper-slide ul-banner-slide ul-banner-slide--2">
-                                    <div class="ul-banner-slide-img">
-                                        <img src="/static/hero_mac/2.png" alt="Banner Image">
-                                    </div>
-                                    <div class="ul-banner-slide-txt">
-                                        <span class="ul-banner-slide-sub-title">Perfect for Summer Evenings</span>
-                                        <h1 class="ul-banner-slide-title">Casual and Stylish for All Seasons</h1>
-                                        <p class="ul-banner-slide-price">Starting From <span class="price">$129</span>
-                                        </p>
-                                        <a href="shop.html" class="ul-btn">SHOP NOW <i
-                                                class="flaticon-up-right-arrow"></i></a>
-                                    </div>
-                                </div>
-
-                                <!-- single slide -->
-                                <div class="swiper-slide ul-banner-slide ul-banner-slide--3">
-                                    <div class="ul-banner-slide-img">
-                                        <img src="/static/hero_mac/3.png" alt="Banner Image">
-                                    </div>
-                                    <div class="ul-banner-slide-txt">
-                                        <span class="ul-banner-slide-sub-title">Perfect for Summer Evenings</span>
-                                        <h1 class="ul-banner-slide-title">Casual and Stylish for All Seasons</h1>
-                                        <p class="ul-banner-slide-price">Starting From <span class="price">$129</span>
-                                        </p>
-                                        <a href="shop.html" class="ul-btn">SHOP NOW <i
-                                                class="flaticon-up-right-arrow"></i></a>
-                                    </div>
-                                </div>
-
-                                <!-- single slide -->
-                                <div class="swiper-slide ul-banner-slide">
-                                    <div class="ul-banner-slide-img">
-                                        <img src="/static/hero_mac/3.png" alt="Banner Image">
-                                    </div>
-                                    <div class="ul-banner-slide-txt">
-                                        <span class="ul-banner-slide-sub-title">Perfect for Summer Evenings</span>
-                                        <h1 class="ul-banner-slide-title">Casual and Stylish for All Seasons</h1>
-                                        <p class="ul-banner-slide-price">Starting From <span class="price">$129</span>
-                                        </p>
-                                        <a href="shop.html" class="ul-btn">SHOP NOW <i
-                                                class="flaticon-up-right-arrow"></i></a>
-                                    </div>
-                                </div>
+                                {% endfor %}
                             </div>
 
                             <!-- slider navigation -->
@@ -228,11 +184,11 @@
                 <div class="ul-inner-container">
                     <div class="ul-section-heading">
                         <div class="left">
-                            <span class="ul-section-sub-title">Services</span>
-                            <h2 class="ul-section-title">Discover Our Exclusive Offerings</h2>
+                            <span class="ul-section-sub-title">{{ home_content.exclusive_offer_subtitle }}</span>
+                            <h2 class="ul-section-title">{{ home_content.exclusive_offer_title }}</h2>
                         </div>
 
-                        <div class="right"><a href="#" class="ul-btn">Make a enquiry <i
+                        <div class="right"><a href="{{ home_content.exclusive_offer_cta_link }}" class="ul-btn">{{ home_content.exclusive_offer_cta_text }} <i
                                     class="flaticon-up-right-arrow"></i></a></div>
                     </div>
 
@@ -244,10 +200,8 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-6">
                                         <h3 class="ul-service-title mb-3" style="color: var(--ul-primary); font-weight: 600;">
-                                            White Label Clothing</h3>
-                                        <p class="ul-service-description mb-4">Just starting out? Select from our
-                                            catalogue of products, add your branding and you're good to go. A great
-                                            solution for small businesses & startup clothing brands.</p>
+                                            {{ home_content.service_1_title }}</h3>
+                                        <p class="ul-service-description mb-4">{{ home_content.service_1_description }}</p>
 
                                         <div class="ul-service-features mb-4">
                                             <div class="feature-item d-flex align-items-center mb-2">
@@ -270,7 +224,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="ul-service-image">
-                                            <img src="/static/services/1.svg"
+                                            <img src="{{ home_content.service_1_image }}"
                                                 alt="White Label Clothing" class="img-fluid rounded"
                                                 style="width: 610px;height: 423px;">
                                         </div>
@@ -285,18 +239,15 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-6">
                                         <div class="ul-service-image">
-                                            <img src="/static/services/2.svg"
+                                            <img src="{{ home_content.service_2_image }}"
                                                 alt="Custom Clothing Manufacturing" class="img-fluid rounded"
                                                 style="width: 610px;height: 423px;">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <h3 class="ul-service-title mb-3" style="color: var(--ul-primary); font-weight: 600;">
-                                            Custom Clothing Manufacturing</h3>
-                                        <p class="ul-service-description mb-4">Looking for something unique? With our
-                                            expert guidance, you can design fully custom products, selecting everything
-                                            from fabrics and sizing to adding your own creative twist. We'll support you
-                                            every step of the way.</p>
+                                            {{ home_content.service_2_title }}</h3>
+                                        <p class="ul-service-description mb-4">{{ home_content.service_2_description }}</p>
 
                                         <div class="ul-service-features mb-4">
                                             <div class="feature-item d-flex align-items-center mb-2">
@@ -327,10 +278,8 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-6">
                                         <h3 class="ul-service-title mb-3" style="color: var(--ul-primary); font-weight: 600;">
-                                            Garment Design Services</h3>
-                                        <p class="ul-service-description mb-4">Need assistance with bringing your ideas
-                                            to life? We cover everything from start to finish and help businesses with
-                                            their brand development.</p>
+                                            {{ home_content.service_3_title }}</h3>
+                                        <p class="ul-service-description mb-4">{{ home_content.service_3_description }}</p>
 
                                         <div class="ul-service-features mb-4">
                                             <div class="feature-item d-flex align-items-center mb-2">
@@ -352,7 +301,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="ul-service-image">
-                                            <img src="/static/services/3.svg"
+                                            <img src="{{ home_content.service_3_image }}"
                                                 alt="Garment Design Services" class="img-fluid rounded"
                                                 style="width: 610px;height: 423px;">
                                         </div>

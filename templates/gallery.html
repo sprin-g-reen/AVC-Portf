@@ -136,7 +136,7 @@
                     {% for image in gallery_images %}
                     <div class="responsive-container-block img-cont">
                         <img class="img"
-                             src="{{ url_for('static', filename=image.path) }}"
+                             src="{{ image.url }}"
                              alt="{{ image.color }}"
                              loading="lazy">
                     </div>

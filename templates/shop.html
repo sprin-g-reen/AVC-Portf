@@ -103,7 +103,7 @@
                                     </div>
 
                                     <div class="ul-product-img" data-product-id="{{ product.id }}">
-                                        <img class="product-main-img" src="/static/{{ product.image_path }}" alt="{{ product.image_alt }}" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='/static/images/logo.png'">
+                                        <img class="product-main-img" src="{{ resolve_media_url(product.image_path) }}" alt="{{ product.image_alt }}" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='/static/images/logo.png'">
 
                                         {% if product.images %}
                                         <div class="product-color-controls" style="margin-top:8px;">
@@ -123,7 +123,7 @@
                                             <form class="color-variants" id="color-variants-{{ product.id }}" style="display:none; gap:6px; margin-top:8px; flex-wrap:wrap;">
                                                 {% for img in product.images %}
                                                 <label style="display:inline-flex; align-items:center; gap:4px; cursor:pointer;" title="{{ img.color }}">
-                                                    <input type="radio" name="product-color-{{ product.id }}" hidden data-image="/static/{{ img.image_path }}" data-color="{{ img.color }}">
+                                                    <input type="radio" name="product-color-{{ product.id }}" hidden data-image="{{ resolve_media_url(img.image_path) }}" data-color="{{ img.color }}">
                                                     <span style="width:20px;height:20px;border-radius:50%;border:1px solid #ccc; background-color:{{ img.color }};"></span>
                                                     <span style="font-size:11px; white-space:nowrap;">{{ img.color|title }}</span>
                                                 </label>

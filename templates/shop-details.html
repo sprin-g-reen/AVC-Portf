@@ -376,10 +376,14 @@
                             <div class="ul-product-details-img">
                                 <div class="ul-product-details-img-slider swiper">
                                     <div class="swiper-wrapper" id="color-image-slider">
-                                        {% set first_color = product.images[0].color %}
-                                        {% for img_path in product.color_images[first_color] %}
-                                        <div class="swiper-slide"><img src="{{ url_for('static', filename=img_path) }}" alt="{{ first_color }}" loading="lazy" decoding="async"></div>
-                                        {% endfor %}
+                                        {% if product.images and product.color_images %}
+                                            {% set first_color = product.images[0].color %}
+                                            {% for img_path in product.color_images.get(first_color, []) %}
+                                            <div class="swiper-slide"><img src="{{ img_path }}" alt="{{ first_color }}" loading="lazy" decoding="async"></div>
+                                            {% endfor %}
+                                        {% else %}
+                                            <div class="swiper-slide"><img src="{{ resolve_media_url(product.image_path) }}" alt="{{ product.name }}" loading="lazy" decoding="async"></div>
+                                        {% endif %}
                                     </div>
 
                                     <div class="ul-product-details-img-slider-nav" id="ul-product-details-img-slider-nav">
@@ -534,7 +538,7 @@
                         <div class="platform-description-box">
                             <h4>About this item</h4>
                             <ul>
-                                {% for point in product.description.split('.') %}
+                                {% for point in product.description_text.split('.') %}
                                     {% set clean_point = point.strip() %}
                                     {% if clean_point %}
                                         <li>{{ clean_point }}.</li>
@@ -587,7 +591,7 @@
         const images = colorImages[colorName] || [];
         const slider = document.getElementById('color-image-slider');
         if (slider) {
-            slider.innerHTML = images.map(imgPath => `<div class="swiper-slide"><img src="/static/${imgPath}" alt="${colorName}" loading="lazy" decoding="async"></div>`).join('');
+            slider.innerHTML = images.map(imgPath => `<div class="swiper-slide"><img src="${imgPath}" alt="${colorName}" loading="lazy" decoding="async"></div>`).join('');
         }
 
         reinitializeProductSwiper();
