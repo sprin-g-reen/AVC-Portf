@@ -497,12 +497,10 @@ def cms_panel():
     if not strapi_admin_url and strapi_url:
         strapi_admin_url = f"{strapi_url}/admin"
 
-    if strapi_admin_url and is_url_reachable(strapi_admin_url):
-        return redirect(strapi_admin_url)
-
+    # For network/proxy deployments, skip server-side reachability checks and
+    # always redirect when a CMS URL is configured.
     if strapi_admin_url:
-        flash('CMS is configured but Strapi admin is not reachable. Start Strapi and try again.', 'error')
-        return redirect(url_for('shop'))
+        return redirect(strapi_admin_url)
 
     flash('CMS is not configured. Set STRAPI_ADMIN_URL or STRAPI_URL.', 'error')
     return redirect(url_for('shop'))
