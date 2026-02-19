@@ -174,24 +174,55 @@ def main():
         payload["data"] = filter_payload_fields(payload["data"], allowed_fields)
         try:
             existing_key = find_existing_product(strapi_url, collection, token, product_id)
-            if existing_key:
-                url = f"{strapi_url}/api/{collection}/{existing_key}"
-                http_json(url, method="PUT", token=token, payload=payload)
-                updated += 1
+            method = "PUT" if existing_key else "POST"
+            url = f"{strapi_url}/api/{collection}/{existing_key}" if existing_key else f"{strapi_url}/api/{collection}"
+
+            # Retry loop for "Invalid key <field>" errors on first-time schema mismatches.
+            for _ in range(5):
+                try:
+                    http_json(url, method=method, token=token, payload=payload)
+                    if method == "PUT":
+                        updated += 1
+                    else:
+                        created += 1
+                    break
+                except HTTPError as exc:
+                    error_body = ""
+                    try:
+                        error_body = exc.read().decode("utf-8", errors="replace")
+                    except Exception:
+                        pass
+
+                    invalid_key = None
+                    if error_body:
+                        try:
+                            parsed = json.loads(error_body)
+                            invalid_key = (
+                                parsed.get("error", {})
+                                .get("details", {})
+                                .get("key")
+                            )
+                        except Exception:
+                            invalid_key = None
+
+                    if exc.code == 400 and invalid_key and invalid_key in payload["data"]:
+                        payload["data"].pop(invalid_key, None)
+                        if isinstance(allowed_fields, set):
+                            allowed_fields.discard(invalid_key)
+                        continue
+
+                    failed += 1
+                    if error_body:
+                        print(f"Failed for product {product_id}: {exc} | {error_body}")
+                    else:
+                        print(f"Failed for product {product_id}: {exc}")
+                    break
             else:
-                url = f"{strapi_url}/api/{collection}"
-                http_json(url, method="POST", token=token, payload=payload)
-                created += 1
+                failed += 1
+                print(f"Failed for product {product_id}: too many retries")
         except HTTPError as exc:
             failed += 1
-            try:
-                error_body = exc.read().decode("utf-8", errors="replace")
-            except Exception:
-                error_body = ""
-            if error_body:
-                print(f"Failed for product {product_id}: {exc} | {error_body}")
-            else:
-                print(f"Failed for product {product_id}: {exc}")
+            print(f"Failed for product {product_id}: {exc}")
 
     print(f"Sync complete. created={created}, updated={updated}, failed={failed}")
 
