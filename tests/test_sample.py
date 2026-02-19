@@ -30,7 +30,7 @@ class AppHelpersTests(unittest.TestCase):
 class StrapiClientTests(unittest.TestCase):
     @patch.dict(os.environ, {"STRAPI_URL": "http://localhost:1337", "STRAPI_PRODUCTS_COLLECTION": "products"}, clear=False)
     @patch("strapi_client._fetch_json")
-    def test_get_shop_products_ignores_missing_external_id(self, mock_fetch_json):
+    def test_get_shop_products_includes_entries_without_external_id(self, mock_fetch_json):
         mock_fetch_json.return_value = {
             "data": [
                 {
@@ -51,10 +51,9 @@ class StrapiClientTests(unittest.TestCase):
 
         products = strapi_client.get_shop_products()
         self.assertIsNotNone(products)
-        self.assertEqual(len(products), 1)
-        only_product = list(products.values())[0]
-        self.assertEqual(only_product["name"], "Keep Me")
-        self.assertEqual(only_product["external_id"], "000001")
+        self.assertEqual(len(products), 2)
+        self.assertTrue(any(p.get("name") == "Keep Me" for p in products.values()))
+        self.assertTrue(any(p.get("name") == "Skip Me" for p in products.values()))
 
 
 if __name__ == "__main__":

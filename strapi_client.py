@@ -528,10 +528,11 @@ def get_shop_products():
 
             for index, row in enumerate(data, start=1):
                 product = _normalize_product(row, fallback_id=f"{page}-{index}", strapi_url=strapi_url)
-                if not str(product.get("external_id", "")).strip():
-                    continue
-                # Keep one record per external_id to avoid duplicates in storefront.
-                all_products[str(product["id"])] = product
+                external_id = str(product.get("external_id", "")).strip()
+                product_key = external_id or str(product.get("id", f"{page}-{index}"))
+                # Use external_id when present; otherwise fallback to Strapi id/documentId.
+                # This ensures newly created products (without external_id) still appear.
+                all_products[product_key] = product
 
             pagination = payload.get("meta", {}).get("pagination", {})
             page_count = pagination.get("pageCount")
