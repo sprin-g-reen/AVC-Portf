@@ -105,10 +105,8 @@
             <section class="ul-categories">
                 <div class="ul-section-heading">
                     <div class="left">
-                        <h2 class="ul-section-title" style="text-transform: capitalize;">our work is trusted by big
-                            brands</h2>
-                        <p>We've supplied clothing and merchandise to some of the largest organisations over the last 5
-                            years. Check out the services we've supplied brands of all sizes below.</p>
+                        <h2 class="ul-section-title" style="text-transform: capitalize;">{{ home_content.trusted_title }}</h2>
+                        <p>{{ home_content.trusted_description }}</p>
                     </div>
                 </div>
                 <div class="ul-inner-container">
@@ -116,23 +114,12 @@
                         <div class="ul-brands-marquee-wrapper" style="overflow:hidden;position:relative;">
                             <div class="ul-brands-marquee">
                                 <div class="ul-brands-marquee-track">
-                                    <img src="/static/brands/1.svg" alt="Brand 1" style="height:48px;">
-                                    <img src="/static/brands/2.svg" alt="Brand 2" style="height:48px;">
-                                    <img src="/static/brands/3.svg" alt="Brand 3" style="height:48px;">
-                                    <img src="/static/brands/4.svg" alt="Brand 4" style="height:48px;">
-                                    <img src="/static/brands/5.svg" alt="Brand 5" style="height:48px;">
-                                    <img src="/static/brands/6.svg" alt="Brand 6" style="height:48px;">
-                                    <img src="/static/brands/7.svg" alt="Brand 7" style="height:48px;">
-                                    <img src="/static/brands/8.svg" alt="Brand 8" style="height:48px;">
-                                    <!-- Repeat for seamless loop -->
-                                    <img src="/static/brands/1.svg" alt="Brand 1" style="height:48px;">
-                                    <img src="/static/brands/2.svg" alt="Brand 2" style="height:48px;">
-                                    <img src="/static/brands/3.svg" alt="Brand 3" style="height:48px;">
-                                    <img src="/static/brands/4.svg" alt="Brand 4" style="height:48px;">
-                                    <img src="/static/brands/5.svg" alt="Brand 5" style="height:48px;">
-                                    <img src="/static/brands/6.svg" alt="Brand 6" style="height:48px;">
-                                    <img src="/static/brands/7.svg" alt="Brand 7" style="height:48px;">
-                                    <img src="/static/brands/8.svg" alt="Brand 8" style="height:48px;">
+                                    {% for brand_img in home_content.trusted_brand_images %}
+                                    <img src="{{ brand_img }}" alt="Brand {{ loop.index }}" style="height:48px;">
+                                    {% endfor %}
+                                    {% for brand_img in home_content.trusted_brand_images %}
+                                    <img src="{{ brand_img }}" alt="Brand {{ loop.index }}" style="height:48px;">
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -194,121 +181,32 @@
 
                     <!-- Services Cards -->
                     <div class="row ul-bs-row g-4 mt-5">
-                        <!-- White Label Clothing Card (Text - Image) -->
+                        {% for service in home_content.services %}
                         <div class="col-12">
                             <div class="ul-service-card h-100 p-4 bg-white rounded shadow-sm">
                                 <div class="row align-items-center">
-                                    <div class="col-md-6">
-                                        <h3 class="ul-service-title mb-3" style="color: var(--ul-primary); font-weight: 600;">
-                                            {{ home_content.service_1_title }}</h3>
-                                        <p class="ul-service-description mb-4">{{ home_content.service_1_description }}</p>
-
-                                        <div class="ul-service-features mb-4">
-                                            <div class="feature-item d-flex align-items-center mb-2">
-                                                <i class="flaticon-check-mark text-success me-2"></i>
-                                                <span>25pc per style & colour minimum order quantity</span>
-                                            </div>
-                                            <div class="feature-item d-flex align-items-center mb-2">
-                                                <i class="flaticon-check-mark text-success me-2"></i>
-                                                <span>70 + styles available on a 3-4 week turnaround time</span>
-                                            </div>
-                                            <div class="feature-item d-flex align-items-center mb-2">
-                                                <i class="flaticon-check-mark text-success me-2"></i>
-                                                <span>Branded in-house (UK)</span>
-                                            </div>
-                                        </div>
-
-                                        <a href="#" class="btn btn-primary"
-                                            style="background-color: var(--ul-primary); border-color: var(--ul-primary);">Download
-                                            Catalogue</a>
-                                    </div>
+                                    {% if loop.index % 2 == 0 %}
                                     <div class="col-md-6">
                                         <div class="ul-service-image">
-                                            <img src="{{ home_content.service_1_image }}"
-                                                alt="White Label Clothing" class="img-fluid rounded"
-                                                style="width: 610px;height: 423px;">
+                                            <img src="{{ service.image }}" alt="{{ service.title }}" class="img-fluid rounded" style="width: 610px;height: 423px;">
                                         </div>
                                     </div>
+                                    {% endif %}
+                                    <div class="col-md-6">
+                                        <h3 class="ul-service-title mb-3" style="color: var(--ul-primary); font-weight: 600;">{{ service.title }}</h3>
+                                        <p class="ul-service-description mb-4">{{ service.description }}</p>
+                                    </div>
+                                    {% if loop.index % 2 == 1 %}
+                                    <div class="col-md-6">
+                                        <div class="ul-service-image">
+                                            <img src="{{ service.image }}" alt="{{ service.title }}" class="img-fluid rounded" style="width: 610px;height: 423px;">
+                                        </div>
+                                    </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Custom Clothing Manufacturing Card (Image - Text) -->
-                        <div class="col-12">
-                            <div class="ul-service-card h-100 p-4 bg-white rounded shadow-sm">
-                                <div class="row align-items-center">
-                                    <div class="col-md-6">
-                                        <div class="ul-service-image">
-                                            <img src="{{ home_content.service_2_image }}"
-                                                alt="Custom Clothing Manufacturing" class="img-fluid rounded"
-                                                style="width: 610px;height: 423px;">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <h3 class="ul-service-title mb-3" style="color: var(--ul-primary); font-weight: 600;">
-                                            {{ home_content.service_2_title }}</h3>
-                                        <p class="ul-service-description mb-4">{{ home_content.service_2_description }}</p>
-
-                                        <div class="ul-service-features mb-4">
-                                            <div class="feature-item d-flex align-items-center mb-2">
-                                                <i class="flaticon-check-mark text-success me-2"></i>
-                                                <span>100pc per style & colour minimum order quantity</span>
-                                            </div>
-                                            <div class="feature-item d-flex align-items-center mb-2">
-                                                <i class="flaticon-check-mark text-success me-2"></i>
-                                                <span>Full process production; we handle everything</span>
-                                            </div>
-                                            <div class="feature-item d-flex align-items-center mb-2">
-                                                <i class="flaticon-check-mark text-success me-2"></i>
-                                                <span>Create custom products from scratch</span>
-                                            </div>
-                                        </div>
-
-                                        <a href="#" class="btn btn-primary"
-                                            style="background-color: var(--ul-primary); border-color: var(--ul-primary);">Explore Custom
-                                            Service</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Garment Design Services Card (Text - Image) -->
-                        <div class="col-12">
-                            <div class="ul-service-card h-100 p-4 bg-white rounded shadow-sm">
-                                <div class="row align-items-center">
-                                    <div class="col-md-6">
-                                        <h3 class="ul-service-title mb-3" style="color: var(--ul-primary); font-weight: 600;">
-                                            {{ home_content.service_3_title }}</h3>
-                                        <p class="ul-service-description mb-4">{{ home_content.service_3_description }}</p>
-
-                                        <div class="ul-service-features mb-4">
-                                            <div class="feature-item d-flex align-items-center mb-2">
-                                                <i class="flaticon-check-mark text-success me-2"></i>
-                                                <span>Design concepts & trend forecasting</span>
-                                            </div>
-                                            <div class="feature-item d-flex align-items-center mb-2">
-                                                <i class="flaticon-check-mark text-success me-2"></i>
-                                                <span>Tech packs; including graded size charts & patterns</span>
-                                            </div>
-                                            <div class="feature-item d-flex align-items-center mb-2">
-                                                <i class="flaticon-check-mark text-success me-2"></i>
-                                                <span>3D design renders</span>
-                                            </div>
-                                        </div>
-
-                                        <a href="#" class="btn btn-primary"
-                                            style="background-color: var(--ul-primary); border-color: var(--ul-primary);">Design Pricing</a>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="ul-service-image">
-                                            <img src="{{ home_content.service_3_image }}"
-                                                alt="Garment Design Services" class="img-fluid rounded"
-                                                style="width: 610px;height: 423px;">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </section>

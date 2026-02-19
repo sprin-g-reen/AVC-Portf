@@ -8,36 +8,11 @@
         <div class="ul-header-top-slider splide">
             <div class="splide__track">
                 <ul class="splide__list">
+                    {% for ticker_item in site_content.header_ticker_items %}
                     <li class="splide__slide">
-                        <p class="ul-header-top-slider-item"><i class="flaticon-sparkle"></i>limited time offer</p>
+                        <p class="ul-header-top-slider-item"><i class="flaticon-sparkle"></i>{{ ticker_item }}</p>
                     </li>
-                    <li class="splide__slide">
-                        <p class="ul-header-top-slider-item"><i class="flaticon-sparkle"></i> limited time offer</p>
-                    </li>
-                    <li class="splide__slide">
-                        <p class="ul-header-top-slider-item"><i class="flaticon-sparkle"></i> limited time offer</p>
-                    </li>
-                    <li class="splide__slide">
-                        <p class="ul-header-top-slider-item"><i class="flaticon-sparkle"></i> limited time offer</p>
-                    </li>
-                    <li class="splide__slide">
-                        <p class="ul-header-top-slider-item"><i class="flaticon-sparkle"></i> limited time offer</p>
-                    </li>
-                    <li class="splide__slide">
-                        <p class="ul-header-top-slider-item"><i class="flaticon-sparkle"></i> limited time offer</p>
-                    </li>
-                    <li class="splide__slide">
-                        <p class="ul-header-top-slider-item"><i class="flaticon-sparkle"></i> limited time offer</p>
-                    </li>
-                    <li class="splide__slide">
-                        <p class="ul-header-top-slider-item"><i class="flaticon-sparkle"></i> limited time offer</p>
-                    </li>
-                    <li class="splide__slide">
-                        <p class="ul-header-top-slider-item"><i class="flaticon-sparkle"></i> limited time offer</p>
-                    </li>
-                    <li class="splide__slide">
-                        <p class="ul-header-top-slider-item"><i class="flaticon-sparkle"></i> limited time offer</p>
-                    </li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>
@@ -50,7 +25,7 @@
                 <!-- header left -->
                 <div class="header-bottom-left">
                     <div class="logo-container">
-                        <a href="/" class="d-inline-block"><img src="/static/img/logo.png" alt="logo" class="logo"></a>
+                        <a href="/" class="d-inline-block"><img src="{{ site_content.logo_url }}" alt="logo" class="logo"></a>
                     </div>
 
                     <!-- search form -->
@@ -552,6 +527,11 @@
                 <div class=" ul-header-nav-wrapper">
                     <div class="to-go-to-sidebar-in-mobile">
                         <nav class="ul-header-nav" id="site-navigation">
+                            {% if site_content.nav_links %}
+                            {% for link in site_content.nav_links %}
+                            <a href="{{ link.url }}" class="{{ 'active' if request.path == link.url or (link.url != '/' and request.path.startswith(link.url)) }}" {% if link.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ link.label }}</a>
+                            {% endfor %}
+                            {% else %}
                             <a href="/" class="{{ 'active' if request.path == '/' }}">Home</a>
                         
                             <div class="has-sub-menu has-mega-menu {{ 'active' if request.path.startswith('/shop') }}">
@@ -788,6 +768,7 @@
                             <a href="/contact" class="{{ 'active' if request.path == '/contact' }}">Contact Us</a>
                             <a href="/faq" class="{{ 'active' if request.path == '/faq' }}">FAQ</a>
                             <a href="/about" class="{{ 'active' if request.path == '/about' }}">About Us</a>
+                            {% endif %}
                         </nav>
                     </div>
                 </div>

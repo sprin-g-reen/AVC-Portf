@@ -515,6 +515,17 @@ export interface ApiHomepageHomepage extends Struct.CollectionTypeSchema {
     exclusive_offer_cta_text: Schema.Attribute.String;
     exclusive_offer_subtitle: Schema.Attribute.String;
     exclusive_offer_title: Schema.Attribute.String;
+    footer_brand_logo: Schema.Attribute.Media<'images'>;
+    footer_columns: Schema.Attribute.JSON;
+    footer_connect_title: Schema.Attribute.String;
+    footer_copyright: Schema.Attribute.Text;
+    footer_logo: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
+    footer_payment_image: Schema.Attribute.Media<'images'>;
+    footer_phone: Schema.Attribute.String;
+    footer_support_title: Schema.Attribute.String;
+    header_ticker_items: Schema.Attribute.JSON;
     hero_cta_link: Schema.Attribute.String;
     hero_cta_text: Schema.Attribute.String;
     hero_images: Schema.Attribute.Media<
@@ -531,7 +542,15 @@ export interface ApiHomepageHomepage extends Struct.CollectionTypeSchema {
       'api::homepage.homepage'
     > &
       Schema.Attribute.Private;
+    logo: Schema.Attribute.Media<'images'>;
+    nav_links: Schema.Attribute.JSON;
     publishedAt: Schema.Attribute.DateTime;
+    trusted_brand_images: Schema.Attribute.Media<'images', true>;
+    trusted_description: Schema.Attribute.Text;
+    trusted_images: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
+    trusted_title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

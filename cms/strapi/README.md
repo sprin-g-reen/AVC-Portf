@@ -85,23 +85,61 @@ Recommended fields:
 - `exclusive_offer_title` (Text)
 - `exclusive_offer_cta_text` (Text)
 - `exclusive_offer_cta_link` (Text)
+- `logo` (Media, single)
+- `header_ticker_items` (JSON)
+- `nav_links` (JSON)
+- `trusted_title` (Text)
+- `trusted_description` (Long Text)
+- `trusted_brand_images` (Media, multiple)
+- `footer_columns` (JSON)
+- `footer_connect_title` (Text)
+- `footer_support_title` (Text)
+- `footer_phone` (Text)
+- `footer_brand_logo` (Media, single)
+- `footer_payment_image` (Media, single)
+- `footer_copyright` (Long Text)
 
 How it works:
 
 - Flask route `/` reads first entry from `homepages`.
-- Hero slider images and Exclusive Offer heading/CTA are rendered from this collection.
+- Header, hero, trusted brands section, service cards, and footer are rendered from this collection.
 - If no entry exists, current hardcoded defaults are used.
+
+JSON formats:
+
+- `nav_links`
+```json
+[
+  { "label": "Home", "url": "/" },
+  { "label": "Our Gallery", "url": "/gallery" },
+  { "label": "Contact Us", "url": "/contact", "new_tab": false }
+]
+```
+- `footer_columns`
+```json
+[
+  {
+    "title": "Our Products",
+    "links": [
+      { "label": "Customized T-Shirts", "url": "#" },
+      { "label": "Customized Shirts", "url": "#" }
+    ]
+  }
+]
+```
 
 ## 3) Enable API access
 
 In Strapi:
 
 1. Create an API token (Settings -> API Tokens).  
-2. Give read/write access to `products` for the token role.
+2. Give read/write access to `products` and `galleries` for the token role.
+3. Give read access to `homepages`.
 3. In Roles & Permissions, ensure your admin/editor role can:
-   - `create`, `read`, `update`, `delete` on `products`
+   - `create`, `read`, `update`, `delete` on `products` and `galleries`
+   - `read`/`update` on `homepages` (if you want landing page editing)
    - upload/update media in Media Library
-3. Publish product entries.
+4. Publish entries.
 
 ## 4) Configure Flask app
 

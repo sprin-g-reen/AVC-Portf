@@ -176,6 +176,37 @@ def _media_urls_from_value(value, strapi_url):
     return urls
 
 
+def _normalize_nav_links(value):
+    links = []
+    if not isinstance(value, list):
+        return links
+    for item in value:
+        if not isinstance(item, dict):
+            continue
+        label = _safe_get(item, "label", "title", "name", default="")
+        url = _safe_get(item, "url", "href", "link", default="")
+        new_tab = bool(_safe_get(item, "new_tab", "open_in_new", default=False))
+        if not label or not url:
+            continue
+        links.append({"label": str(label), "url": str(url), "new_tab": new_tab})
+    return links
+
+
+def _normalize_footer_columns(value):
+    columns = []
+    if not isinstance(value, list):
+        return columns
+    for item in value:
+        if not isinstance(item, dict):
+            continue
+        title = _safe_get(item, "title", "name", default="")
+        raw_links = _safe_get(item, "links", "items", default=[])
+        links = _normalize_nav_links(raw_links)
+        if title and links:
+            columns.append({"title": str(title), "links": links})
+    return columns
+
+
 def get_homepage_content():
     strapi_url = os.getenv("STRAPI_URL", "").strip().rstrip("/")
     if not strapi_url:
@@ -205,6 +236,12 @@ def get_homepage_content():
                 {
                     "populate[hero_images]": "true",
                     "populate[common][populate]": "image",
+                    "populate[logo]": "true",
+                    "populate[trusted_brand_images]": "true",
+                    "populate[trusted_images]": "true",
+                    "populate[footer_brand_logo]": "true",
+                    "populate[footer_logo]": "true",
+                    "populate[footer_payment_image]": "true",
                     "pagination[page]": 1,
                     "pagination[pageSize]": 1,
                 }
@@ -259,18 +296,72 @@ def get_homepage_content():
                         return media_url
                 return default
 
+            service_cards = []
+            for item in common_items:
+                if not isinstance(item, dict):
+                    continue
+                title = _safe_get(item, "title", "name", default="").strip()
+                description = _safe_get(item, "description", "desc", default="").strip()
+                image = _media_url_from_value(_safe_get(item, "image", default=None), strapi_url)
+                if not title and not description and not image:
+                    continue
+                service_cards.append(
+                    {
+                        "title": title or "Service",
+                        "description": description,
+                        "image": image or "/static/images/logo.png",
+                    }
+                )
+
+            trusted_brand_images = _media_urls_from_value(
+                _safe_get(attrs, "trusted_brand_images", "trusted_images", "brand_images", "brands", default=None),
+                strapi_url,
+            )
+            nav_links = _normalize_nav_links(
+                _safe_get(attrs, "nav_links", "navbar_links", "menu_links", default=[])
+            )
+            footer_columns = _normalize_footer_columns(
+                _safe_get(attrs, "footer_columns", "footer_links", default=[])
+            )
+            logo_url = _media_url_from_value(
+                _safe_get(attrs, "logo", "logo_image", "brand_logo", default=None),
+                strapi_url,
+            )
+            footer_brand_logo_url = _media_url_from_value(
+                _safe_get(attrs, "footer_brand_logo", "footer_logo", default=None),
+                strapi_url,
+            )
+            footer_payment_image_url = _media_url_from_value(
+                _safe_get(attrs, "footer_payment_image", "payment_image", default=None),
+                strapi_url,
+            )
+            header_ticker_items = _as_list(
+                _safe_get(attrs, "header_ticker_items", "ticker_items", "announcement_items", default=[])
+            )
+
             return {
                 "hero_images": hero_urls,
+                "logo_url": logo_url,
+                "header_ticker_items": [str(x) for x in header_ticker_items if str(x).strip()],
+                "nav_links": nav_links,
                 "hero_subtitle": _safe_get(attrs, "hero_subtitle", "banner_subtitle", default="Perfect for Summer Evenings"),
                 "hero_title": _safe_get(attrs, "hero_title", "banner_title", default="Casual and Stylish for All Seasons"),
                 "hero_price_text": _safe_get(attrs, "hero_price_text", "banner_price_text", default="Starting From"),
                 "hero_price_value": _safe_get(attrs, "hero_price_value", "banner_price_value", default="$129"),
                 "hero_cta_text": _safe_get(attrs, "hero_cta_text", "banner_cta_text", default="SHOP NOW"),
                 "hero_cta_link": _safe_get(attrs, "hero_cta_link", "banner_cta_link", default="/shop"),
+                "trusted_title": _safe_get(attrs, "trusted_title", default="our work is trusted by big brands"),
+                "trusted_description": _safe_get(
+                    attrs,
+                    "trusted_description",
+                    default="We've supplied clothing and merchandise to some of the largest organisations over the last 5 years. Check out the services we've supplied brands of all sizes below.",
+                ),
+                "trusted_brand_images": trusted_brand_images,
                 "exclusive_offer_subtitle": _safe_get(attrs, "exclusive_offer_subtitle", "offer_subtitle", default="Services"),
                 "exclusive_offer_title": _safe_get(attrs, "exclusive_offer_title", "offer_title", default="Discover Our Exclusive Offerings"),
                 "exclusive_offer_cta_text": _safe_get(attrs, "exclusive_offer_cta_text", "offer_cta_text", default="Make a enquiry"),
                 "exclusive_offer_cta_link": _safe_get(attrs, "exclusive_offer_cta_link", "offer_cta_link", default="#"),
+                "services": service_cards,
                 "service_1_title": _safe_get(attrs, "service_1_title", "white_label_title", default=_component_title(0, "White Label Clothing")),
                 "service_1_description": _safe_get(attrs, "service_1_description", "white_label_description", default=_component_description(0, "Just starting out? Select from our catalogue of products, add your branding and you're good to go. A great solution for small businesses & startup clothing brands.")),
                 "service_1_image": _service_image("service_1_image", "white_label_image", default=_component_image(0, "/static/services/1.svg")),
@@ -280,6 +371,17 @@ def get_homepage_content():
                 "service_3_title": _safe_get(attrs, "service_3_title", "garment_design_title", default=_component_title(2, "Garment Design Services")),
                 "service_3_description": _safe_get(attrs, "service_3_description", "garment_design_description", default=_component_description(2, "Need assistance with bringing your ideas to life? We cover everything from start to finish and help businesses with their brand development.")),
                 "service_3_image": _service_image("service_3_image", "garment_design_image", default=_component_image(2, "/static/services/3.svg")),
+                "footer_columns": footer_columns,
+                "footer_connect_title": _safe_get(attrs, "footer_connect_title", default="Connect with us"),
+                "footer_support_title": _safe_get(attrs, "footer_support_title", default="Need help? Call now!"),
+                "footer_phone": _safe_get(attrs, "footer_phone", default="9876543210"),
+                "footer_brand_logo_url": footer_brand_logo_url,
+                "footer_copyright": _safe_get(
+                    attrs,
+                    "footer_copyright",
+                    default="Apparel Branding Company - All Rights Reserved; Created with love by Platfware",
+                ),
+                "footer_payment_image_url": footer_payment_image_url,
             }
         except HTTPError as exc:
             if exc.code == 404:

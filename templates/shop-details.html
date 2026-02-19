@@ -516,7 +516,7 @@
                                     <div class="platform-buy-price">{{ product.price }}</div>
                                     <div class="platform-stock">In stock</div>
                                     <div class="platform-delivery-note">Bulk-ready apparel with dependable turnaround support.</div>
-                                    <a href="https://wa.me/91{{ phone_number }}?text=Hello%2C%20I%20would%20like%20to%20inquire%20about%20the%20product%20at%20{{ url_for('shop_details', id=product.id, _external=True) }}." class="platform-btn platform-btn-primary">
+                                    <a href="https://wa.me/91{{ phone_number }}?text=Hello%2C%20I%20would%20like%20to%20inquire%20about%20the%20product%20at%20{{ url_for('shop_details', product_id=product.id, _external=True) }}." class="platform-btn platform-btn-primary">
                                         <span class="icon"><i class="flaticon-chat"></i></span>&nbsp; Connect with Us
                                     </a>
                                     <a href="tel:+91{{ phone_number }}" class="platform-btn platform-btn-secondary">

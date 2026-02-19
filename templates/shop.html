@@ -94,7 +94,7 @@
                             <!-- product card -->
                             <div class="col">
                                 <div class="ul-product" style="height: 100%;">
-                                    <a href="/shop-details?id={{ product.id }}">
+                                    <a href="/product/{{ product.id }}">
                                     <div class="ul-product-heading">
                                         <span class="ul-product-price text-danger">{{ product.price }}</span>
                                         {% if product.discount %}
@@ -134,7 +134,7 @@
                                     </div>
 
                                     <div class="ul-product-txt">
-                                        <h4 class="ul-product-title"><a href="/shop-details?id={{ product.id }}">{{ product.name }}</a></h4>
+                                        <h4 class="ul-product-title"><a href="/product/{{ product.id }}">{{ product.name }}</a></h4>
                                         <h5 class="ul-product-category"><a href="/shop?category={{ product.category }}">{{ product.category }}</a></h5>
                                     </div>
                                     </a>

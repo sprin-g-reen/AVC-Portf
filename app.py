@@ -70,6 +70,109 @@ def load_shop_products():
         return {}
 
 
+def default_home_content():
+    return {
+        "logo_url": "/static/img/logo.png",
+        "header_ticker_items": ["limited time offer"],
+        "nav_links": [
+            {"label": "Home", "url": "/"},
+            {"label": "Branding Services", "url": "/shop"},
+            {"label": "InStock Apparel", "url": "/shop"},
+            {"label": "Our Gallery", "url": "/gallery"},
+            {"label": "Testimonials", "url": "/testimonials"},
+            {"label": "Contact Us", "url": "/contact"},
+            {"label": "FAQ", "url": "/faq"},
+            {"label": "About Us", "url": "/about"},
+        ],
+        "hero_images": [
+            "/static/hero_mac/1.png",
+            "/static/hero_mac/2.png",
+            "/static/hero_mac/3.png",
+        ],
+        "hero_subtitle": "Perfect for Summer Evenings",
+        "hero_title": "Casual and Stylish for All Seasons",
+        "hero_price_text": "Starting From",
+        "hero_price_value": "$129",
+        "hero_cta_text": "SHOP NOW",
+        "hero_cta_link": "/shop",
+        "trusted_title": "our work is trusted by big brands",
+        "trusted_description": "We've supplied clothing and merchandise to some of the largest organisations over the last 5 years. Check out the services we've supplied brands of all sizes below.",
+        "trusted_brand_images": [
+            "/static/brands/1.svg",
+            "/static/brands/2.svg",
+            "/static/brands/3.svg",
+            "/static/brands/4.svg",
+            "/static/brands/5.svg",
+            "/static/brands/6.svg",
+            "/static/brands/7.svg",
+            "/static/brands/8.svg",
+        ],
+        "exclusive_offer_subtitle": "Services",
+        "exclusive_offer_title": "Discover Our Exclusive Offerings",
+        "exclusive_offer_cta_text": "Make a enquiry",
+        "exclusive_offer_cta_link": "#",
+        "services": [
+            {
+                "title": "White Label Clothing",
+                "description": "Just starting out? Select from our catalogue of products, add your branding and you're good to go. A great solution for small businesses & startup clothing brands.",
+                "image": "/static/services/1.svg",
+            },
+            {
+                "title": "Custom Clothing Manufacturing",
+                "description": "Looking for something unique? With our expert guidance, you can design fully custom products, selecting everything from fabrics and sizing to adding your own creative twist. We'll support you every step of the way.",
+                "image": "/static/services/2.svg",
+            },
+            {
+                "title": "Garment Design Services",
+                "description": "Need assistance with bringing your ideas to life? We cover everything from start to finish and help businesses with their brand development.",
+                "image": "/static/services/3.svg",
+            },
+        ],
+        "footer_columns": [
+            {
+                "title": "Our Products",
+                "links": [
+                    {"label": "Customized T-Shirts", "url": "#"},
+                    {"label": "Customized Shirts", "url": "#"},
+                    {"label": "Customized Trousers", "url": "#"},
+                    {"label": "Customized Hoodies", "url": "#"},
+                    {"label": "Customized Caps", "url": "#"},
+                ],
+            },
+            {
+                "title": "White Papers",
+                "links": [
+                    {"label": "Corporate Uniforms", "url": "#"},
+                    {"label": "School Uniforms", "url": "#"},
+                    {"label": "Sports Uniforms", "url": "#"},
+                    {"label": "Hospital Uniforms", "url": "#"},
+                    {"label": "Hotel Uniforms", "url": "#"},
+                ],
+            },
+        ],
+        "footer_connect_title": "Connect with us",
+        "footer_support_title": "Need help? Call now!",
+        "footer_phone": SystemConfig.COMPANY_PHONE,
+        "footer_brand_logo_url": "/static/img/logo.png",
+        "footer_copyright": "Apparel Branding Company - All Rights Reserved; Created with love by Platfware",
+        "footer_payment_image_url": "/static/img/payment-methods.png",
+    }
+
+
+def load_home_content():
+    merged = default_home_content()
+    from_cms = get_homepage_content() or {}
+    for key, value in from_cms.items():
+        if value is None:
+            continue
+        if isinstance(value, list) and not value:
+            continue
+        if isinstance(value, str) and not value.strip():
+            continue
+        merged[key] = value
+    return merged
+
+
 def is_url_reachable(url, timeout=3):
     try:
         req = Request(url=url, method="GET")
@@ -90,7 +193,12 @@ def inject_globals():
     g.company_address = SystemConfig.COMPANY_ADDRESS
     g.company_phone = SystemConfig.COMPANY_PHONE
     g.company_email = SystemConfig.COMPANY_EMAIL
-    return dict(resolve_media_url=resolve_media_url)
+    return dict(resolve_media_url=resolve_media_url, site_content=getattr(g, "site_content", default_home_content()))
+
+
+@app.before_request
+def inject_site_content():
+    g.site_content = load_home_content()
 
 # setup sttaic folder
 app.static_folder = 'static'
@@ -114,32 +222,7 @@ def index():
     end_idx = start_idx + per_page
     
     current_reviews = all_reviews[start_idx:end_idx]
-    home_content = get_homepage_content() or {
-        "hero_images": [
-            "/static/hero_mac/1.png",
-            "/static/hero_mac/2.png",
-            "/static/hero_mac/3.png",
-        ],
-        "hero_subtitle": "Perfect for Summer Evenings",
-        "hero_title": "Casual and Stylish for All Seasons",
-        "hero_price_text": "Starting From",
-        "hero_price_value": "$129",
-        "hero_cta_text": "SHOP NOW",
-        "hero_cta_link": "/shop",
-        "exclusive_offer_subtitle": "Services",
-        "exclusive_offer_title": "Discover Our Exclusive Offerings",
-        "exclusive_offer_cta_text": "Make a enquiry",
-        "exclusive_offer_cta_link": "#",
-        "service_1_title": "White Label Clothing",
-        "service_1_description": "Just starting out? Select from our catalogue of products, add your branding and you're good to go. A great solution for small businesses & startup clothing brands.",
-        "service_1_image": "/static/services/1.svg",
-        "service_2_title": "Custom Clothing Manufacturing",
-        "service_2_description": "Looking for something unique? With our expert guidance, you can design fully custom products, selecting everything from fabrics and sizing to adding your own creative twist. We'll support you every step of the way.",
-        "service_2_image": "/static/services/2.svg",
-        "service_3_title": "Garment Design Services",
-        "service_3_description": "Need assistance with bringing your ideas to life? We cover everything from start to finish and help businesses with their brand development.",
-        "service_3_image": "/static/services/3.svg",
-    }
+    home_content = g.site_content
 
     return render_template('index.html', reviews=current_reviews,
                          home_content=home_content,
@@ -263,9 +346,10 @@ def shop():
                          total_pages=total_pages)
 
 @app.route('/shop-details')
-def shop_details():
+@app.route('/product/<product_id>')
+def shop_details(product_id=None):
     """Handle shop details page with error handling and data validation."""
-    product_id = request.args.get('id')
+    product_id = product_id or request.args.get('id')
     
     if not product_id:
         flash('Product ID is required', 'error')
@@ -399,7 +483,7 @@ def search_api():
                 'desc': product.get('desc', '')[:100] + '...' if len(product.get('desc', '')) > 100 else product.get('desc', ''),
                 'image': resolve_media_url(product.get('image_path')),
                 'price': product.get('price', ''),
-                'url': f'/shop-details?id={product_id}'
+                'url': f'/product/{product_id}'
             })
     
     # Limit results to 8 items
@@ -427,6 +511,8 @@ def cms_panel():
 @app.route('/cms/admin')
 def cms_admin_redirect():
     return redirect(url_for('cms_panel'))
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

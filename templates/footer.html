@@ -1,97 +1,29 @@
 <footer class="ul-footer">
     <div class="ul-inner-container">
         <div class="ul-footer-top">
-            <!-- single links column -->
+            {% for column in site_content.footer_columns %}
             <div class="ul-footer-top-widget">
-                <h3 class="ul-footer-top-widget-title">Our Products</h3>
-
+                <h3 class="ul-footer-top-widget-title">{{ column.title }}</h3>
                 <div class="ul-footer-top-widget-links">
-                    <a href="#">Customized T-Shirts</a>
-                    <a href="#">Customized Shirts</a>
-                    <a href="#">Customized Trousers</a>
-                    <a href="#">Customized Hoodies</a>
-                    <a href="#">Customized Caps</a>
+                    {% for link in column.links %}
+                    <a href="{{ link.url }}" {% if link.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ link.label }}</a>
+                    {% endfor %}
                 </div>
             </div>
-
-            <!-- single links column -->
-            <div class="ul-footer-top-widget">
-                <h3 class="ul-footer-top-widget-title">White Papers</h3>
-
-                <div class="ul-footer-top-widget-links">
-                    <a href="#">Corporate Uniforms</a>
-                    <a href="#">School Uniforms</a>
-                    <a href="#">Sports Uniforms</a>
-                    <a href="#">Hospital Uniforms</a>
-                    <a href="#">Hotel Uniforms</a>
-                </div>
-            </div>
-
-            <!-- single links column -->
-            <div class="ul-footer-top-widget">
-                <h3 class="ul-footer-top-widget-title">Collateral</h3>
-
-                <div class="ul-footer-top-widget-links">
-                    <a href="#">Brochures</a>
-                    <a href="#">Catalogs</a>
-                    <a href="#">Posters</a>
-                    <a href="#">Signage</a>
-                    <a href="#">Promotional Items</a>
-                </div>
-            </div>
-
-            <!-- single links column -->
-            <div class="ul-footer-top-widget">
-                <h3 class="ul-footer-top-widget-title">Others</h3>
-
-                <div class="ul-footer-top-widget-links">
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms & Conditions</a>
-                    <a href="#">Return Policy</a>
-                    <a href="#">Services</a>
-                    <a href="#">Use of Cookies</a>
-                </div>
-            </div>
-
-            <!-- single links column -->
-            <div class="ul-footer-top-widget">
-                <h3 class="ul-footer-top-widget-title">Contents</h3>
-
-                <div class="ul-footer-top-widget-links">
-                    <a href="#">About Us</a>
-                    <a href="#">Locations</a>
-                    <a href="#">Contact Us</a>
-                    <a href="#">FAQ</a>
-                    <a href="#">Blog</a>
-                </div>
-            </div>
-
-            <!-- single links column -->
-            <div class="ul-footer-top-widget">
-                <h3 class="ul-footer-top-widget-title">Download</h3>
-
-                <div class="ul-footer-top-widget-links">
-                    <a href="#">Customer Brochure</a>
-                    <a href="#">Corporate Brochure</a>
-                    <a href="#">School Brochure</a>
-                    <a href="#">Sports Brochure</a>
-                    <a href="#">Hospital Brochure</a>
-                </div>
-            </div>
+            {% endfor %}
         </div>
 
-            <div class="ul-footer-middle">
-            <!-- single widget -->
+        <div class="ul-footer-middle">
             <div class="ul-footer-middle-widget footer-connect">
-                <h3 class="ul-footer-middle-widget-title">Connect with us</h3>
+                <h3 class="ul-footer-middle-widget-title">{{ site_content.footer_connect_title }}</h3>
                 <div class="ul-footer-middle-widget-content">
                     <div class="app-links">
-                        <a href="tel:9876543210" aria-label="Call 9876543210">
+                        <a href="tel:{{ site_content.footer_phone }}" aria-label="Call {{ site_content.footer_phone }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
                                 <path d="M3.654 1.328a.678.678 0 0 1 .737-.17l2.2.88c.29.116.447.429.374.729l-.547 2.19a.678.678 0 0 1-.58.508l-1.06.106a11.745 11.745 0 0 0 5.651 5.651l.106-1.06a.678.678 0 0 1 .508-.58l2.19-.547a.678.678 0 0 1 .729.374l.88 2.2a.678.678 0 0 1-.17.737l-1.2 1.2a1.745 1.745 0 0 1-1.8.437c-2.346-.783-4.55-2.53-6.445-4.425C3.03 8.35 1.283 6.146.5 3.8a1.745 1.745 0 0 1 .437-1.8z"/>
                             </svg>
                         </a>
-                        <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp 9876543210">
+                        <a href="https://wa.me/{{ site_content.footer_phone|replace('+', '')|replace(' ', '') }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp {{ site_content.footer_phone }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
                                 <path d="M13.601 2.326A7.88 7.88 0 0 0 8.02 0C3.651 0 .087 3.563.087 7.932c0 1.397.365 2.761 1.06 3.965L0 16l4.214-1.103a7.89 7.89 0 0 0 3.805.97h.003c4.368 0 7.931-3.563 7.931-7.932a7.88 7.88 0 0 0-2.352-5.61zM8.02 14.52h-.003a6.54 6.54 0 0 1-3.333-.91l-.239-.142-2.5.655.668-2.438-.155-.25a6.53 6.53 0 0 1-1.01-3.503c.002-3.604 2.97-6.572 6.574-6.572 1.757 0 3.409.684 4.651 1.926a6.53 6.53 0 0 1 1.92 4.648c-.002 3.604-2.97 6.572-6.573 6.572zm3.605-4.916c-.197-.099-1.166-.575-1.347-.64-.18-.066-.312-.099-.443.098s-.51.64-.624.772c-.115.132-.23.148-.427.05-.197-.099-.831-.306-1.583-.976-.585-.521-.98-1.165-1.095-1.362-.115-.198-.012-.305.086-.403.088-.087.197-.23.296-.345.099-.115.132-.197.198-.329.065-.132.032-.247-.017-.345-.05-.099-.444-1.07-.608-1.466-.16-.386-.323-.334-.443-.34l-.378-.006a.725.725 0 0 0-.525.247c-.181.197-.69.674-.69 1.644s.706 1.907.804 2.04c.099.132 1.39 2.122 3.367 2.974.47.203.837.324 1.123.414.472.15.902.129 1.242.078.379-.057 1.166-.476 1.33-.936.164-.46.164-.854.115-.936-.049-.082-.18-.132-.378-.23z"/>
                             </svg>
@@ -100,25 +32,23 @@
                 </div>
             </div>
 
-            <!-- single widget -->
             <div class="ul-footer-middle-widget footer-support">
-                <h3 class="ul-footer-middle-widget-title">Need help? Call now!</h3>
+                <h3 class="ul-footer-middle-widget-title">{{ site_content.footer_support_title }}</h3>
                 <div class="ul-footer-middle-widget-content">
                     <div class="contact-nums">
-                        <a href="tel:9876543210">9876543210</a>
+                        <a href="tel:{{ site_content.footer_phone }}">{{ site_content.footer_phone }}</a>
                     </div>
                 </div>
             </div>
 
-            <!-- single widget -->
             <div class="ul-footer-middle-widget footer-brand align-self-center">
-                <a href="/"><img src="/static/img/logo.png" alt="logo" class="logo rounded"></a>
+                <a href="/"><img src="{{ site_content.footer_brand_logo_url }}" alt="logo" class="logo rounded"></a>
             </div>
         </div>
 
         <div class="ul-footer-bottom">
-            <p class="copyright-txt">&copy; <script>document.write(new Date().getFullYear())</script> Apparel Branding Company - All Rights Reserved; Created with love by <a href="https://platfware.com" target="_blank">Platfware</a></p>
-            <img src="/static/img/payment-methods.png" alt="payment methods logos">
+            <p class="copyright-txt">&copy; <script>document.write(new Date().getFullYear())</script> {{ site_content.footer_copyright }}</p>
+            <img src="{{ site_content.footer_payment_image_url }}" alt="payment methods logos">
         </div>
     </div>
 </footer>
