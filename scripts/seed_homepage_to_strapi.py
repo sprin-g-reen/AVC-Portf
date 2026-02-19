@@ -62,6 +62,30 @@ def main():
     hero_paths = [ROOT / "static" / "hero_mac" / "1.png", ROOT / "static" / "hero_mac" / "2.png", ROOT / "static" / "hero_mac" / "3.png"]
     hero_ids = [upload_image(base_url, token, p) for p in hero_paths if p.exists()]
 
+    service_defs = [
+        (
+            "White Label Clothing",
+            "Just starting out? Select from our catalogue of products, add your branding and you're good to go. A great solution for small businesses & startup clothing brands.",
+            ROOT / "static" / "services" / "1.svg",
+        ),
+        (
+            "Custom Clothing Manufacturing",
+            "Looking for something unique? With our expert guidance, you can design fully custom products, selecting everything from fabrics and sizing to adding your own creative twist. We'll support you every step of the way.",
+            ROOT / "static" / "services" / "2.svg",
+        ),
+        (
+            "Garment Design Services",
+            "Need assistance with bringing your ideas to life? We cover everything from start to finish and help businesses with their brand development.",
+            ROOT / "static" / "services" / "3.svg",
+        ),
+    ]
+    common = []
+    for title, description, image_path in service_defs:
+        entry = {"title": title, "description": description}
+        if image_path.exists():
+            entry["image"] = upload_image(base_url, token, image_path)
+        common.append(entry)
+
     data = {
         "hero_images": hero_ids,
         "hero_subtitle": "Perfect for Summer Evenings",
@@ -74,15 +98,7 @@ def main():
         "exclusive_offer_title": "Discover Our Exclusive Offerings",
         "exclusive_offer_cta_text": "Make a enquiry",
         "exclusive_offer_cta_link": "#",
-        "service_1_title": "White Label Clothing",
-        "service_1_description": "Just starting out? Select from our catalogue of products, add your branding and you're good to go. A great solution for small businesses & startup clothing brands.",
-        "service_1_image": "/static/services/1.svg",
-        "service_2_title": "Custom Clothing Manufacturing",
-        "service_2_description": "Looking for something unique? With our expert guidance, you can design fully custom products, selecting everything from fabrics and sizing to adding your own creative twist. We'll support you every step of the way.",
-        "service_2_image": "/static/services/2.svg",
-        "service_3_title": "Garment Design Services",
-        "service_3_description": "Need assistance with bringing your ideas to life? We cover everything from start to finish and help businesses with their brand development.",
-        "service_3_image": "/static/services/3.svg",
+        "common": common,
     }
     if allowed_fields:
         filtered = {k: v for k, v in data.items() if k in allowed_fields}
