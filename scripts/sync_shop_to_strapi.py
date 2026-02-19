@@ -7,6 +7,28 @@ from urllib.request import Request, urlopen
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
 SHOP_JSON_PATH = os.path.join(PROJECT_ROOT, "content", "shop.json")
+DEFAULT_PRODUCT_FIELDS = {
+    "external_id",
+    "name",
+    "description",
+    "desc",
+    "price",
+    "category",
+    "image_path",
+    "image_alt",
+    "images",
+    "extended_moq",
+    "discount",
+    "colors_available",
+    "custom_color",
+    "delivery_time",
+    "extended_sizes",
+    "sizes",
+    "keywords",
+    "decorations",
+    "instructions",
+    "product_details",
+}
 
 
 def http_json(url, method="GET", token="", payload=None):
@@ -55,13 +77,18 @@ def as_blocks_text(text):
 
 
 def get_allowed_fields(strapi_url, collection, token):
+    forced = os.getenv("STRAPI_ALLOWED_PRODUCT_FIELDS", "").strip()
+    if forced:
+        return {x.strip() for x in forced.split(",") if x.strip()}
+
     url = f"{strapi_url}/api/{collection}?pagination[pageSize]=1"
     data = http_json(url, token=token).get("data", [])
     if not data:
-        return None
+        # First sync may hit an empty collection; use safe defaults from our schema.
+        return set(DEFAULT_PRODUCT_FIELDS)
     first = data[0]
     if not isinstance(first, dict):
-        return None
+        return set(DEFAULT_PRODUCT_FIELDS)
     blocked = {"id", "documentId", "createdAt", "updatedAt", "publishedAt"}
     return {k for k in first.keys() if k not in blocked}
 
@@ -157,7 +184,14 @@ def main():
                 created += 1
         except HTTPError as exc:
             failed += 1
-            print(f"Failed for product {product_id}: {exc}")
+            try:
+                error_body = exc.read().decode("utf-8", errors="replace")
+            except Exception:
+                error_body = ""
+            if error_body:
+                print(f"Failed for product {product_id}: {exc} | {error_body}")
+            else:
+                print(f"Failed for product {product_id}: {exc}")
 
     print(f"Sync complete. created={created}, updated={updated}, failed={failed}")
 
