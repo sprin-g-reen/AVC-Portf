@@ -56,9 +56,14 @@ def fetch_product(base_url, collection, token, external_id):
     return row.get("documentId") or row.get("id"), None
 
 
-def update_product_images(base_url, collection, token, doc_key, image_items):
+def update_product_images(base_url, collection, token, doc_key, image_items, media_ids):
     headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
-    payload = {"data": {"images": image_items}}
+    data = {"images": image_items}
+    if media_ids:
+        # `image_path` is single media and `image` is multi-media in current product schema.
+        data["image_path"] = media_ids[0]
+        data["image"] = media_ids
+    payload = {"data": data}
     resp = requests.put(f"{base_url}/api/{collection}/{doc_key}", headers=headers, json=payload, timeout=45)
     if resp.status_code not in (200, 201):
         return f"update failed ({resp.status_code}): {resp.text[:250]}"
@@ -95,6 +100,7 @@ def main():
 
         raw_images = product.get("images") or []
         image_items = []
+        uploaded_media_ids = []
 
         for img in raw_images:
             rel_path = img.get("image_path")
@@ -116,9 +122,12 @@ def main():
                     "image": media_id,
                 }
             )
+            uploaded_media_ids.append(media_id)
             total_colors_uploaded += 1
 
-        update_err = update_product_images(base_url, collection, token, doc_key, image_items)
+        # Keep order stable and remove duplicates for top-level multi-media field.
+        dedup_media_ids = list(dict.fromkeys(uploaded_media_ids))
+        update_err = update_product_images(base_url, collection, token, doc_key, image_items, dedup_media_ids)
         if update_err:
             product_failed += 1
             errors.append((external_id, update_err))
