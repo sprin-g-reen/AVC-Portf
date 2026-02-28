@@ -68,22 +68,115 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Menu dropdown/submenu in mobile
   if (headerNavMobile) {
-    const isDesktopModeForcedOnMobile = () => {
-      if (!inlineMobileNavToggle) return false;
-      return window.getComputedStyle(inlineMobileNavToggle).display === "none";
+    let activeMegaPortal = null;
+
+    const clearMegaMenuInlineStyles = (submenu) => {
+      if (!submenu) return;
+      submenu.style.removeProperty("display");
+      submenu.style.removeProperty("position");
+      submenu.style.removeProperty("left");
+      submenu.style.removeProperty("top");
+      submenu.style.removeProperty("width");
+      submenu.style.removeProperty("max-height");
+      submenu.style.removeProperty("z-index");
+      submenu.style.removeProperty("opacity");
+      submenu.style.removeProperty("visibility");
+      submenu.style.removeProperty("pointer-events");
+      submenu.style.removeProperty("transform");
+    };
+
+    const closeActiveMegaMenus = () => {
+      if (activeMegaPortal) {
+        const { item, submenu, placeholder } = activeMegaPortal;
+        if (placeholder?.parentNode) {
+          placeholder.parentNode.insertBefore(submenu, placeholder);
+          placeholder.parentNode.removeChild(placeholder);
+        }
+        item.classList.remove("active");
+        clearMegaMenuInlineStyles(submenu);
+        activeMegaPortal = null;
+        return;
+      }
+
+      const openMegaMenus = headerNavMobile.querySelectorAll(".has-mega-menu.active");
+      openMegaMenus.forEach((menu) => menu.classList.remove("active"));
+    };
+
+    const openMegaMenuAsOverlay = (item, submenu) => {
+      if (!item || !submenu) return;
+      const trigger = item.querySelector(":scope > a");
+      if (!trigger) return;
+
+      closeActiveMegaMenus();
+
+      const parent = submenu.parentNode;
+      if (!parent) return;
+      const placeholder = document.createComment("mega-menu-placeholder");
+      parent.insertBefore(placeholder, submenu);
+      document.body.appendChild(submenu);
+
+      const rect = trigger.getBoundingClientRect();
+      const viewportWidth = window.innerWidth;
+      const desiredWidth = Math.min(170, viewportWidth - 16);
+      let left = rect.left;
+      if (left + desiredWidth > viewportWidth - 8) left = viewportWidth - desiredWidth - 8;
+      if (left < 8) left = 8;
+      const top = rect.bottom + 6;
+      const maxHeight = Math.max(160, window.innerHeight - top - 12);
+
+      submenu.style.display = "block";
+      submenu.style.position = "fixed";
+      submenu.style.left = `${Math.round(left)}px`;
+      submenu.style.top = `${Math.round(top)}px`;
+      submenu.style.width = `${Math.round(desiredWidth)}px`;
+      submenu.style.maxHeight = `${Math.round(maxHeight)}px`;
+      submenu.style.zIndex = "2147483647";
+      submenu.style.opacity = "1";
+      submenu.style.visibility = "visible";
+      submenu.style.pointerEvents = "all";
+      submenu.style.transform = "none";
+
+      item.classList.add("active");
+      activeMegaPortal = { item, submenu, placeholder };
     };
 
     const items = headerNavMobile.querySelectorAll(".has-sub-menu");
     items.forEach((item) => {
       const trigger = item.querySelector(":scope > a");
+      const submenu = item.querySelector(":scope > .ul-header-submenu");
       if (!trigger) return;
 
       trigger.addEventListener("click", (e) => {
-        if (window.innerWidth < 992 && !isDesktopModeForcedOnMobile()) {
+        if (window.innerWidth < 992) {
           e.preventDefault();
-          item.classList.toggle("active");
+          const isMegaMenu = item.classList.contains("has-mega-menu") && submenu;
+          const isAlreadyActive = item.classList.contains("active");
+
+          if (isMegaMenu) {
+            if (isAlreadyActive) closeActiveMegaMenus();
+            else openMegaMenuAsOverlay(item, submenu);
+          } else {
+            item.classList.toggle("active");
+          }
         }
       });
+    });
+
+    // Close overlay dropdown on scroll/resize so it doesn't stay floating while page moves.
+    window.addEventListener("scroll", () => {
+      if (window.innerWidth < 992) closeActiveMegaMenus();
+    }, { passive: true });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth >= 992) closeActiveMegaMenus();
+    });
+
+    document.addEventListener("click", (event) => {
+      if (window.innerWidth >= 992) return;
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      if (activeMegaPortal && activeMegaPortal.submenu.contains(target)) return;
+      if (!headerNavMobile.contains(target)) closeActiveMegaMenus();
     });
   }
 
@@ -102,9 +195,10 @@ document.addEventListener("DOMContentLoaded", () => {
         pagination: false,
         type: 'loop',
         drag: 'free',
-        focus: 'center',
+        focus: 0,
         perPage: 9,
         autoWidth: true,
+        trimSpace: false,
         gap: 15,
         autoScroll: { speed: 1.5 },
       }).mount(window.splide?.Extensions || {});

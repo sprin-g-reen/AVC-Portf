@@ -376,8 +376,8 @@
                             <div class="ul-product-details-img">
                                 <div class="ul-product-details-img-slider swiper">
                                     <div class="swiper-wrapper" id="color-image-slider">
-                                        {% if product.images and product.color_images %}
-                                            {% set first_color = product.images[0].color %}
+                                        {% if product.available_colors and product.color_images %}
+                                            {% set first_color = product.available_colors[0] %}
                                             {% for img_path in product.color_images.get(first_color, []) %}
                                             <div class="swiper-slide"><img src="{{ img_path }}" alt="{{ first_color }}" loading="lazy" decoding="async"></div>
                                             {% endfor %}
@@ -460,7 +460,7 @@
                                     </div>
                                     {% endif %}
 
-                                    {% if product.images %}
+                                    {% if product.available_colors %}
                                     <div class="ul-product-details-option ul-product-details-colors">
                                         <div style="margin-bottom:12px; padding:10px; background:#f8f9fa; border-radius:6px;">
                                             <span style="font-size:14px; font-weight:600;">Selected Color: </span>
@@ -468,10 +468,10 @@
                                         </div>
 
                                         <form action="#" class="variants color-variants" id="color-variants" style="display:flex; padding:10px; background:#f8fafc; border:1px solid #e9edf3; border-radius:10px;">
-                                            {% for color in product.images %}
-                                            <label for="ul-product-details-color-{{ loop.index }}" style="display:inline-flex;" title="{{ color.color }}">
-                                                <input type="radio" name="product-color" id="ul-product-details-color-{{ loop.index }}" {% if loop.first %}checked{% endif %} hidden data-color="{{ color.color }}" onchange="updateProductImage(this)">
-                                                <span class="color-name-chip">{{ color.color|title }}</span>
+                                            {% for color_name in product.available_colors %}
+                                            <label for="ul-product-details-color-{{ loop.index }}" style="display:inline-flex;" title="{{ color_name }}">
+                                                <input type="radio" name="product-color" id="ul-product-details-color-{{ loop.index }}" {% if loop.first %}checked{% endif %} hidden data-color="{{ color_name }}" onchange="updateProductImage(this)">
+                                                <span class="color-name-chip">{{ color_name|title }}</span>
                                             </label>
                                             {% endfor %}
                                         </form>
@@ -569,7 +569,7 @@
     <script src="/static/vendor/fslightbox/fslightbox.js"></script>
 
     <!-- custom JS -->
-    <script src="/static/js/main.js"></script>
+    <script src="/static/js/main.js?v=20260222i"></script>
 
     <script>
     function updateProductImage(input) {

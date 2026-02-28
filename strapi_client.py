@@ -53,24 +53,47 @@ def _media_url_from_value(value, strapi_url):
 
 def _normalize_image_item(item, strapi_url):
     if not isinstance(item, dict):
-        return None
+        return []
 
     attrs = item.get("attributes", item)
-    color = _safe_get(attrs, "color", "name", default="default")
+    color_value = _safe_get(attrs, "color", "name", default="default")
+    if isinstance(color_value, dict):
+        color_value = _safe_get(color_value, "name", "color", default="default")
+    elif isinstance(color_value, list):
+        names = []
+        for entry in color_value:
+            if isinstance(entry, dict):
+                name = _safe_get(entry, "name", "color", default="")
+                if name:
+                    names.append(str(name))
+            elif entry:
+                names.append(str(entry))
+        color_value = names[0] if names else "default"
+
+    color = str(color_value or "default")
     image_alt = _safe_get(attrs, "image_alt", "alt", "alternativeText", "name", default="")
-    image_path = _safe_get(attrs, "image_path", "image", "media", "photo", "url", default="")
-    image_url = _media_url_from_value(image_path, strapi_url)
+    image_value = _safe_get(attrs, "image_path", "image", "media", "photo", default="")
+    image_urls = _media_urls_from_value(image_value, strapi_url)
 
-    if not image_url and "data" in attrs:
+    if not image_urls:
+        image_url = _media_url_from_value(image_value, strapi_url)
+        if image_url:
+            image_urls = [image_url]
+    if not image_urls and "url" in attrs:
         image_url = _media_url_from_value(attrs, strapi_url)
-    if not image_url:
-        return None
+        if image_url:
+            image_urls = [image_url]
+    if not image_urls:
+        return []
 
-    return {
-        "image_path": image_url,
-        "image_alt": image_alt,
-        "color": str(color),
-    }
+    return [
+        {
+            "image_path": image_url,
+            "image_alt": image_alt,
+            "color": color,
+        }
+        for image_url in image_urls
+    ]
 
 
 def _normalize_images(raw_images, strapi_url):
@@ -80,20 +103,20 @@ def _normalize_images(raw_images, strapi_url):
         data = raw_images.get("data")
         if isinstance(data, list):
             for item in data:
-                normalized = _normalize_image_item(item, strapi_url)
-                if normalized:
-                    images.append(normalized)
+                normalized_items = _normalize_image_item(item, strapi_url)
+                if normalized_items:
+                    images.extend(normalized_items)
             return images
         if isinstance(data, dict):
-            normalized = _normalize_image_item(data, strapi_url)
-            if normalized:
-                images.append(normalized)
+            normalized_items = _normalize_image_item(data, strapi_url)
+            if normalized_items:
+                images.extend(normalized_items)
             return images
 
     for item in _as_list(raw_images):
-        normalized = _normalize_image_item(item, strapi_url)
-        if normalized:
-            images.append(normalized)
+        normalized_items = _normalize_image_item(item, strapi_url)
+        if normalized_items:
+            images.extend(normalized_items)
 
     return images
 
@@ -105,6 +128,29 @@ def _normalize_product(entry, fallback_id, strapi_url):
     product_id = str(external_id or raw_id or fallback_id)
 
     images = _normalize_images(_safe_get(attrs, "images", "gallery_images", default=[]), strapi_url)
+    if not images:
+        fallback_urls = _media_urls_from_value(_safe_get(attrs, "image", default=None), strapi_url)
+        color_values = _as_list(_safe_get(attrs, "color", default=[]))
+        color_names = []
+        for value in color_values:
+            if isinstance(value, dict):
+                color_name = _safe_get(value, "name", "color", default="")
+                if color_name:
+                    color_names.append(str(color_name))
+            elif value:
+                color_names.append(str(value))
+
+        for index, image_url in enumerate(fallback_urls):
+            color_name = "default"
+            if color_names:
+                color_name = color_names[index] if index < len(color_names) else color_names[0]
+            images.append(
+                {
+                    "image_path": image_url,
+                    "image_alt": _safe_get(attrs, "image_alt", "alt_text", "name", default=""),
+                    "color": color_name or "default",
+                }
+            )
     primary_image = _media_url_from_value(_safe_get(attrs, "image_path", "image", "thumbnail", default=""), strapi_url)
     if not primary_image and images:
         primary_image = images[0]["image_path"]
@@ -515,7 +561,11 @@ def get_shop_products():
         while True:
             query = urlencode(
                 {
-                    "populate[images][populate]": "image",
+                    "populate[image]": "true",
+                    "populate[image_path]": "true",
+                    "populate[color]": "true",
+                    "populate[images][populate][image]": "true",
+                    "sort[0]": "updatedAt:desc",
                     "pagination[page]": page,
                     "pagination[pageSize]": page_size,
                 }

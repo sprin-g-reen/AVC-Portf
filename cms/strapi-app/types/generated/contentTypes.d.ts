@@ -489,7 +489,7 @@ export interface ApiGalleryGallery extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    sort_order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    sort_order: Schema.Attribute.BigInteger;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

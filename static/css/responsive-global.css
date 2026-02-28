@@ -1,5 +1,24 @@
 /* Global responsive layer (loaded after shared header styles) */
 
+/* Browser consistency baseline for Edge/Chromium text and form controls */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.ul-header input,
+.ul-header select,
+.ul-header button {
+  font: inherit;
+  line-height: 1.2;
+}
+
 /* Desktop stabilization */
 @media (min-width: 992px) {
   .ul-header-bottom-wrapper {
@@ -8,21 +27,21 @@
     align-items: center !important;
     justify-content: space-between !important;
     flex-wrap: nowrap !important;
-    gap: 14px !important;
+    gap: 10px !important;
   }
 
   .ul-header-bottom .header-bottom-left {
     width: auto !important;
-    flex: 0 1 700px !important;
+    flex: 0 1 640px !important;
     min-width: 0 !important;
     flex-wrap: nowrap !important;
     align-items: center !important;
-    gap: 14px !important;
+    gap: 10px !important;
   }
 
   .ul-header-search-wrapper {
-    flex: 1 1 380px !important;
-    max-width: 420px !important;
+    flex: 1 1 320px !important;
+    max-width: 360px !important;
     min-width: 220px !important;
   }
 
@@ -44,13 +63,13 @@
     flex-wrap: nowrap !important;
     align-items: center !important;
     border: 0 !important;
-    gap: clamp(12px, 1vw, 20px) !important;
+    gap: 12px !important;
     width: auto !important;
     min-width: 0 !important;
     margin-left: auto !important;
   }
 
-  .ul-header-nav > * {
+  .ul-header-nav>* {
     line-height: 40px !important;
     padding: 0 !important;
     border: 0 !important;
@@ -58,9 +77,10 @@
 
   .ul-header-nav a {
     white-space: nowrap !important;
-    font-size: clamp(13px, 0.84vw, 16px) !important;
+    font-size: 14px !important;
     font-weight: 500 !important;
     letter-spacing: 0.01em !important;
+    line-height: 1.25 !important;
   }
 }
 
@@ -87,6 +107,7 @@
 
 /* Tablet + Mobile */
 @media (max-width: 991px) {
+
   html,
   body {
     width: 100% !important;
@@ -187,9 +208,12 @@
   .to-go-to-sidebar-in-mobile {
     width: 100% !important;
     overflow-x: auto !important;
-    overflow-y: hidden !important;
+    overflow-y: visible !important;
+    /* Allow vertical overflow for submenus */
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    position: relative;
+    z-index: 1000;
   }
 
   .ul-header-nav-wrapper::-webkit-scrollbar,
@@ -201,31 +225,259 @@
     display: flex !important;
     flex-direction: row !important;
     flex-wrap: nowrap !important;
-    gap: 8px !important;
+    align-items: center !important;
+    gap: 12px !important;
     width: max-content !important;
     min-width: max-content !important;
     border: 0 !important;
-    padding: 6px 2px !important;
+    padding: 0 15px !important;
+    height: 74px !important;
+    /* Fixed height for consistency */
+    overflow: visible !important;
   }
 
-  .ul-header-nav > * {
-    line-height: 1 !important;
+  .ul-header-nav>* {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: auto !important;
+    /* Reset stretching */
+    line-height: normal !important;
     padding: 0 !important;
     border: 0 !important;
   }
 
-  .ul-header-nav a {
-    font-size: 12px !important;
-    white-space: nowrap !important;
-    letter-spacing: 0.02em !important;
-    border: 1px solid rgba(0, 0, 0, 0.12) !important;
-    border-radius: 999px !important;
-    padding: 9px 11px !important;
-    background: #fff !important;
+  .ul-header-nav .has-mega-menu {
+    position: relative !important;
+    display: inline-flex !important;
+    align-items: center !important;
   }
 
-  .ul-header-nav .has-mega-menu > .ul-header-submenu {
+  /* Default hidden state - remove !important to allow JS/Active class to override */
+  .ul-header-nav .has-mega-menu .ul-header-submenu {
     display: none !important;
+    /* Force hide unless active class is present */
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  /* Secondary "Menu Bar" Styling for Branding Services */
+  .ul-header-nav .has-mega-menu.active>.ul-header-submenu {
+    display: block !important;
+    position: absolute !important;
+    top: calc(100% + 8px) !important;
+    left: 0 !important;
+    width: min(92vw, 420px) !important;
+    height: auto !important;
+    max-height: 65vh !important;
+    z-index: 99999 !important;
+    background: #fdfdfd !important;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    border-radius: 12px !important;
+    padding: 12px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: all !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Internal structure for dropdown */
+  .ul-header-submenu.ul-header-megamenu {
+    display: block !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .ul-header-megamenu .single-col-title {
+    display: block !important;
+    margin-bottom: 8px !important;
+    font-size: 13px !important;
+  }
+
+  .ul-header-megamenu .promo-col {
+    display: none !important;
+  }
+
+  /* Category list as vertical menu */
+  .ul-header-megamenu .single-col {
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  .ul-header-megamenu ul {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .ul-header-megamenu ul li {
+    list-style: none !important;
+    margin: 0 !important;
+  }
+
+  /* Category items */
+  .ul-header-megamenu ul li a {
+    height: auto !important;
+    padding: 10px 12px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    background: #f0f4f8 !important;
+    color: #002244 !important;
+    border: 1px solid rgba(0, 34, 68, 0.1) !important;
+    border-radius: 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    white-space: normal !important;
+    box-shadow: none !important;
+  }
+
+  .ul-header-megamenu ul li a.active,
+  .ul-header-megamenu ul li a:hover {
+    background: #002244 !important;
+    color: #fff !important;
+    border-color: #002244 !important;
+  }
+
+  /* Unified Pill Styling */
+  .ul-header-nav a {
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    white-space: nowrap !important;
+    border: 1.5px solid rgba(13, 110, 253, 0.15) !important;
+    border-radius: 999px !important;
+    padding: 0 24px !important;
+    background: #ffffff !important;
+    height: 48px !important;
+    /* Large Circle/Pill */
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #002244 !important;
+    /* Consistent navy */
+    transition: all 0.2s ease !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05) !important;
+  }
+
+  /* Branding Services Small Fit */
+  .branding-services-link {
+    height: 34px !important;
+    /* Small fit */
+    padding: 0 14px !important;
+    font-size: 11px !important;
+    background: #fdfdfd !important;
+    color: #002244 !important;
+    /* Force navy text */
+    text-transform: uppercase;
+    border-color: rgba(0, 34, 68, 0.2) !important;
+  }
+
+  /* Active/Hover states - ensuring high contrast navy background */
+  .ul-header-nav a.active,
+  .ul-header-nav .has-mega-menu.active .branding-services-link,
+  .ul-header-nav a:hover {
+    background: #002244 !important;
+    /* Solid Navy */
+    color: #ffffff !important;
+    border-color: #002244 !important;
+    box-shadow: 0 6px 18px rgba(0, 34, 68, 0.25) !important;
+  }
+
+  .ul-header-megamenu {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    padding: 0 !important;
+  }
+
+  .ul-header-megamenu .single-col {
+    padding: 24px !important;
+    width: 100% !important;
+  }
+
+  .ul-header-megamenu .single-col-title {
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    color: var(--ul-primary) !important;
+    margin-bottom: 16px !important;
+    display: block !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid rgba(var(--ul-primary-rgb), 0.1);
+    padding-bottom: 8px;
+  }
+
+  .ul-header-megamenu ul {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    /* Two columns like a proper menu bar */
+    gap: 12px !important;
+  }
+
+  .ul-header-megamenu ul li a {
+    background: #fdfdfd !important;
+    border: 1px solid #f0f0f0 !important;
+    border-radius: 10px !important;
+    padding: 14px !important;
+    font-size: 13px !important;
+    text-align: center !important;
+    height: auto !important;
+  }
+
+  /* Re-enable promo banner on mobile but make it fit */
+  .ul-header-megamenu .promo-col {
+    display: block !important;
+    padding: 0 24px 24px 24px !important;
+    min-width: 0 !important;
+  }
+
+  .mega-promo-banner {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    padding: 15px !important;
+    background: var(--ul-primary) !important;
+    color: #fff !important;
+    border-radius: 12px !important;
+  }
+
+  .promo-image-wrapper {
+    display: none !important;
+    /* Hide image to keep it slim on mobile */
+  }
+
+  .promo-content-wrapper {
+    padding: 0 !important;
+    text-align: left !important;
+  }
+
+  .promo-badge,
+  .promo-description,
+  .promo-cta-button {
+    display: none !important;
+  }
+
+  .promo-title {
+    font-size: 14px !important;
+    color: #fff !important;
+    margin: 0 !important;
+    font-weight: 700 !important;
+  }
+
+  .promo-offer {
+    margin-left: auto !important;
+    background: #fff !important;
+    color: var(--ul-primary) !important;
+    padding: 4px 10px !important;
+    border-radius: 6px !important;
+    font-weight: 800 !important;
+    font-size: 14px !important;
   }
 
   .ul-breadcrumb {
@@ -233,7 +485,7 @@
     margin-right: 12px !important;
   }
 
-  .ul-shop-products-grid > .col {
+  .ul-shop-products-grid>.col {
     flex: 0 0 50% !important;
     max-width: 50% !important;
   }
@@ -264,8 +516,8 @@
     gap: 12px !important;
   }
 
-  .platform-top-grid > .col,
-  .platform-top-grid > [class*="col-"] {
+  .platform-top-grid>.col,
+  .platform-top-grid>[class*="col-"] {
     flex: 0 0 100% !important;
     max-width: 100% !important;
     width: 100% !important;
@@ -344,6 +596,7 @@
 }
 
 @media (max-width: 575px) {
+
   .ul-container,
   .ul-inner-container,
   .ul-inner-page-container {
@@ -360,7 +613,7 @@
     padding: 8px 10px !important;
   }
 
-  .ul-shop-products-grid > .col {
+  .ul-shop-products-grid>.col {
     flex: 0 0 100% !important;
     max-width: 100% !important;
   }
@@ -371,5 +624,150 @@
 
   .ul-footer-top {
     grid-template-columns: 1fr !important;
+  }
+}
+
+/* Final mobile override: keep Branding Services categories fully visible and scrollable */
+@media (max-width: 991px) {
+  .ul-header-nav .has-mega-menu {
+    position: relative !important;
+  }
+
+  .ul-header-nav .has-mega-menu.active>.ul-header-submenu {
+    display: block !important;
+    position: absolute !important;
+    top: calc(100% + 8px) !important;
+    left: 0 !important;
+    width: min(92vw, 420px) !important;
+    height: auto !important;
+    max-height: 65vh !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding: 12px !important;
+    background: #fff !important;
+    border-radius: 12px !important;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12) !important;
+    z-index: 100000 !important;
+  }
+
+  .ul-header-nav .has-mega-menu .ul-header-submenu .single-col {
+    width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .ul-header-nav .has-mega-menu .ul-header-submenu .single-col-title {
+    display: block !important;
+    margin: 0 0 8px !important;
+    font-size: 13px !important;
+  }
+
+  .ul-header-nav .has-mega-menu .ul-header-submenu .promo-col {
+    display: none !important;
+  }
+
+  .ul-header-nav .has-mega-menu .ul-header-submenu ul {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .ul-header-nav .has-mega-menu .ul-header-submenu ul li a {
+    display: flex !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    width: 100% !important;
+    height: auto !important;
+    padding: 10px 12px !important;
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+  }
+}
+
+/* Branding Services mobile dropdown style (matches compact dropdown card UI) */
+@media (max-width: 991px) {
+  .ul-header,
+  .ul-header-bottom,
+  .ul-header-bottom-wrapper,
+  .header-bottom-left {
+    position: relative !important;
+    z-index: 100000 !important;
+    overflow: visible !important;
+    transform: none !important;
+  }
+
+  .ul-header-nav-wrapper,
+  .to-go-to-sidebar-in-mobile {
+    position: relative !important;
+    z-index: 100000 !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    -webkit-overflow-scrolling: touch !important;
+    transform: none !important;
+  }
+
+  .ul-header-nav .has-mega-menu {
+    position: relative !important;
+  }
+
+  .ul-header-nav .has-mega-menu.active > .branding-services-dropdown {
+    display: block !important;
+    position: absolute !important;
+    top: calc(100% + 6px) !important;
+    left: 0 !important;
+    width: 170px !important;
+    max-height: 62vh !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding: 0 !important;
+    background: #f4f4f4 !important;
+    border-radius: 0 0 18px 18px !important;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.14) !important;
+    z-index: 100001 !important;
+  }
+
+  .ul-header-nav .has-mega-menu > .branding-services-dropdown .single-col-title,
+  .ul-header-nav .has-mega-menu > .branding-services-dropdown .promo-col {
+    display: none !important;
+  }
+
+  .ul-header-nav .has-mega-menu > .branding-services-dropdown .single-col {
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .ul-header-nav .has-mega-menu > .branding-services-dropdown ul {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .ul-header-nav .has-mega-menu > .branding-services-dropdown ul li {
+    margin: 0 !important;
+    list-style: none !important;
+  }
+
+  .ul-header-nav .has-mega-menu > .branding-services-dropdown ul li a {
+    display: block !important;
+    width: 100% !important;
+    padding: 12px 14px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: #4b4b4b !important;
+    font-size: clamp(16px, 4.6vw, 21px) !important;
+    font-weight: 500 !important;
+    line-height: 1.2 !important;
+    text-transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .ul-header-nav .has-mega-menu > .branding-services-dropdown ul li:first-child a,
+  .ul-header-nav .has-mega-menu > .branding-services-dropdown ul li a.active {
+    background: linear-gradient(135deg, #1f2a76 0%, #3f468f 100%) !important;
+    color: #fff !important;
+    border-radius: 0 0 0 0 !important;
   }
 }

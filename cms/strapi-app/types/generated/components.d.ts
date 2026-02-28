@@ -30,7 +30,10 @@ export interface TextImageItem extends Struct.ComponentSchema {
   };
   attributes: {
     color: Schema.Attribute.String;
-    image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    image: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
     image_alt: Schema.Attribute.String;
     Sizes: Schema.Attribute.JSON;
   };

@@ -1,4 +1,3 @@
-
 <!-- SIDEBAR SECTION END -->
 
 <!-- HEADER SECTION START -->
@@ -8,10 +7,12 @@
         <div class="ul-header-top-slider splide">
             <div class="splide__track">
                 <ul class="splide__list">
+                    {% for _ in range(8) %}
                     {% for ticker_item in site_content.header_ticker_items %}
-                    <li class="splide__slide">
-                        <p class="ul-header-top-slider-item"><i class="flaticon-sparkle"></i>{{ ticker_item }}</p>
-                    </li>
+                        <li class="splide__slide">
+                            <p class="ul-header-top-slider-item"><i class="flaticon-sparkle"></i>{{ ticker_item }}</p>
+                        </li>
+                    {% endfor %}
                     {% endfor %}
                 </ul>
             </div>
@@ -25,7 +26,8 @@
                 <!-- header left -->
                 <div class="header-bottom-left">
                     <div class="logo-container">
-                        <a href="/" class="d-inline-block"><img src="{{ site_content.logo_url }}" alt="logo" class="logo"></a>
+                        <a href="/" class="d-inline-block"><img src="{{ site_content.logo_url }}" alt="logo"
+                                class="logo"></a>
                     </div>
 
                     <!-- search form -->
@@ -40,7 +42,8 @@
                                 </select>
                             </div>
                             <div class="search-input-wrapper">
-                                <input type="search" id="headerSearchInput" placeholder="Search products..." class="ul-search-input">
+                                <input type="search" id="headerSearchInput" placeholder="Search products..."
+                                    class="ul-search-input">
                                 <button type="button" id="searchButton" class="search-btn">
                                     <i class="flaticon-search-interface-symbol"></i>
                                 </button>
@@ -53,16 +56,16 @@
                     <script>
                         let searchTimeout;
                         let currentSearchQuery = '';
-                        
+
                         const searchInput = document.getElementById('headerSearchInput');
                         const searchCategory = document.getElementById('headerSearchCategory');
                         const searchResults = document.getElementById('searchResults');
                         const searchButton = document.getElementById('searchButton');
 
                         // Handle input events for live search
-                        searchInput.addEventListener('input', function() {
+                        searchInput.addEventListener('input', function () {
                             const query = this.value.trim();
-                            
+
                             if (query.length < 2) {
                                 hideSearchResults();
                                 return;
@@ -75,7 +78,7 @@
                         });
 
                         // Handle category change
-                        searchCategory.addEventListener('change', function() {
+                        searchCategory.addEventListener('change', function () {
                             const query = searchInput.value.trim();
                             if (query.length >= 2) {
                                 performSearch(query);
@@ -83,7 +86,7 @@
                         });
 
                         // Handle search button click
-                        searchButton.addEventListener('click', function() {
+                        searchButton.addEventListener('click', function () {
                             const query = searchInput.value.trim();
                             if (query.length >= 2) {
                                 performSearch(query);
@@ -91,7 +94,7 @@
                         });
 
                         // Handle Enter key
-                        searchInput.addEventListener('keydown', function(e) {
+                        searchInput.addEventListener('keydown', function (e) {
                             if (e.key === 'Enter') {
                                 e.preventDefault();
                                 const query = this.value.trim();
@@ -112,14 +115,14 @@
                         // Perform search via AJAX
                         function performSearch(query) {
                             if (query === currentSearchQuery) return;
-                            
+
                             currentSearchQuery = query;
                             const category = searchCategory.value;
-                            
+
                             // Show loading state
                             searchResults.innerHTML = '<div class="no-results">Searching...</div>';
                             showSearchResults();
-                            
+
                             fetch(`/search/api?q=${encodeURIComponent(query)}&category=${category}`)
                                 .then(response => {
                                     if (!response.ok) {
@@ -180,14 +183,14 @@
                         }
 
                         // Hide results when clicking outside
-                        document.addEventListener('click', function(e) {
+                        document.addEventListener('click', function (e) {
                             if (!document.getElementById('searchContainer').contains(e.target)) {
                                 hideSearchResults();
                             }
                         });
 
                         // Handle focus events
-                        searchInput.addEventListener('focus', function() {
+                        searchInput.addEventListener('focus', function () {
                             if (this.value.trim().length >= 2) {
                                 showSearchResults();
                             }
@@ -414,7 +417,7 @@
                                 max-width: 350px;
                                 min-width: 250px;
                             }
-                            
+
                             .ul-search-input {
                                 font-size: 0.9rem;
                             }
@@ -520,257 +523,249 @@
                             font-weight: bold;
                         }
                     </style>
-                    <link rel="stylesheet" href="/static/css/responsive-global.css">
+                    <link rel="stylesheet" href="/static/css/responsive-global.css?v=20260226a">
                 </div>
 
                 <!-- header nav -->
                 <div class=" ul-header-nav-wrapper">
                     <div class="to-go-to-sidebar-in-mobile">
                         <nav class="ul-header-nav" id="site-navigation">
-                            {% if site_content.nav_links %}
-                            {% for link in site_content.nav_links %}
-                            <a href="{{ link.url }}" class="{{ 'active' if request.path == link.url or (link.url != '/' and request.path.startswith(link.url)) }}" {% if link.new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>{{ link.label }}</a>
-                            {% endfor %}
-                            {% else %}
-                            <a href="/" class="{{ 'active' if request.path == '/' }}">Home</a>
-                        
-                            <div class="has-sub-menu has-mega-menu {{ 'active' if request.path.startswith('/shop') }}">
-                                <a role="button" href="/shop">Branding Services</a>
+                            {% macro branding_services_megamenu() %}
+                            <div class="ul-header-submenu ul-header-megamenu branding-services-dropdown">
+                                <div class="single-col">
+                                    <span class="single-col-title">Branding Categories</span>
+                                    <ul>
+                                        <li><a href="/shop-details?id=000004"
+                                                class="{{ 'active' if request.path == '/shop-details?id=000004' }}">Screen
+                                                Printing</a></li>
+                                        <li><a href="/shop-details?id=000004"
+                                                class="{{ 'active' if request.path == '/shop-details?id=000004' }}">Embroidery</a>
+                                        </li>
+                                        <li><a href="/shop-details?id=000004"
+                                                class="{{ 'active' if request.path == '/shop-details?id=000004' }}">Heat
+                                                Transfer</a></li>
+                                        <li><a href="/shop-details?id=000004"
+                                                class="{{ 'active' if request.path == '/shop-details?id=000004' }}">Digital
+                                                Printing</a></li>
+                                        <li><a href="/shop-details?id=000005"
+                                                class="{{ 'active' if request.path == '/shop-details?id=000005' }}">Sublimation</a>
+                                        </li>
+                                        <li><a href="/shop-details?id=000002"
+                                                class="{{ 'active' if request.path == '/shop-details?id=000002' }}">Applique</a>
+                                        </li>
+                                    </ul>
+                                </div>
 
-                                <div class="ul-header-submenu ul-header-megamenu">
-                                    <div class="single-col">
-                                        <span class="single-col-title">Custom Apparels</span>
-                                        <ul>
-                                            <li><a href="/shop-details?id=000001" class="{{ 'active' if request.path == '/shop-details?id=000001' }}">Elite Supima Polo</a></li>
-                                            <li><a href="/shop-details?id=000002" class="{{ 'active' if request.path == '/shop-details?id=000002' }}">Supreme Heavy Weight Cotton Polo</a></li>
-                                            <li><a href="/shop-details?id=000003" class="{{ 'active' if request.path == '/shop-details?id=000003' }}">Prime Cotton Polo</a></li>
-                                            <li><a href="/shop-details?id=000004" class="{{ 'active' if request.path == '/shop-details?id=000004' }}">Prime Cotton Tipping Polo</a></li>
-                                            </ul>
-                                            </div>
-
-                                            <div class="single-col">
-                                                <span class="single-col-title">Premium Apparels</span>
-                                                <ul>
-                                                    <li><a href="/shop-details?id=000005" class="{{ 'active' if request.path == '/shop-details?id=000005' }}">Iconic Heavy Cotton Round Neck</a></li>
-                                                    <li><a href="/shop-details?id=000006" class="{{ 'active' if request.path == '/shop-details?id=000006' }}">Iconic Soft Cotton Round Neck</a></li>
-                                                    <li><a href="/shop-details?id=000007" class="{{ 'active' if request.path == '/shop-details?id=000007' }}">Ultra Soft Zipper Hoodie</a></li>
-                                                </ul>
-                                            </div>
-
-                                            <div class="single-col">
-                                                <span class="single-col-title">Custom Apparel Model</span>
-                                                <ul>
-                                                    <li><a href="/shop-details?id=000008" class="{{ 'active' if request.path == '/shop-details?id=000008' }}">Ultra Soft Pullover Hoodie</a></li>
-                                                    <li><a href="/shop-details?id=000009" class="{{ 'active' if request.path == '/shop-details?id=000009' }}">Premium Dry Fit Pique Performance Polo</a></li>
-                                                    <li><a href="/shop-details?id=000010" class="{{ 'active' if request.path == '/shop-details?id=000010' }}">Heavy Weight Round Neck 240</a></li>
-                                                </ul>
-                                            </div>
-
-                                            <div class="single-col">
-                                                <span class="single-col-title">Children's</span>
-                                                <ul>
-                                                    <li><a href="/shop-details?id=000011" class="{{ 'active' if request.path == '/shop-details?id=000011' }}">Clothing</a></li>
-                                                    <li><a href="/shop-details?id=000012" class="{{ 'active' if request.path == '/shop-details?id=000012' }}">Footwear</a></li>
-                                                    <li><a href="/shop-details?id=000013" class="{{ 'active' if request.path == '/shop-details?id=000013' }}">Accessories</a></li>
-                                                    <li><a href="/shop-details?id=000014" class="{{ 'active' if request.path == '/shop-details?id=000014' }}">Toys & Games</a></li>
-                                                    <li><a href="/shop-details?id=000015" class="{{ 'active' if request.path == '/shop-details?id=000015' }}">Baby Essentials</a></li>
-                                                </ul>
-                                    </div>
-
-                                    <div class="single-col">
-                                        <span class="single-col-title">Other Apparels</span>
-                                        <ul>
-                                            <li><a href="/shop/corporate-uniforms" class="{{ 'active' if request.path == '/shop/corporate-uniforms' }}">Corporate Uniforms</a></li>
-                                            <li><a href="/shop/school-uniforms" class="{{ 'active' if request.path == '/shop/school-uniforms' }}">School Uniforms</a></li>
-                                            <li><a href="/shop/sports-uniforms" class="{{ 'active' if request.path == '/shop/sports-uniforms' }}">Sports Uniforms</a></li>
-                                            <li><a href="/shop/hospital-uniforms" class="{{ 'active' if request.path == '/shop/hospital-uniforms' }}">Hospital Uniforms</a></li>
-                                            <li><a href="/shop/hotel-uniforms" class="{{ 'active' if request.path == '/shop/hotel-uniforms' }}">Hotel Uniforms</a></li>
-                                            <li><a href="/shop/other-uniforms" class="{{ 'active' if request.path == '/shop/other-uniforms' }}">Other Uniforms</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="single-col promo-col">
-                                        <div class="mega-promo-banner">
-                                            <div class="promo-image-wrapper">
-                                                <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                                                     alt="Premium Fashion Collection" 
-                                                     class="promo-img">
-                                            </div>
-                                            <div class="promo-content-wrapper">
-                                                <div class="promo-badge">NEW ARRIVAL</div>
-                                                <h3 class="promo-title">Summer Elite<br>Collection 2024</h3>
-                                                <div class="promo-offer">
-                                                    <span class="discount">50%</span>
-                                                    <span class="offer-text">OFF</span>
-                                                </div>
-                                                <p class="promo-description">Exclusive designs with premium fabrics</p>
-                                                <a href="/shop" class="promo-cta-button">
-                                                    <span>SHOP NOW</span>
-                                                    <i class="flaticon-right-arrow"></i>
-                                                </a>
-                                            </div>
-                                            <style>
-                                                .promo-col {
-                                                    min-width: 300px !important;
-                                                }
-                                                
-                                                .mega-promo-banner {
-                                                    position: relative;
-                                                    background: #fff;
-                                                    border-radius: 12px;
-                                                    overflow: hidden;
-                                                    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-                                                    transition: transform 0.3s ease, box-shadow 0.3s ease;
-                                                }
-
-                                                .mega-promo-banner:hover {
-                                                    transform: translateY(-5px);
-                                                    box-shadow: 0 12px 32px rgba(0,0,0,0.18);
-                                                }
-
-                                                .promo-image-wrapper {
-                                                    position: relative;
-                                                    overflow: hidden;
-                                                }
-
-                                                .promo-img {
-                                                    width: 100%;
-                                                    height: 320px;
-                                                    object-fit: cover;
-                                                    transition: transform 0.5s ease;
-                                                }
-
-                                                .mega-promo-banner:hover .promo-img {
-                                                    transform: scale(1.05);
-                                                }
-
-                                                .promo-content-wrapper {
-                                                    position: absolute;
-                                                    top: 0;
-                                                    left: 0;
-                                                    right: 0;
-                                                    bottom: 0;
-                                                    padding: 25px;
-                                                    background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 100%);
-                                                    display: flex;
-                                                    flex-direction: column;
-                                                    justify-content: center;
-                                                    align-items: center;
-                                                }
-
-                                                .promo-badge {
-                                                    background: #ff4444;
-                                                    color: white;
-                                                    padding: 6px 12px;
-                                                    border-radius: 20px;
-                                                    font-size: 12px;
-                                                    font-weight: 600;
-                                                    margin-bottom: 15px;
-                                                    letter-spacing: 1px;
-                                                }
-
-                                                .promo-title {
-                                                    color: #fff;
-                                                    font-size: 28px;
-                                                    font-weight: 700;
-                                                    text-align: center;
-                                                    margin-bottom: 15px;
-                                                    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-                                                    line-height: 1.2;
-                                                }
-
-                                                .promo-offer {
-                                                    margin-bottom: 15px;
-                                                    text-align: center;
-                                                }
-
-                                                .discount {
-                                                    color: #fff;
-                                                    font-size: 42px;
-                                                    font-weight: 800;
-                                                }
-
-                                                .offer-text {
-                                                    color: #fff;
-                                                    font-size: 24px;
-                                                    font-weight: 600;
-                                                    margin-left: 5px;
-                                                }
-
-                                                .promo-description {
-                                                    color: rgba(255,255,255,0.9);
-                                                    font-size: 16px;
-                                                    text-align: center;
-                                                    margin-bottom: 25px;
-                                                }
-
-                                                .promo-cta-button {
-                                                    background: #fff;
-                                                    color: #000;
-                                                    padding: 16px 36px;
-                                                    border-radius: 30px;
-                                                    font-weight: 600;
-                                                    font-size: 15px;
-                                                    text-decoration: none;
-                                                    display: inline-flex;
-                                                    align-items: center;
-                                                    gap: 10px;
-                                                    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-                                                    position: relative;
-                                                    overflow: hidden;
-                                                    margin-bottom: 10%;
-                                                }
-
-                                                .promo-cta-button:before {
-                                                    content: '';
-                                                    position: absolute;
-                                                    top: 0;
-                                                    left: 0;
-                                                    width: 100%;
-                                                    height: 100%;
-                                                    background: #000;
-                                                    transform: translateX(-100%);
-                                                    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-                                                    z-index: 1;
-                                                }
-
-                                                .promo-cta-button span,
-                                                .promo-cta-button i {
-                                                    position: relative;
-                                                    z-index: 2;
-                                                    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-                                                }
-
-                                                .promo-cta-button:hover {
-                                                    transform: translateY(-2px);
-                                                    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-                                                }
-
-                                                .promo-cta-button:hover:before {
-                                                    transform: translateX(0);
-                                                }
-
-                                                .promo-cta-button:hover span,
-                                                .promo-cta-button:hover i {
-                                                    color: #fff;
-                                                }
-
-                                                .promo-cta-button:hover i {
-                                                    transform: translateX(5px);
-                                                }
-                                            </style>
+                                <div class="single-col promo-col">
+                                    <div class="mega-promo-banner">
+                                        <div class="promo-image-wrapper">
+                                            <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                                                alt="Premium Fashion Collection" class="promo-img">
                                         </div>
+                                        <div class="promo-content-wrapper">
+                                            <div class="promo-badge">NEW ARRIVAL</div>
+                                            <h3 class="promo-title">Summer Elite<br>Collection 2024</h3>
+                                            <div class="promo-offer">
+                                                <span class="discount">50%</span>
+                                                <span class="offer-text">OFF</span>
+                                            </div>
+                                            <p class="promo-description">Exclusive designs with premium fabrics</p>
+                                            <a href="/shop" class="promo-cta-button">
+                                                <span>SHOP NOW</span>
+                                                <i class="flaticon-right-arrow"></i>
+                                            </a>
+                                        </div>
+                                        <style>
+                                            .promo-col {
+                                                min-width: 300px !important;
+                                            }
+
+                                            .mega-promo-banner {
+                                                position: relative;
+                                                background: #fff;
+                                                border-radius: 12px;
+                                                overflow: hidden;
+                                                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+                                                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                                            }
+
+                                            .mega-promo-banner:hover {
+                                                transform: translateY(-5px);
+                                                box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+                                            }
+
+                                            .promo-image-wrapper {
+                                                position: relative;
+                                                overflow: hidden;
+                                            }
+
+                                            .promo-img {
+                                                width: 100%;
+                                                height: 320px;
+                                                object-fit: cover;
+                                                transition: transform 0.5s ease;
+                                            }
+
+                                            .mega-promo-banner:hover .promo-img {
+                                                transform: scale(1.05);
+                                            }
+
+                                            .promo-content-wrapper {
+                                                position: absolute;
+                                                top: 0;
+                                                left: 0;
+                                                right: 0;
+                                                bottom: 0;
+                                                padding: 25px;
+                                                background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%);
+                                                display: flex;
+                                                flex-direction: column;
+                                                justify-content: center;
+                                                align-items: center;
+                                            }
+
+                                            .promo-badge {
+                                                background: #ff4444;
+                                                color: white;
+                                                padding: 6px 12px;
+                                                border-radius: 20px;
+                                                font-size: 12px;
+                                                font-weight: 600;
+                                                margin-bottom: 15px;
+                                                letter-spacing: 1px;
+                                            }
+
+                                            .promo-title {
+                                                color: #fff;
+                                                font-size: 28px;
+                                                font-weight: 700;
+                                                text-align: center;
+                                                margin-bottom: 15px;
+                                                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+                                                line-height: 1.2;
+                                            }
+
+                                            .promo-offer {
+                                                margin-bottom: 15px;
+                                                text-align: center;
+                                            }
+
+                                            .discount {
+                                                color: #fff;
+                                                font-size: 42px;
+                                                font-weight: 800;
+                                            }
+
+                                            .offer-text {
+                                                color: #fff;
+                                                font-size: 24px;
+                                                font-weight: 600;
+                                                margin-left: 5px;
+                                            }
+
+                                            .promo-description {
+                                                color: rgba(255, 255, 255, 0.9);
+                                                font-size: 16px;
+                                                text-align: center;
+                                                margin-bottom: 25px;
+                                            }
+
+                                            .promo-cta-button {
+                                                background: #fff;
+                                                color: #000;
+                                                padding: 16px 36px;
+                                                border-radius: 30px;
+                                                font-weight: 600;
+                                                font-size: 15px;
+                                                text-decoration: none;
+                                                display: inline-flex;
+                                                align-items: center;
+                                                gap: 10px;
+                                                transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+                                                position: relative;
+                                                overflow: hidden;
+                                                margin-bottom: 10%;
+                                            }
+
+                                            .promo-cta-button:before {
+                                                content: '';
+                                                position: absolute;
+                                                top: 0;
+                                                left: 0;
+                                                width: 100%;
+                                                height: 100%;
+                                                background: #000;
+                                                transform: translateX(-100%);
+                                                transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+                                                z-index: 1;
+                                            }
+
+                                            .promo-cta-button span,
+                                            .promo-cta-button i {
+                                                position: relative;
+                                                z-index: 2;
+                                                transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+                                            }
+
+                                            .promo-cta-button:hover {
+                                                transform: translateY(-2px);
+                                                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+                                            }
+
+                                            .promo-cta-button:hover:before {
+                                                transform: translateX(0);
+                                            }
+
+                                            .promo-cta-button:hover span,
+                                            .promo-cta-button:hover i {
+                                                color: #fff;
+                                            }
+
+                                            .promo-cta-button:hover i {
+                                                transform: translateX(5px);
+                                            }
+                                        </style>
                                     </div>
                                 </div>
                             </div>
+                            {% endmacro %}
+
+                            {% if site_content.nav_links %}
+                            {% for link in site_content.nav_links %}
+                            {% if link.label and 'branding service' in link.label|lower %}
+                            <div
+                                class="has-sub-menu has-mega-menu {{ 'active' if request.path == link.url or (link.url != '/' and request.path.startswith(link.url)) }}">
+                                <a role="button" href="#" onclick="return false;" class="branding-services-link">{{
+                                    link.label }}</a>
+                                {{ branding_services_megamenu() }}
+                            </div>
+                            {% else %}
+                            <a href="{{ link.url }}"
+                                class="{{ 'active' if request.path == link.url or (link.url != '/' and request.path.startswith(link.url)) }}"
+                                {% if link.new_tab %}target="_blank" rel="noopener noreferrer" {% endif %}>{{ link.label
+                                }}</a>
+                            {% endif %}
+                            {% endfor %}
+                            {% else %}
+                            <a href="/" class="{{ 'active' if request.path == '/' }}">Home</a>
+
+                            <div class="has-sub-menu has-mega-menu {{ 'active' if request.path.startswith('/shop') }}">
+                                <a role="button" href="#" onclick="return false;" class="branding-services-link">Branding
+                                    Services</a>
+
+                                {{ branding_services_megamenu() }}
+                            </div>
                             <a href="/shop" class="{{ 'active' if request.path == '/shop' }}">InStock Apparel</a>
                             <a href="/gallery" class="{{ 'active' if request.path == '/gallery' }}">Our Gallery</a>
-                            <a href="/testimonials" class="{{ 'active' if request.path == '/testimonials' }}">Testimonials</a>
+                            <a href="/testimonials"
+                                class="{{ 'active' if request.path == '/testimonials' }}">Testimonials</a>
                             <a href="/contact" class="{{ 'active' if request.path == '/contact' }}">Contact Us</a>
                             <a href="/faq" class="{{ 'active' if request.path == '/faq' }}">FAQ</a>
                             <a href="/about" class="{{ 'active' if request.path == '/about' }}">About Us</a>
                             {% endif %}
                         </nav>
                     </div>
+
                 </div>
             </div>
         </div>

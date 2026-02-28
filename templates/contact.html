@@ -16,6 +16,8 @@
 
     <!-- custom CSS -->
     <link rel="stylesheet" href="/static/css/style.css">
+    <!-- FontAwesome for social icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
@@ -42,24 +44,29 @@
                         <div>
                             <span class="ul-section-sub-title text-white">Get in Touch</span>
                             <h2 class="ul-section-title text-white">Contact Us</h2>
-                            <p class="text-white-50 mb-0">Have a question or need assistance? Fill out the form below and our team will respond as soon as possible.</p>
+                            <p class="text-white-50 mb-0">Have a question or need assistance? Fill out the form below
+                                and our team will respond as soon as possible.</p>
                         </div>
                     </div>
 
                     <div class="ul-nwsltr-subs-form-wrapper">
                         <div class="icon"><i class="flaticon-airplane"></i></div>
-                        <form action="#" method="post" class="ul-nwsltr-subs-form needs-validation" novalidate autocomplete="off">
+                        <form action="#" method="post" class="ul-nwsltr-subs-form needs-validation" novalidate
+                            autocomplete="off">
                             <div class="row g-2">
                                 <div class="col-12 col-md-6">
-                                    <input type="text" name="name" id="nwsltr-name" placeholder="Your Name" required aria-label="Your Name">
+                                    <input type="text" name="name" id="nwsltr-name" placeholder="Your Name" required
+                                        aria-label="Your Name">
                                     <div class="invalid-feedback">Please enter your name.</div>
                                 </div>
                                 <div class="col-12 col-md-6">
-                                    <input type="email" name="email" id="nwsltr-email" placeholder="Your Email" required aria-label="Your Email">
+                                    <input type="email" name="email" id="nwsltr-email" placeholder="Your Email" required
+                                        aria-label="Your Email">
                                     <div class="invalid-feedback">Please enter a valid email.</div>
                                 </div>
                                 <div class="col-12 col-md-6">
-                                    <input type="tel" name="phone" id="nwsltr-phone" placeholder="Phone Number" required aria-label="Phone Number" pattern="^[\d\s\-\+\(\)]{7,}$">
+                                    <input type="tel" name="phone" id="nwsltr-phone" placeholder="Phone Number" required
+                                        aria-label="Phone Number" pattern="^[\d\s\-\+\(\)]{7,}$">
                                     <div class="invalid-feedback">Please enter a valid phone number.</div>
                                 </div>
                                 <div class="col-12 col-md-3">
@@ -83,11 +90,13 @@
                                     <div class="invalid-feedback">Please select a category.</div>
                                 </div>
                                 <div class="col-12">
-                                    <textarea name="message" id="nwsltr-message" rows="3" placeholder="Your Message" required aria-label="Your Message"></textarea>
+                                    <textarea name="message" id="nwsltr-message" rows="3" placeholder="Your Message"
+                                        required aria-label="Your Message"></textarea>
                                     <div class="invalid-feedback">Please enter your message.</div>
                                 </div>
                                 <div class="col-12">
-                                    <button type="submit" class="btn btn-primary">Send Message <i class="flaticon-up-right-arrow"></i></button>
+                                    <button type="submit" class="btn btn-primary">Send Message <i
+                                            class="flaticon-up-right-arrow"></i></button>
                                 </div>
                             </div>
                         </form>
@@ -100,27 +109,29 @@
         </div>
         <!-- Force newsletter form vertical layout on all screen sizes for this page only -->
         <style>
-            .ul-nwsltr-subs-form { 
+            .ul-nwsltr-subs-form {
                 display: flex;
-                flex-direction: column !important; 
-                height: auto !important; 
-                border-radius: 20px !important; 
-                gap: 12px; 
-                padding: 16px; 
-                background: rgba(255,255,255,0.95);
-                box-shadow: 0 2px 16px rgba(30,58,138,0.07);
+                flex-direction: column !important;
+                height: auto !important;
+                border-radius: 20px !important;
+                gap: 12px;
+                padding: 16px;
+                background: rgba(255, 255, 255, 0.95);
+                box-shadow: 0 2px 16px rgba(30, 58, 138, 0.07);
                 transition: box-shadow 0.2s;
             }
+
             .ul-nwsltr-subs-form input,
             .ul-nwsltr-subs-form select,
-            .ul-nwsltr-subs-form textarea { 
-                width: 100%; 
-                padding: 10px 16px; 
+            .ul-nwsltr-subs-form textarea {
+                width: 100%;
+                padding: 10px 16px;
                 border-radius: 8px;
                 border: 1px solid #e0e0e0;
                 background: #f9f9f9;
                 transition: border-color 0.2s;
             }
+
             .ul-nwsltr-subs-form input:focus,
             .ul-nwsltr-subs-form select:focus,
             .ul-nwsltr-subs-form textarea:focus {
@@ -128,9 +139,10 @@
                 outline: none;
                 background: #fff;
             }
-            .ul-nwsltr-subs-form button { 
-                width: 100%; 
-                height: 44px; 
+
+            .ul-nwsltr-subs-form button {
+                width: 100%;
+                height: 44px;
                 border-radius: 8px;
                 font-weight: 600;
                 letter-spacing: 0.02em;
@@ -139,24 +151,30 @@
                 color: #fff;
                 transition: background 0.2s;
             }
-            .ul-nwsltr-subs-form button:hover, .ul-nwsltr-subs-form button:focus {
+
+            .ul-nwsltr-subs-form button:hover,
+            .ul-nwsltr-subs-form button:focus {
                 background: #16306b;
             }
+
             .ul-nwsltr-subs-form-wrapper .icon {
                 text-align: center;
                 font-size: 2.5rem;
                 color: var(--ul-primary, #1e3a8a);
                 margin-bottom: 12px;
             }
+
             .ul-nwsltr-success {
                 text-align: center;
                 font-size: 1.1rem;
             }
+
             /* Responsive: stack fields on small screens */
             @media (max-width: 768px) {
                 .ul-nwsltr-subs-form .row {
                     flex-direction: column;
                 }
+
                 .ul-nwsltr-subs-form .col-12,
                 .ul-nwsltr-subs-form .col-md-6,
                 .ul-nwsltr-subs-form .col-md-3 {
@@ -196,31 +214,34 @@
                 </div>
 
                 <div class="ul-contact-info whatsapp">
-                    <div class="icon"><i class="fa fa-brands fa-whatsapp"></i></div>
+                    <div class="icon"><i class="fa-brands fa-whatsapp"></i></div>
                     <div class="txt">
                         <h6 class="title">WhatsApp</h6>
                         <p class="descr mb-0">
-                            <a href="https://wa.me/{{ content.whatsapp }}" target="_blank" class="contact-button">Chat with us <i class="flaticon-arrow-point-to-right"></i></a>
+                            <a href="https://wa.me/{{ content.whatsapp }}" target="_blank" class="contact-button">Chat
+                                with us <i class="flaticon-arrow-point-to-right"></i></a>
                         </p>
                     </div>
-                </div>  
+                </div>
 
                 <div class="ul-contact-info instagram">
                     <div class="icon"><i class="flaticon-instagram"></i></div>
                     <div class="txt">
                         <h6 class="title">Instagram</h6>
                         <p class="descr mb-0">
-                            <a href="{{ content.instagram }}" target="_blank" class="contact-button">Follow us <i class="flaticon-arrow-point-to-right"></i></a>
+                            <a href="{{ content.instagram }}" target="_blank" class="contact-button">Follow us <i
+                                    class="flaticon-arrow-point-to-right"></i></a>
                         </p>
                     </div>
                 </div>
 
                 <div class="ul-contact-info facebook">
-                    <div class="icon"><i class="fa fa-brands fa-facebook"></i></div>
+                    <div class="icon"><i class="fa-brands fa-facebook"></i></div>
                     <div class="txt">
                         <h6 class="title">Facebook</h6>
                         <p class="descr mb-0">
-                            <a href="{{ content.facebook }}" target="_blank" class="contact-button">Like us <i class="flaticon-arrow-point-to-right"></i></a>
+                            <a href="{{ content.facebook }}" target="_blank" class="contact-button">Like us <i
+                                    class="flaticon-arrow-point-to-right"></i></a>
                         </p>
                     </div>
                 </div>
@@ -246,7 +267,7 @@
                     padding: 0 2rem;
                     justify-content: center;
                 }
-                
+
                 .ul-contact-info {
                     padding: 2.5rem;
                     background: #ffffff;
@@ -315,6 +336,7 @@
                 .instagram .icon i {
                     background: -webkit-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
                     -webkit-background-clip: text;
+                    background-clip: text;
                     -webkit-text-fill-color: transparent;
                 }
 
@@ -450,7 +472,7 @@
                         grid-template-columns: 1fr;
                         gap: 1rem;
                     }
-                    
+
                     .ul-contact-info {
                         padding: 2rem;
                     }
@@ -474,41 +496,41 @@
                 }
             </style>
             <script>
-            // Send Contact Us message directly to WhatsApp
-            document.addEventListener('DOMContentLoaded', function () {
-                var form = document.querySelector('.ul-nwsltr-subs-form');
-                if (form) {
-                    form.addEventListener('submit', function (e) {
-                        e.preventDefault();
-                        if (form.checkValidity()) {
-                            form.classList.add('was-validated');
-                            var name = document.getElementById('nwsltr-name')?.value?.trim() || '';
-                            var email = document.getElementById('nwsltr-email')?.value?.trim() || '';
-                            var phone = document.getElementById('nwsltr-phone')?.value?.trim() || '';
-                            var priority = document.getElementById('nwsltr-priority')?.value || '';
-                            var category = document.getElementById('nwsltr-category')?.value || '';
-                            var message = document.getElementById('nwsltr-message')?.value?.trim() || '';
+                // Send Contact Us message directly to WhatsApp
+                document.addEventListener('DOMContentLoaded', function () {
+                    var form = document.querySelector('.ul-nwsltr-subs-form');
+                    if (form) {
+                        form.addEventListener('submit', function (e) {
+                            e.preventDefault();
+                            if (form.checkValidity()) {
+                                form.classList.add('was-validated');
+                                var name = document.getElementById('nwsltr-name')?.value?.trim() || '';
+                                var email = document.getElementById('nwsltr-email')?.value?.trim() || '';
+                                var phone = document.getElementById('nwsltr-phone')?.value?.trim() || '';
+                                var priority = document.getElementById('nwsltr-priority')?.value || '';
+                                var category = document.getElementById('nwsltr-category')?.value || '';
+                                var message = document.getElementById('nwsltr-message')?.value?.trim() || '';
 
-                            var whatsappNumber = "{{ content.whatsapp }}".replace(/\D/g, '');
-                            var whatsappText =
-                                "New Contact Us Enquiry%0A" +
-                                "Name: " + encodeURIComponent(name) + "%0A" +
-                                "Email: " + encodeURIComponent(email) + "%0A" +
-                                "Phone: " + encodeURIComponent(phone) + "%0A" +
-                                "Priority: " + encodeURIComponent(priority) + "%0A" +
-                                "Category: " + encodeURIComponent(category) + "%0A" +
-                                "Message: " + encodeURIComponent(message);
+                                var whatsappNumber = "{{ content.whatsapp }}".replace(/\D/g, '');
+                                var whatsappText =
+                                    "New Contact Us Enquiry%0A" +
+                                    "Name: " + encodeURIComponent(name) + "%0A" +
+                                    "Email: " + encodeURIComponent(email) + "%0A" +
+                                    "Phone: " + encodeURIComponent(phone) + "%0A" +
+                                    "Priority: " + encodeURIComponent(priority) + "%0A" +
+                                    "Category: " + encodeURIComponent(category) + "%0A" +
+                                    "Message: " + encodeURIComponent(message);
 
-                            window.open("https://wa.me/" + whatsappNumber + "?text=" + whatsappText, "_blank");
-                        } else {
-                            form.classList.add('was-validated');
-                        }
-                    });
-                }
-            });
-        </script>
+                                window.open("https://wa.me/" + whatsappNumber + "?text=" + whatsappText, "_blank");
+                            } else {
+                                form.classList.add('was-validated');
+                            }
+                        });
+                    }
+                });
+            </script>
         </section>
-        
+
     </main>
 
     <!-- FOOTER SECTION START -->
@@ -527,8 +549,7 @@
     <script src="/static/vendor/fslightbox/fslightbox.js"></script>
 
     <!-- custom JS -->
-    <script src="/static/js/main.js"></script>
+    <script src="/static/js/main.js?v=20260222i"></script>
 </body>
 
 </html>
-

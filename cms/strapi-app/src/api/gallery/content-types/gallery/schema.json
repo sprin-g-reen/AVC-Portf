@@ -22,8 +22,7 @@
       ]
     },
     "sort_order": {
-      "type": "integer",
-      "default": 0
+      "type": "biginteger"
     }
   }
 }
