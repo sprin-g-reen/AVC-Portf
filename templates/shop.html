@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- libraries CSS -->
+    <link rel="stylesheet" href="/static/icon/flaticon_glamer.css">
+    <link rel="stylesheet" href="/static/vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/vendor/splide/splide.min.css">
+    <link rel="stylesheet" href="/static/vendor/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="/static/vendor/slim-select/slimselect.css">
+    <link rel="stylesheet" href="/static/vendor/animate-wow/animate.min.css">
+    <link rel="stylesheet" href="/static/vendor/no-ui-slider/nouislider.min.css">
+
+    <!-- custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+    <!-- page-specific image ratio fix for product grid -->
+    <style>
+      .swatch-list {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 8px;
+        flex-wrap: wrap;
+      }
+      .color-swatch-label {
+        cursor: pointer;
+      }
+      .color-swatch {
+        width: 18px;
+        height: 18px;
+        border-radius: 999px;
+        border: 1px solid #c9d4e5;
+        display: inline-block;
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.45);
+      }
+      .color-swatch-label input:checked + .color-swatch {
+        transform: scale(1.08);
+        border-color: #1f4fa8;
+        box-shadow: 0 0 0 2px rgba(31,79,168,0.2);
+      }
+      .more-colors-count {
+        font-size: 14px;
+        font-weight: 600;
+        color: #0a58ca;
+        margin-left: 4px;
+      }
+      .ul-product .ul-product-img {
+        aspect-ratio: 1 / 1; /* change to 4 / 3 or 16 / 9 if preferred */
+        width: 100%;
+        overflow: hidden;
+        background: #fff;
+        display: block;
+      }
+      .ul-product .ul-product-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* keep natural aspect without cropping */
+        display: block;
+      }
+
+      /* Strong mobile override for shop grid */
+      @media (max-width: 991px) {
+        .ul-shop-products-grid {
+          display: grid !important;
+          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          gap: 12px !important;
+        }
+
+        .ul-shop-products-grid > .col {
+          width: auto !important;
+          max-width: none !important;
+          flex: unset !important;
+          padding: 0 !important;
+        }
+
+        .ul-product {
+          height: 100% !important;
+          padding: 12px !important;
+          border-radius: 12px !important;
+        }
+
+        .ul-product-title a {
+          font-size: 15px !important;
+          line-height: 1.35 !important;
+        }
+      }
+
+      @media (max-width: 575px) {
+        .ul-shop-products-grid {
+          grid-template-columns: 1fr !important;
+        }
+      }
+    </style>
+</head>
+
+<body>
+    {% include 'header.html' %}
+    <main>
+        <!-- BREADCRUMB SECTION START -->
+        <div class="ul-container">
+            <div class="ul-breadcrumb">
+                <h2 class="ul-breadcrumb-title">Discover Our Products</h2>
+                <div class="ul-breadcrumb-nav">
+                    <a href="/"><i class="flaticon-home"></i> Home</a>
+                    <i class="flaticon-arrow-point-to-right"></i>
+                    <span class="current-page">Shop</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="ul-inner-page-container">
+            <div class="ul-inner-products-wrapper">
+                <div class="row ul-bs-row flex-column-reverse flex-md-row">
+                    <!-- right products container -->
+                    <div class="col-12">
+                        <div class="row ul-bs-row row-cols-lg-4 row-cols-sm-3 row-cols-2 row-cols-xxs-1 ul-shop-products-grid">
+                            {% for product in products %}
+                            <!-- product card -->
+                            <div class="col">
+                                <div class="ul-product" style="height: 100%;">
+                                    <div class="ul-product-heading">
+                                        <span class="ul-product-price text-danger">{{ product.price }}</span>
+                                        {% if product.discount %}
+                                        <span class="ul-product-discount-tag">{{ product.discount }}</span>
+                                        {% endif %}
+                                    </div>
+
+                                    <a class="product-link" 
+                                       data-base-url="/product/{{ product.documentId }}" 
+                                       href="/product/{{ product.documentId }}">
+
+                                        <div class="ul-product-img" data-product-id="{{ product.documentId }}">
+                                            <img
+                                              src="{{ 'https://cms.apparelbrandingcompany.in' + product.image_path if product.image_path else '/static/images/logo.png' }}"
+                                              alt="{{ product.image_alt or product.name }}"
+                                              loading="lazy"
+                                              decoding="async"
+                                            >
+                                        </div>
+                                    </a>
+
+                                        {% if product.images %}
+                                        <div class="product-color-controls" style="margin-top:8px;" data-product-id="{{ product.documentId }}">
+                                            <div style="font-size:12px; color:#666; margin-bottom:6px;">
+                                                Color:
+                                                <span class="selected-color-name" id="selected-color-{{ product.documentId }}" style="font-weight:600; font-size:13px;"></span>
+                                            </div>
+                                            <form class="color-variants swatch-list" id="color-variants-{{ product.documentId }}">
+                                                {% for img in product.images[:4] %}
+                                                <label class="color-swatch-label" title="{{ img.color }}">
+                                                    <input type="radio" name="product-color-{{ product.documentId }}" hidden data-image="{{ resolve_media_url(img.image_path) }}" data-color="{{ img.color }}">
+                                                    <span class="color-swatch" data-color="{{ img.color }}"></span>
+                                                </label>
+                                                {% endfor %}
+                                                {% if product.images|length > 4 %}
+                                                <a class="more-colors-count product-link"
+                                                   data-base-url="/product/{{ product.documentId }}"
+                                                   href="/product/{{ product.documentId }}"
+                                                   title="View all colors">+{{ product.images|length - 4 }}</a>
+                                                {% endif %}
+                                            </form>
+                                        </div>
+                                        {% endif %}
+
+                                    <div class="ul-product-txt">
+                                        <h4 class="ul-product-title">
+                                            <a class="product-link" 
+                                               data-base-url="/product/{{ product.documentId }}" 
+                                               href="/product/{{ product.documentId }}">
+                                               {{ product.name }}
+                                            </a>
+                                        </h4>
+                                        <h5 class="ul-product-category"><a href="/shop?category={{ product.category }}">{{ product.category }}</a></h5>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% if not products %}
+                        <div class="alert alert-light border mt-3">No products match the selected filters.</div>
+                        {% endif %}
+
+                        <!-- pagination -->
+                        <div class="ul-pagination">
+                            {% if total_pages > 1 %}
+                            <ul>
+                                {% if current_page > 1 %}
+                                <li><a href="{{ url_for('shop', page=current_page-1) }}"><i class="flaticon-left-arrow"></i></a></li>
+                                {% endif %}
+                                
+                                <li class="pages">
+                                    {% for page_num in range(1, total_pages + 1) %}
+                                    <a href="{{ url_for('shop', page=page_num) }}" {% if page_num == current_page %}class="active"{% endif %}>
+                                        {% if page_num < 10 %}0{% endif %}{{ page_num }}
+                                    </a>
+                                    {% endfor %}
+                                </li>
+                                
+                                {% if current_page < total_pages %}
+                                <li><a href="{{ url_for('shop', page=current_page+1) }}"><i class="flaticon-arrow-point-to-right"></i></a></li>
+                                {% endif %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER SECTION START -->
+    {% include 'footer.html' %}
+    <!-- FOOTER SECTION END -->
+
+    <!-- libraries JS -->
+    <script src="/static/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="/static/vendor/splide/splide.min.js"></script>
+    <script src="/static/vendor/splide/splide-extension-auto-scroll.min.js"></script>
+    <script src="/static/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="/static/vendor/slim-select/slimselect.min.js"></script>
+    <script src="/static/vendor/animate-wow/wow.min.js"></script>
+    <script src="/static/vendor/splittype/index.min.js"></script>
+    <script src="/static/vendor/mixitup/mixitup.min.js"></script>
+    <script src="/static/vendor/fslightbox/fslightbox.js"></script>
+    <script src="/static/vendor/no-ui-slider/nouislider.min.js"></script>
+
+    <!-- custom JS -->
+    <script src="/static/js/main_v2.js?v=6"></script>
+    <script>
+    function capitalizeWords(str) {
+        if (!str) return '';
+        return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    }
+
+    // Product listing color toggle and swap
+    document.addEventListener('DOMContentLoaded', function() {
+        function colorToCss(colorName) {
+            const key = (colorName || '').trim().toLowerCase();
+            const map = {
+                'bottle green': '#006a4e',
+                'charcoal melange': '#4a4a4a',
+                'chrome yellow': '#f1c40f',
+                'desert sand': '#d7b98e',
+                'flag green': '#138808',
+                'grey melange': '#8a8f98',
+                'royal blue': '#2f5bd1',
+                'sky blue': '#79c8ff',
+                'navy': '#1d2f6f',
+                'black': '#111111',
+                'white': '#ffffff',
+                'red': '#d90429',
+                'burgundy': '#800020',
+            };
+            if (map[key]) return map[key];
+            if (key.includes('white') || key.includes('off white') || key.includes('ivory')) return '#f4f4f4';
+            if (key.includes('black') || key.includes('charcoal')) return '#242424';
+            if (key.includes('grey') || key.includes('gray') || key.includes('melange')) return '#8a8f98';
+            if (key.includes('navy')) return '#1d2f6f';
+            if (key.includes('blue')) return '#2f5bd1';
+            if (key.includes('sky')) return '#79c8ff';
+            if (key.includes('green') || key.includes('olive')) return '#1f6f4a';
+            if (key.includes('red') || key.includes('maroon')) return '#b31b34';
+            if (key.includes('burgundy') || key.includes('wine')) return '#800020';
+            if (key.includes('yellow') || key.includes('mustard')) return '#d6a800';
+            if (key.includes('orange') || key.includes('rust')) return '#d97706';
+            if (key.includes('brown') || key.includes('coffee') || key.includes('chocolate')) return '#6b4f3a';
+            if (key.includes('beige') || key.includes('sand') || key.includes('cream')) return '#d7b98e';
+            if (key && typeof CSS !== 'undefined' && CSS.supports && CSS.supports('color', key)) return key;
+            return '#7a8ca8';
+        }
+
+        function updateProductLinks(card, colorName) {
+            if (!card) return;
+            const encoded = colorName ? encodeURIComponent(colorName) : '';
+            card.querySelectorAll('.product-link').forEach((link) => {
+                const base = link.dataset.baseUrl || link.getAttribute('href').split('?')[0];
+                link.dataset.baseUrl = base;
+                link.setAttribute('href', encoded ? `${base}?color=${encoded}` : base);
+            });
+        }
+
+        // swatch click -> redirect to product details with selected color
+        document.querySelectorAll('.color-variants').forEach(form => {
+            form.addEventListener('change', function(e) {
+                const input = e.target.closest('label')?.querySelector('input[type=radio]');
+                if (!input) return;
+                const colorName = input.dataset.color;
+                const cardRoot = input.closest('.ul-product');
+                if (cardRoot) {
+                    updateProductLinks(cardRoot, colorName);
+                    const firstLink = cardRoot.querySelector('.product-link');
+                    if (firstLink) {
+                        const href = firstLink.getAttribute('href');
+                        if (href) window.location.href = href;
+                    }
+                }
+            });
+        });
+
+        // Initialize first color display and swatch paint
+        document.querySelectorAll('.color-variants').forEach(form => {
+            form.querySelectorAll('.color-swatch').forEach((swatch) => {
+                const colorValue = colorToCss(swatch.dataset.color);
+                swatch.style.backgroundColor = colorValue;
+                const key = (swatch.dataset.color || '').trim().toLowerCase();
+                if (key === 'white' || key === '#fff' || key === '#ffffff') {
+                    swatch.style.borderColor = '#9fb2cf';
+                }
+            });
+            const firstInput = form.querySelector('input[type=radio]');
+            if (firstInput && firstInput.dataset.color) {
+                const pid = form.id.replace('color-variants-', '');
+                const nameEl = document.getElementById('selected-color-' + pid);
+                if (nameEl) nameEl.textContent = capitalizeWords(firstInput.dataset.color);
+                firstInput.checked = true;
+                const cardRoot = form.closest('.ul-product');
+                updateProductLinks(cardRoot, firstInput.dataset.color);
+            }
+        });
+    });
+    </script>
+</body>
+
+</html>

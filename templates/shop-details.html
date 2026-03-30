@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop {{ product.name }}</title>
+
+    <!-- libraries CSS -->
+    <link rel="stylesheet" href="/static/icon/flaticon_glamer.css">
+    <link rel="stylesheet" href="/static/vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/vendor/splide/splide.min.css">
+    <link rel="stylesheet" href="/static/vendor/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="/static/vendor/slim-select/slimselect.css">
+    <link rel="stylesheet" href="/static/vendor/animate-wow/animate.min.css">
+
+    <!-- custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <!-- page-specific fixes: keep product images in a fixed aspect ratio and prevent distortion -->
+    <style>
+      .platform-product-page {
+        font-family: "Poppins", sans-serif;
+      }
+
+      .platform-top-grid {
+        align-items: flex-start !important;
+      }
+
+      .platform-sticky-left {
+        position: sticky;
+        top: 110px;
+      }
+
+      .platform-sticky-left .ul-product-details-img {
+        height: calc(100vh - 130px);
+      }
+
+      .platform-sticky-left .ul-product-details-img .swiper {
+        height: 100%;
+      }
+
+      .platform-sticky-left .ul-product-details-img .swiper-slide {
+        min-height: 100%;
+        max-height: 100%;
+      }
+
+      .platform-scroll-right {
+        max-height: calc(100vh - 130px);
+        overflow-y: auto;
+        padding-right: 0;
+        scrollbar-gutter: stable;
+      }
+
+      .platform-scroll-right::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .platform-scroll-right::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+      }
+
+      .ul-product-details-img .swiper {
+        width: 100%;
+        border: 1px solid #d5d9d9;
+        border-radius: 10px;
+        background: #fff;
+        padding: 8px;
+      }
+      .ul-product-details-img .swiper-wrapper {
+        align-items: center;
+      }
+      .ul-product-details-img .swiper-slide {
+        min-height: 320px;
+        max-height: 520px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        padding: 4px;
+      }
+      .ul-product-details-img .swiper-slide img {
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        max-height: none;
+        object-fit: contain;
+      }
+
+      .platform-main-info {
+        border: 1px solid #e8e8e8;
+        border-radius: 12px;
+        background: #fff;
+        padding: 20px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .platform-main-info .ul-product-details-title {
+        font-size: 32px;
+        line-height: 1.25;
+        margin-bottom: 6px;
+      }
+
+      .platform-meta-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+        color: #5f6368;
+        font-size: 14px;
+      }
+
+      .platform-meta-pill {
+        border: 1px solid #e2e5ea;
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-weight: 500;
+      }
+
+      .platform-divider {
+        border: 0;
+        border-top: 1px solid #e7e7e7;
+        margin: 12px 0 16px;
+      }
+
+      .ul-product-details-price.platform-price {
+        color: var(--ul-primary);
+        font-size: 30px;
+        font-weight: 700;
+      }
+
+      .ul-product-details-descr.platform-short-desc {
+        color: #333;
+        font-size: 16px;
+        line-height: 1.65;
+      }
+
+      .platform-main-info .ul-product-details-option {
+        align-items: flex-start;
+      }
+
+      .platform-size-option {
+        display: block;
+      }
+
+      .platform-size-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px 24px;
+      }
+
+      .platform-size-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-width: 0;
+      }
+
+      .platform-size-group .title {
+        display: block;
+        font-size: 15px;
+        font-weight: 600;
+        line-height: 1.35;
+      }
+
+      .platform-main-info .ul-product-details-sizes .variants {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .platform-main-info .ul-product-details-sizes .size-btn {
+        width: auto;
+        min-width: 40px;
+        height: 34px;
+        aspect-ratio: auto;
+        padding: 0 10px;
+      }
+
+      .color-variants {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .detail-color-thumb {
+        width: 58px;
+        height: 58px;
+        border-radius: 10px;
+        border: 1px solid #c9d4e5;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        cursor: pointer;
+        background: #fff;
+        transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      }
+
+      .detail-color-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      #color-variants label.selected .detail-color-thumb {
+        border-color: #1f4fa8;
+        transform: scale(1.03);
+        box-shadow: 0 0 0 2px rgba(31,79,168,0.2);
+      }
+
+      .platform-buy-box {
+        border: 1px solid #e8e8e8;
+        border-radius: 12px;
+        background: #fff;
+        padding: 16px;
+        margin-top: 16px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .platform-buy-price {
+        color: var(--ul-primary);
+        font-size: 30px;
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 8px;
+      }
+
+      .platform-stock {
+        color: #0b8f3a;
+        font-size: 17px;
+        margin-bottom: 14px;
+      }
+
+      .platform-delivery-note {
+        color: #565959;
+        font-size: 14px;
+        margin-bottom: 14px;
+      }
+
+      .platform-btn {
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 14px;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .platform-btn-primary {
+        background: var(--ul-primary);
+        border-color: var(--ul-primary);
+        color: #fff;
+      }
+
+      .platform-btn-primary:hover {
+        background: #000;
+        border-color: #000;
+        color: #fff;
+      }
+
+      .platform-btn-secondary {
+        background: #fff;
+        border-color: var(--ul-primary);
+        color: var(--ul-primary);
+      }
+
+      .platform-btn-secondary:hover {
+        background: var(--ul-primary);
+        color: #fff;
+      }
+
+
+      .platform-description-box {
+        border: 1px solid #e6e8ec;
+        border-radius: 12px;
+        padding: 18px 20px;
+        background: #fff;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .platform-description-box h4 {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 12px;
+      }
+
+      .platform-description-box ul {
+        list-style: disc;
+        padding-left: 22px;
+        margin: 0;
+      }
+
+      .platform-description-box li {
+        margin-bottom: 8px;
+        line-height: 1.6;
+      }
+
+      /* Keep clear side gutters on desktop/tablet for the product details section */
+      .ul-inner-page-container {
+        margin-left: clamp(15px, 13.4vw, 255px);
+        margin-right: clamp(15px, 13.4vw, 255px);
+      }
+
+      @media (max-width: 1399px) {
+        .ul-inner-page-container {
+          margin-left: clamp(15px, 5.4vw, 255px);
+          margin-right: clamp(15px, 5.4vw, 255px);
+        }
+      }
+
+      @media (max-width: 1199px) {
+        .ul-inner-page-container {
+          margin-left: clamp(15px, 3.15vw, 255px);
+          margin-right: clamp(15px, 3.15vw, 255px);
+        }
+      }
+
+      @media (max-width: 991px) {
+        .ul-inner-page-container {
+          margin-left: 12px !important;
+          margin-right: 12px !important;
+          overflow-x: visible;
+        }
+        .platform-product-page {
+          min-width: 0;
+          width: 100%;
+        }
+        .platform-top-grid {
+          flex-wrap: wrap;
+          gap: 12px;
+        }
+        .platform-top-grid > .col {
+          flex: 0 0 100% !important;
+          max-width: 100% !important;
+        }
+        .platform-sticky-left {
+          position: static;
+          top: auto;
+        }
+        .platform-sticky-left .ul-product-details-img,
+        .platform-sticky-left .ul-product-details-img .swiper {
+          height: auto;
+          max-height: none;
+        }
+        .platform-scroll-right {
+          max-height: none;
+          overflow: visible;
+          padding-right: 0;
+        }
+      }
+      @media (max-width: 767px) {
+        .platform-size-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+</head>
+
+<body>
+    {% include 'header.html' %}
+
+    <main>
+        <!-- BREADCRUMB SECTION START -->
+        <div class="ul-container">
+            <div class="ul-breadcrumb">
+                <h2 class="ul-breadcrumb-title">Shop {{ product.name }} Details</h2>
+                <div class="ul-breadcrumb-nav">
+                    <a href="/"><i class="flaticon-home"></i> Home</a>
+                    <!-- <div> -->
+                    <i class="flaticon-arrow-point-to-right"></i>
+                    <a href="/shop">Shop</a>
+                    <!-- </div>
+                    <div> -->
+                    <i class="flaticon-arrow-point-to-right"></i>
+                    <span class="current-page">Shop {{ product.name }} Details</span>
+                    <!-- </div> -->
+                </div>
+            </div>
+        </div>
+        <!-- BREADCRUMB SECTION END -->
+
+
+        <!-- MAIN CONTENT SECTION START -->
+        <div class="ul-inner-page-container">
+            <div class="ul-product-details platform-product-page">
+                <div class="ul-product-details-top">
+                    <div class="row ul-bs-row row-cols-lg-2 row-cols-1 platform-top-grid">
+                        <!-- img -->
+                        <div class="col platform-sticky-left">
+                            <div class="ul-product-details-img">
+                                <div class="ul-product-details-img-slider swiper">
+                                    <div class="swiper-wrapper" id="color-image-slider">
+                                        <div class="swiper-slide">
+                                          <img src="{{ resolve_media_url(product.image_path) }}" alt="{{ product.name }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="ul-product-details-img-slider-nav" id="ul-product-details-img-slider-nav">
+                                        <button class="prev"><i class="flaticon-left-arrow"></i></button>
+                                        <button class="next"><i class="flaticon-arrow-point-to-right"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- txt -->
+                        <div class="col platform-scroll-right">
+                            <div class="ul-product-details-txt platform-main-info">
+                                <h3 class="ul-product-details-title">{{ product.name }}</h3>
+                                <div class="platform-meta-row">
+                                    <span class="platform-meta-pill">Premium Apparel</span>
+                                    <span>Bulk orders supported</span>
+                                </div>
+                                <hr class="platform-divider">
+                                <span class="ul-product-details-price platform-price"> {{ product.price }}</span>
+
+                                <!-- product model (show original/alt name if available) -->
+                                <div class="ul-product-model" style="margin-top:6px;color:#555;">
+                                    <strong>Model:</strong>
+                                    <span>{{ product.image_alt or product.name }}</span>
+                                </div>
+
+                                <!-- product description -->
+                                <p class="ul-product-details-descr platform-short-desc">{{ product.desc }}</p>
+
+                                <!-- product options -->
+                                <div class="ul-product-details-options">
+                                    {% if product.get('all_sizes') %}
+                                    <div class="ul-product-details-option ul-product-details-sizes platform-size-option">
+                                        <div class="platform-size-grid">
+                                            <div class="platform-size-group">
+                                                <span class="title">Regular Sizes ({{ product.all_sizes.regular.moq }})</span>
+                                                <form class="variants">
+                                                    {% for size in product.all_sizes.regular.sizes %}
+                                                    <label for="ul-product-details-size-{{ size }}">
+                                                        <input type="radio" name="product-size" id="ul-product-details-size-{{ size }}" {% if loop.first %}checked{% endif %} hidden>
+                                                        <span class="size-btn">{{ size }}</span>
+                                                    </label>
+                                                    {% endfor %}
+                                                </form>
+                                            </div>
+
+                                            {% if product.all_sizes.extended and product.all_sizes.extended.sizes %}
+                                            <div class="platform-size-group">
+                                                <span class="title">Extended Sizes ({{ product.all_sizes.extended.moq }})</span>
+                                                <form class="variants">
+                                                    {% for size in product.all_sizes.extended.sizes %}
+                                                    <label for="ul-product-details-size-ext-{{ size }}">
+                                                        <input type="radio" name="product-size" id="ul-product-details-size-ext-{{ size }}" hidden>
+                                                        <span class="size-btn">{{ size }}</span>
+                                                    </label>
+                                                    {% endfor %}
+                                                </form>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    {% else %}
+                                    <div class="ul-product-details-option ul-product-details-sizes">
+                                        <span class="title">Sizes</span>
+                                        <form class="variants">
+                                            {% for size in product.Sizes %}
+                                            <label for="ul-product-details-size-{{ size }}">
+                                                <input type="radio" name="product-size" id="ul-product-details-size-{{ size }}" {% if loop.first %}checked{% endif %} hidden>
+                                                <span class="size-btn">{{ size }}</span>
+                                            </label>
+                                            {% endfor %}
+                                        </form>
+                                    </div>
+                                    {% endif %}
+                                </div>
+
+                                {% if product.product_details %}
+                                <div class="ul-product-details-option">
+                                    <span class="title">Product Details</span>
+                                    <ul>
+                                        {% for detail in product.product_details %}
+                                        <li><i class="flaticon-check-mark"></i> {{ detail }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                {% endif %}
+
+                                <!-- product quantity -->
+                                <div class="ul-product-details-option ul-product-details-decorations mt-3">
+                                    <span class="title">Decorations</span>
+                                    <ul>
+                                        {% for decoration in product.decorations %}
+                                            <li><i class="flaticon-check-mark"></i> {{ decoration }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+
+                                <div class="ul-product-details-option ul-product-details-instructions">
+                                    <span class="title">Instructions</span>
+                                    <ul>
+                                        {% for instruction in product.instructions %}
+                                            <li><i class="flaticon-check-mark"></i> {{ instruction }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                
+
+
+                                <!-- product actions -->
+                                <div class="platform-buy-box">
+                                    <div class="platform-buy-price">{{ product.price }}</div>
+                                    <div class="platform-stock">In stock</div>
+                                    <div class="platform-delivery-note">Bulk-ready apparel with dependable turnaround support.</div>
+                                    <a href="https://wa.me/91{{ phone_number }}?text=Hello%2C%20I%20would%20like%20to%20inquire%20about%20the%20product%20at%20{{ url_for('shop_details', product_id=product.id, _external=True) }}." class="platform-btn platform-btn-primary">
+                                        <span class="icon"><i class="flaticon-chat"></i></span>&nbsp; Connect with Us
+                                    </a>
+                                    <a href="tel:+91{{ phone_number }}" class="platform-btn platform-btn-secondary">
+                                        <span class="icon"><i class="flaticon-phone-call"></i></span>&nbsp; Speak to Our Expert
+                                    </a>
+                                    <script>
+                                        // Share controls removed by request.
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ul-product-details-bottom">
+                    <!-- description -->
+                    <div class="ul-product-details-long-descr-wrapper">
+                        <h3 class="ul-product-details-inner-title">Item Description</h3>
+                        <div class="platform-description-box">
+                            <h4>About this item</h4>
+                             <ul>
+                               <li>{{ product.desc }}</li>
+                             </ul>
+                        </div>
+                    </div>
+
+                    {% if related_products %}
+                    <div class="ul-product-details-long-descr-wrapper mt-4">
+                        <h3 class="ul-product-details-inner-title">Related Products</h3>
+                        <div class="row ul-bs-row row-cols-lg-4 row-cols-sm-2 row-cols-1">
+                            {% for related in related_products %}
+                            <div class="col">
+                                <div class="ul-product h-100">
+                                    <a href="/product/{{ related.id }}">
+                                        <div class="ul-product-img">
+                                            <img src="{{ resolve_media_url(related.image_path) }}" alt="{{ related.name }}" loading="lazy" decoding="async">
+                                        </div>
+                                    </a>
+                                    <div class="ul-product-txt">
+                                        <h4 class="ul-product-title"><a href="/product/{{ related.id }}">{{ related.name }}</a></h4>
+                                        <h5 class="ul-product-category">{{ related.category }}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER SECTION START -->
+    {% include 'footer.html' %}
+    <!-- FOOTER SECTION END -->
+
+    <!-- libraries JS -->
+    <script src="/static/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="/static/vendor/splide/splide.min.js"></script>
+    <script src="/static/vendor/splide/splide-extension-auto-scroll.min.js"></script>
+    <script src="/static/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="/static/vendor/slim-select/slimselect.min.js"></script>
+    <script src="/static/vendor/animate-wow/wow.min.js"></script>
+    <script src="/static/vendor/splittype/index.min.js"></script>
+    <script src="/static/vendor/mixitup/mixitup.min.js"></script>
+    <script src="/static/vendor/fslightbox/fslightbox.js"></script>
+
+    <!-- custom JS -->
+    <script src="/static/js/main_v2.js?v=6"></script>
+
+    <script>
+    function updateProductImage(input) {
+        if (!input) return;
+        const colorName = input.dataset.color;
+        // mark selected swatch
+        document.querySelectorAll('#color-variants label').forEach(lbl => lbl.classList.remove('selected'));
+        const lbl = input.closest('label');
+        if (lbl) lbl.classList.add('selected');
+
+        // show selected color name with proper capitalization
+        const nameEl = document.getElementById('selected-color-name');
+        if (nameEl) {
+            nameEl.textContent = capitalizeWords(colorName) || '';
+        }
+
+        // update image slider with all images for this color
+        const colorImages = window.colorImagesByColor || {};
+        const images = colorImages[colorName] || [];
+        const slider = document.getElementById('color-image-slider');
+        if (slider) {
+            slider.innerHTML = images.map(imgPath => `<div class="swiper-slide"><img src="${imgPath}" alt="${colorName}" loading="lazy" decoding="async"></div>`).join('');
+        }
+
+        reinitializeProductSwiper();
+    }
+
+    function capitalizeWords(str) {
+        if (!str) return '';
+        return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    }
+
+    function reinitializeProductSwiper() {
+        if (typeof Swiper === 'undefined') return;
+
+        if (window.ulProductDetailsSwiper && typeof window.ulProductDetailsSwiper.destroy === 'function') {
+            window.ulProductDetailsSwiper.destroy(true, true);
+        }
+
+        window.ulProductDetailsSwiper = new Swiper(".ul-product-details-img-slider", {
+            slidesPerView: 1,
+            loop: true,
+            autoplay: { delay: 3000 },
+            spaceBetween: 0,
+            navigation: {
+                nextEl: "#ul-product-details-img-slider-nav .next",
+                prevEl: "#ul-product-details-img-slider-nav .prev"
+            }
+        });
+    }
+
+    // Add error handling for images
+    document.addEventListener('DOMContentLoaded', function() {
+        // Expose color images mapping to JS
+        window.colorImagesByColor = {{ product.color_images|tojson }};
+
+        // initialize selected color (if any)
+        let selected = document.querySelector('#color-variants input[type=radio]:checked');
+        if (!selected) {
+            selected = document.querySelector('#color-variants input[type=radio]');
+            if (selected) selected.checked = true;
+        }
+        if (selected) updateProductImage(selected);
+
+        const images = document.querySelectorAll('img');
+        images.forEach(img => {
+            img.onerror = function() {
+                this.src = '/static/images/logo.png'; // Fallback to existing logo image
+            };
+        });
+    });
+    </script>
+</body>
+
+</html>
+

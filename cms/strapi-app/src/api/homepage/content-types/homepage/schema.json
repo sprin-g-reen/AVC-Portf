@@ -1,0 +1,135 @@
+{
+  "kind": "collectionType",
+  "collectionName": "homepages",
+  "info": {
+    "singularName": "homepage",
+    "pluralName": "homepages",
+    "displayName": "homepage"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "hero_images": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "hero_subtitle": {
+      "type": "string"
+    },
+    "hero_title": {
+      "type": "string"
+    },
+    "hero_price_text": {
+      "type": "string"
+    },
+    "hero_price_value": {
+      "type": "string"
+    },
+    "hero_cta_text": {
+      "type": "string"
+    },
+    "hero_cta_link": {
+      "type": "string"
+    },
+    "exclusive_offer_subtitle": {
+      "type": "string"
+    },
+    "exclusive_offer_title": {
+      "type": "string"
+    },
+    "exclusive_offer_cta_text": {
+      "type": "string"
+    },
+    "exclusive_offer_cta_link": {
+      "type": "string"
+    },
+    "common": {
+      "type": "component",
+      "component": "service-item.common",
+      "repeatable": true
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "header_ticker_items": {
+      "type": "json"
+    },
+    "nav_links": {
+      "type": "json"
+    },
+    "trusted_title": {
+      "type": "string"
+    },
+    "trusted_description": {
+      "type": "text"
+    },
+    "trusted_brand_images": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "footer_columns": {
+      "type": "json"
+    },
+    "footer_connect_title": {
+      "type": "string"
+    },
+    "footer_support_title": {
+      "type": "string"
+    },
+    "footer_phone": {
+      "type": "string"
+    },
+    "footer_brand_logo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "footer_payment_image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "footer_copyright": {
+      "type": "text"
+    },
+    "footer_logo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "trusted_images": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  }
+}

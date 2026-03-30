@@ -1,0 +1,157 @@
+.ul-footer {
+    background-color: var(--black);
+    color: var(--white);
+
+    &-top {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        align-items: start;
+        gap: clamp(20px, 1.37vw, 26px);
+        padding: clamp(40px, 4.20vw, 80px) 0 clamp(25px, 2.63vw, 50px);
+
+        @include md {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        @include sm {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        @include xxs {
+            grid-template-columns: 1fr;
+        }
+
+        &-widget {
+            &-title {
+                font-weight: 600;
+                font-size: clamp(16px, 1.05vw, 20px);
+                color: var(--white);
+                margin-bottom: clamp(8px, 0.63vw, 12px);
+            }
+
+            &-links {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: clamp(5px, 0.42vw, 8px);
+
+                a {
+                    display: inline-block;
+                    color: #A1A1A1;
+                    font-size: clamp(13px, 0.74vw, 14px);
+                    line-height: 1.45;
+
+                    &:hover {
+                        color: var(--ul-primary);
+                    }
+                }
+            }
+        }
+    }
+
+    &-middle {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr auto;
+        align-items: center;
+        padding: clamp(25px, 2.10vw, 40px) 0;
+        gap: clamp(20px, 1.58vw, 30px);
+        border: solid rgba(255, 255, 255, 0.25);
+        border-width: 1px 0;
+
+        @include md {
+            grid-template-columns: 1fr;
+            align-items: start;
+        }
+
+        &-widget {
+            &.footer-brand {
+                justify-self: end;
+
+                @include md {
+                    justify-self: start;
+                }
+            }
+
+            &-content {
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+            }
+
+            &-title {
+                font-size: clamp(15px, 0.95vw, 18px);
+                font-weight: 500;
+                line-height: 110%;
+                color: var(--white);
+                margin-bottom: clamp(8px, 0.84vw, 16px);
+            }
+
+            .app-links,
+            .social-links {
+                display: flex;
+                gap: clamp(10px, 0.79vw, 15px);
+
+                a,
+                button {
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    border-radius: 999px;
+                    display: inline-flex;
+                    width: 43px;
+                    aspect-ratio: 1/1;
+                    align-items: center;
+                    justify-content: center;
+                    color: rgba(255, 255, 255, 0.8);
+
+                    &:hover {
+                        background-color: var(--white);
+                        border-color: var(--white);
+                        color: var(--ul-primary);
+                    }
+
+                    i {
+                        display: inline-flex;
+                    }
+                }
+            }
+
+            .contact-nums {
+                color: var(--white);
+                font-weight: 500;
+                font-size: clamp(20px, 1.58vw, 30px);
+
+                a {
+                    color: var(--white);
+
+                    &:hover {
+                        color: var(--ul-primary);
+                    }
+                }
+            }
+        }
+    }
+
+    &-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: clamp(18px, 1.58vw, 30px) 0;
+        flex-wrap: wrap;
+        gap: 15px;
+        text-align: center;
+
+        @include sm {
+            justify-content: center;
+        }
+
+        img {
+            max-height: 28px;
+            width: auto;
+        }
+
+        .copyright-txt {
+            margin-bottom: 0;
+            font-size: clamp(12px, 0.74vw, 14px);
+            color: #676666;
+        }
+    }
+}

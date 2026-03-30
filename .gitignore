@@ -1,0 +1,13 @@
+.qodo
+__pycache__/
+*.py[cod]
+
+path/from/output.ext
+
+*.tar.gz
+*.enc
+cms/strapi-app/*.tar.gz.enc
+node_modules/
+venv/
+.env
+*.log

@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABC - Apparel Branding Company</title>
+
+    <!-- libraries CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='icon/flaticon_glamer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendor/splide/splide.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendor/slim-select/slimselect.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='vendor/animate-wow/animate.min.css') }}">
+
+    <!-- custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .ul-banner.single-hero {
+            display: block;
+        }
+        .ul-banner.single-hero .ul-banner-slider-wrapper {
+            width: 100%;
+            background: transparent;
+        }
+        .ul-banner.single-hero .ul-banner-slider-wrapper::before,
+        .ul-banner.single-hero .ul-banner-slider-wrapper::after {
+            display: none;
+        }
+        .ul-banner.single-hero .ul-banner-slider {
+            max-width: 100%;
+            width: 100%;
+        }
+        .ul-banner.single-hero .ul-banner-slide-img img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .ul-products .ul-inner-container {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .ul-service-card .row {
+            row-gap: 1.5rem;
+        }
+        .ul-service-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            text-align: left;
+            max-width: 44ch;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .ul-service-title {
+            line-height: 1.25;
+            margin-bottom: 0.85rem !important;
+        }
+        .ul-service-description {
+            max-width: 42ch;
+            line-height: 1.6;
+            margin-bottom: 0 !important;
+        }
+        .ul-service-image img {
+            width: 100% !important;
+            height: auto !important;
+            max-width: 610px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .exclusive-offer-inner {
+            padding: 28px 22px 8px;
+            box-sizing: border-box;
+        }
+        @media (max-width: 767px) {
+            .exclusive-offer-inner {
+                padding: 20px 14px 4px;
+            }
+            .ul-service-content {
+                max-width: 100%;
+                align-items: center;
+                text-align: center;
+            }
+            .ul-service-description {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'header.html' %}
+    <main>
+        <!-- BANNER SECTION START -->
+        <div class="overflow-hidden">
+            <div class="ul-container">
+                <section class="ul-banner single-hero">
+                    <div class="ul-banner-slider-wrapper">
+                        <div class="ul-banner-slider swiper">
+                            <div class="swiper-wrapper">
+                                {% for hero_image in home_content.hero_images %}
+                                <div class="swiper-slide ul-banner-slide{% if loop.index == 2 %} ul-banner-slide--2{% elif loop.index == 3 %} ul-banner-slide--3{% endif %}">
+                                    <div class="ul-banner-slide-img">
+                                        <img src="{{ hero_image }}" alt="Banner Image">
+                                    </div>
+                                    <div class="ul-banner-slide-txt">
+                                        <span class="ul-banner-slide-sub-title">{{ home_content.hero_subtitle }}</span>
+                                        <h1 class="ul-banner-slide-title">{{ home_content.hero_title }}</h1>
+                                        <p class="ul-banner-slide-price">{{ home_content.hero_price_text }} <span class="price">{{ home_content.hero_price_value }}</span>
+                                        </p>
+                                        <a href="{{ home_content.hero_cta_link }}" class="ul-btn">{{ home_content.hero_cta_text }} <i
+                                                class="flaticon-up-right-arrow"></i></a>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+
+                            <!-- slider navigation -->
+                            <div class="ul-banner-slider-nav-wrapper">
+                                <div class="ul-banner-slider-nav">
+                                    <button class="prev"><span class="icon"><i
+                                                class="flaticon-down"></i></span></button>
+                                    <button class="next"><span class="icon"><i
+                                                class="flaticon-down"></i></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+            </div>
+        </div>
+        <!-- BANNER SECTION END -->
+
+
+        <!-- CATEGORY SECTION START -->
+        <div class="ul-container">
+            <section class="ul-categories">
+                <div class="ul-section-heading">
+                    <div class="left">
+                        <h2 class="ul-section-title" style="text-transform: capitalize;">{{ home_content.trusted_title }}</h2>
+                        <p>{{ home_content.trusted_description }}</p>
+                    </div>
+                </div>
+                <div class="ul-inner-container">
+                    <div class="ul-brands-marquee-section mb-5">
+                        <div class="ul-brands-marquee-wrapper" style="overflow:hidden;position:relative;">
+                            <div class="ul-brands-marquee">
+                                <div class="ul-brands-marquee-track">
+                                    {% for brand_img in home_content.trusted_brand_images %}
+                                    <img src="{{ brand_img }}" alt="Brand {{ loop.index }}" style="height:48px;">
+                                    {% endfor %}
+                                    {% for brand_img in home_content.trusted_brand_images %}
+                                    <img src="{{ brand_img }}" alt="Brand {{ loop.index }}" style="height:48px;">
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <style>
+                        .ul-brands-marquee-section {
+                            width: 100%;
+                        }
+                        .ul-brands-marquee-wrapper {
+                            width: 100%;
+                            overflow: hidden;
+                            position: relative;
+                        }
+                        .ul-brands-marquee {
+                            width: 100%;
+                            overflow: hidden;
+                            position: relative;
+                        }
+                        .ul-brands-marquee-track {
+                            display: flex;
+                            gap: 60px;
+                            width: max-content;
+                            animation: brands-marquee 18s linear infinite;
+                        }
+                        @keyframes brands-marquee {
+                            0% {
+                                transform: translateX(0);
+                            }
+                            100% {
+                                transform: translateX(-50%);
+                            }
+                        }
+                        /* Responsive: reduce gap on small screens */
+                        @media (max-width: 576px) {
+                            .ul-brands-marquee-track {
+                                gap: 32px;
+                            }
+                        }
+                    </style>
+                </div>
+            </section>
+        </div>
+        <!-- CATEGORY SECTION END -->
+
+
+        <!-- PRODUCTS SECTION START -->
+        <div class="ul-container">
+            <section class="ul-products">
+                <div class="ul-inner-container exclusive-offer-inner">
+                    <div class="ul-section-heading">
+                        <div class="left">
+                            <span class="ul-section-sub-title">{{ home_content.exclusive_offer_subtitle }}</span>
+                            <h2 class="ul-section-title">{{ home_content.exclusive_offer_title }}</h2>
+                        </div>
+
+                        <div class="right"><a href="{{ home_content.exclusive_offer_cta_link }}" class="ul-btn">{{ home_content.exclusive_offer_cta_text }} <i
+                                    class="flaticon-up-right-arrow"></i></a></div>
+                    </div>
+
+                
+                    <!-- Services Cards -->
+                    <div class="row ul-bs-row g-4 mt-5">
+                        {% for service in home_content.services %}
+                        <div class="col-12">
+                            <div class="ul-service-card h-100 p-4 bg-white rounded shadow-sm">
+                                <div class="row align-items-center">
+                                    {% if loop.index % 2 == 0 %}
+                                    <div class="col-md-6">
+                                        <div class="ul-service-image">
+                                            <img src="{{ service.image }}" alt="{{ service.title }}" class="img-fluid rounded" style="width: 610px;height: 423px;">
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    <div class="col-md-6 ul-service-content">
+                                        <h3 class="ul-service-title mb-3" style="color: var(--ul-primary); font-weight: 600;">{{ service.title }}</h3>
+                                        <p class="ul-service-description mb-4">{{ service.description }}</p>
+                                    </div>
+                                    {% if loop.index % 2 == 1 %}
+                                    <div class="col-md-6">
+                                        <div class="ul-service-image">
+                                            <img src="{{ service.image }}" alt="{{ service.title }}" class="img-fluid rounded" style="width: 610px;height: 423px;">
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </section>
+        </div>
+
+        <div class="ul-container mt-4 mb-2" style="background: var(--ul-primary); border-radius: 16px;">
+            <section class=""> 
+                <!-- ul-nwsltr-subs -->
+                <div class="ul-inner-container py-5">
+                    <div class="ul-section-heading text-center justify-content-center mb-5">
+                        <div>
+                            <h2 class="ul-section-title text-white">Why choose ABC as your clothing supplier?</h2>
+                            <p class="ul-reviews-heading-descr text-white">Providing high quality manufacturing and world-class service just isn't enough in our books - we want to ensure you have the best partner, to aid sustainable, long-term growth.</p>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center g-5">
+                        <div class="col-md-4">
+                            <div class="ul-why-card h-100 p-4 bg-white rounded shadow-sm text-center">
+                                <div class="ul-why-icon mb-3">
+                                    <i class="flaticon-tshirt" style="font-size:2rem;color:var(--ul-primary);"></i>
+                                </div>
+                                <h3 class="ul-why-title mb-2">Assured Quality</h3>
+                                <p class="ul-why-desc">
+                                    We ensure all items are inspected at four critical stages throughout the manufacturing process to guarantee the highest quality garments.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Ethical Solutions -->
+                        <div class="col-md-4">
+                            <div class="ul-why-card h-100 p-4 bg-white rounded shadow-sm text-center">
+                                <div class="ul-why-icon mb-3">
+                                    <i class="flaticon-compliance" style="font-size:2rem;color:var(--ul-primary);"></i>
+                                </div>
+                                <h3 class="ul-why-title mb-2">Ethical&nbsp;Compliance</h3>
+                                <p class="ul-why-desc">
+                                    We're an accredited Living Wage Employer and our supply chains are independently audited to ensure they meet the strictest ethical standards.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- 360° Service -->
+                        <div class="col-md-4">
+                            <div class="ul-why-card h-100 p-4 bg-white rounded shadow-sm text-center">
+                                <div class="ul-why-icon mb-3">
+                                    <i class="flaticon-360-degrees" style="font-size:2rem;color:var(--ul-primary);"></i>
+                                </div>
+                                <h3 class="ul-why-title mb-2">Integrated Service</h3>
+                                <p class="ul-why-desc">
+                                    We work closely with brands to offer a complete service, from concept development through to manufacturing.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <style>
+            .ul-why-card {
+                transition: box-shadow 0.2s, transform 0.2s;
+            }
+            .ul-why-card:hover {
+                box-shadow: 0 8px 32px rgba(30,58,138,0.15);
+                transform: translateY(-4px) scale(1.03);
+            }
+        </style>
+        <!-- AD SECTION END -->
+
+
+        <!-- REVIEWS SECTION START -->
+        <section class="ul-reviews overflow-hidden py-5">
+            <div class="ul-container">
+                <div class="ul-section-heading text-center justify-content-center mb-5">
+                    <div>
+                        <span class="ul-section-sub-title">Customer Reviews</span>
+                        <h2 class="ul-section-title">What Our Customers Say</h2>
+                        <p class="ul-reviews-heading-descr">Hear from our satisfied customers about their experience
+                            with ABC...</p>
+                    </div>
+                </div>
+
+                <!-- Marquee styles scoped to reviews section -->
+                <style>
+                    .ul-reviews-marquee {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 24px;
+                    }
+
+                    .ul-reviews-marquee .marquee-row {
+                        overflow: hidden;
+                    }
+
+                    .ul-reviews-marquee .marquee-track {
+                        display: flex;
+                        width: max-content;
+                        gap: 24px;
+                        animation: ul-scroll-left 35s linear infinite;
+                    }
+
+                    .ul-reviews-marquee .marquee-track.reverse {
+                        animation-name: ul-scroll-right;
+                    }
+
+                    .ul-reviews-marquee .marquee-group {
+                        display: flex;
+                        gap: 24px;
+                    }
+
+                    .ul-reviews-marquee .ul-review-item {
+                        flex: 0 0 auto;
+                        width: 320px;
+                    }
+
+                    @media (max-width: 992px) {
+                        .ul-reviews-marquee .ul-review-item {
+                            width: 300px;
+                        }
+                    }
+
+                    @media (max-width: 576px) {
+                        .ul-reviews-marquee {
+                            gap: 16px;
+                        }
+
+                        .ul-reviews-marquee .ul-review-item {
+                            width: 260px;
+                        }
+                    }
+
+                    @keyframes ul-scroll-left {
+                        from {
+                            transform: translateX(0);
+                        }
+
+                        to {
+                            transform: translateX(-50%);
+                        }
+                    }
+
+                    @keyframes ul-scroll-right {
+                        from {
+                            transform: translateX(-50%);
+                        }
+
+                        to {
+                            transform: translateX(0);
+                        }
+                    }
+
+                    /* Respect reduced motion */
+                    @media (prefers-reduced-motion: reduce) {
+                        .ul-reviews-marquee .marquee-track {
+                            animation: none;
+                        }
+                    }
+                </style>
+
+                <!-- Two-row marquee -->
+                <div class="ul-reviews-marquee">
+                    <!-- Row 1 (even indices) -->
+                    <div class="marquee-row">
+                        <div class="marquee-track">
+                            <div class="marquee-group">
+                                {% for review in reviews[::2] %}
+                                <div class="ul-review-item">
+                                    <div class="ul-review h-100">
+                                        <div class="ul-review-rating">
+                                            {% for _ in range(review.rating|default(5)) %}
+                                            <i class="flaticon-star"></i>
+                                            {% endfor %}
+                                        </div>
+                                        <p class="ul-review-descr" style="min-height: 120px;">{{ review.message }}</p>
+                                        <div class="ul-review-bottom">
+                                            <div class="ul-review-reviewer">
+                                                <div class="reviewer-image">
+                                                    <img src="{{ review.image_path }}" alt="{{ review.name }}">
+                                                </div>
+                                                <div>
+                                                    <h3 class="reviewer-name">{{ review.name }}</h3>
+                                                    <span class="reviewer-role">{{ review.designation }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="ul-review-icon"><i class="flaticon-left"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <!-- duplicate for seamless loop -->
+                            <div class="marquee-group">
+                                {% for review in reviews[::2] %}
+                                <div class="ul-review-item">
+                                    <div class="ul-review h-100">
+                                        <div class="ul-review-rating">
+                                            {% for _ in range(review.rating|default(5)) %}
+                                            <i class="flaticon-star"></i>
+                                            {% endfor %}
+                                        </div>
+                                        <p class="ul-review-descr" style="min-height: 120px;">{{ review.message }}</p>
+                                        <div class="ul-review-bottom">
+                                            <div class="ul-review-reviewer">
+                                                <div class="reviewer-image">
+                                                    <img src="{{ review.image_path }}" alt="{{ review.name }}">
+                                                </div>
+                                                <div>
+                                                    <h3 class="reviewer-name">{{ review.name }}</h3>
+                                                    <span class="reviewer-role">{{ review.designation }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="ul-review-icon"><i class="flaticon-left"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 2 (odd indices, reverse direction) -->
+                    <div class="marquee-row">
+                        <div class="marquee-track reverse">
+                            <div class="marquee-group">
+                                {% for review in reviews[1::2] %}
+                                <div class="ul-review-item">
+                                    <div class="ul-review h-100">
+                                        <div class="ul-review-rating">
+                                            {% for _ in range(review.rating|default(5)) %}
+                                            <i class="flaticon-star"></i>
+                                            {% endfor %}
+                                        </div>
+                                        <p class="ul-review-descr" style="min-height: 120px;">{{ review.message }}</p>
+                                        <div class="ul-review-bottom">
+                                            <div class="ul-review-reviewer">
+                                                <div class="reviewer-image">
+                                                    <img src="{{ review.image_path }}" alt="{{ review.name }}">
+                                                </div>
+                                                <div>
+                                                    <h3 class="reviewer-name">{{ review.name }}</h3>
+                                                    <span class="reviewer-role">{{ review.designation }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="ul-review-icon"><i class="flaticon-left"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <!-- duplicate for seamless loop -->
+                            <div class="marquee-group">
+                                {% for review in reviews[1::2] %}
+                                <div class="ul-review-item">
+                                    <div class="ul-review h-100">
+                                        <div class="ul-review-rating">
+                                            {% for _ in range(review.rating|default(5)) %}
+                                            <i class="flaticon-star"></i>
+                                            {% endfor %}
+                                        </div>
+                                        <p class="ul-review-descr" style="min-height: 120px;">{{ review.message }}</p>
+                                        <div class="ul-review-bottom">
+                                            <div class="ul-review-reviewer">
+                                                <div class="reviewer-image">
+                                                    <img src="{{ review.image_path }}" alt="{{ review.name }}">
+                                                </div>
+                                                <div>
+                                                    <h3 class="reviewer-name">{{ review.name }}</h3>
+                                                    <span class="reviewer-role">{{ review.designation }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="ul-review-icon"><i class="flaticon-left"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="ul-container mb-4 home-contact-container">
+            <section class="ul-nwsltr-subs">
+                <div class="ul-inner-container">
+                    <div class="ul-section-heading justify-content-center text-center">
+                        <div>
+                            <span class="ul-section-sub-title text-white">Get in Touch</span>
+                            <h2 class="ul-section-title text-white">Contact Us</h2>
+                            <p class="text-white-50 mb-0">Have a question or need assistance? Fill out the form below and our team will respond as soon as possible.</p>
+                        </div>
+                    </div>
+
+                    <div class="ul-nwsltr-subs-form-wrapper">
+                        <div class="icon"><i class="flaticon-airplane"></i></div>
+                        <form action="#" method="post" class="ul-nwsltr-subs-form needs-validation" novalidate autocomplete="off">
+                            <div class="row g-2">
+                                <div class="col-12 col-md-6">
+                                    <input type="text" name="name" id="nwsltr-name" placeholder="Your Name" required aria-label="Your Name">
+                                    <div class="invalid-feedback">Please enter your name.</div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <input type="email" name="email" id="nwsltr-email" placeholder="Your Email" required aria-label="Your Email">
+                                    <div class="invalid-feedback">Please enter a valid email.</div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <input type="tel" name="phone" id="nwsltr-phone" placeholder="Phone Number" required aria-label="Phone Number" pattern="^[\d\s\-\+\(\)]{7,}$">
+                                    <div class="invalid-feedback">Please enter a valid phone number.</div>
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <select name="priority" id="nwsltr-priority" required aria-label="Priority">
+                                        <option value="" disabled selected>Priority</option>
+                                        <option value="Low">Low</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="High">High</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select a priority.</div>
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <select name="category" id="nwsltr-category" required aria-label="Category">
+                                        <option value="" disabled selected>Category</option>
+                                        <option value="Sales">Sales</option>
+                                        <option value="Support Request">Support Request</option>
+                                        <option value="Product Inquiry">Product Inquiry</option>
+                                        <option value="Partnership">Partnership</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select a category.</div>
+                                </div>
+                                <div class="col-12">
+                                    <textarea name="message" id="nwsltr-message" rows="3" placeholder="Your Message" required aria-label="Your Message"></textarea>
+                                    <div class="invalid-feedback">Please enter your message.</div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">Send Message <i class="flaticon-up-right-arrow"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="ul-nwsltr-success alert alert-success mt-3 d-none" role="alert">
+                            Thank you for your enquiry! We'll be in touch soon.
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+      
+        <!-- Force newsletter form vertical layout on all screen sizes for this page only -->
+        <style>
+            .home-contact-container {
+                max-width: 980px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .home-contact-container .ul-inner-container {
+                margin-left: auto !important;
+                margin-right: auto !important;
+                max-width: 860px;
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+            .home-contact-container .ul-nwsltr-subs {
+                border-radius: 18px;
+                overflow: hidden;
+            }
+            .ul-nwsltr-subs-form { 
+                display: flex;
+                flex-direction: column !important; 
+                height: auto !important; 
+                border-radius: 20px !important; 
+                gap: 12px; 
+                padding: 16px; 
+                background: rgba(255,255,255,0.95);
+                box-shadow: 0 2px 16px rgba(30,58,138,0.07);
+                transition: box-shadow 0.2s;
+            }
+            .ul-nwsltr-subs-form input,
+            .ul-nwsltr-subs-form select,
+            .ul-nwsltr-subs-form textarea { 
+                width: 100%; 
+                padding: 10px 16px; 
+                border-radius: 8px;
+                border: 1px solid #e0e0e0;
+                background: #f9f9f9;
+                transition: border-color 0.2s;
+            }
+            .ul-nwsltr-subs-form input:focus,
+            .ul-nwsltr-subs-form select:focus,
+            .ul-nwsltr-subs-form textarea:focus {
+                border-color: var(--ul-primary, #1e3a8a);
+                outline: none;
+                background: #fff;
+            }
+            .ul-nwsltr-subs-form button { 
+                width: 100%; 
+                height: 44px; 
+                border-radius: 8px;
+                font-weight: 600;
+                letter-spacing: 0.02em;
+                background: var(--ul-primary, #1e3a8a);
+                border: none;
+                color: #fff;
+                transition: background 0.2s;
+            }
+            .ul-nwsltr-subs-form button:hover, .ul-nwsltr-subs-form button:focus {
+                background: #16306b;
+            }
+            .ul-nwsltr-subs-form-wrapper .icon {
+                text-align: center;
+                font-size: 2.5rem;
+                color: var(--ul-primary, #1e3a8a);
+                margin-bottom: 12px;
+            }
+            .ul-nwsltr-success {
+                text-align: center;
+                font-size: 1.1rem;
+            }
+            /* Responsive: stack fields on small screens */
+            @media (max-width: 768px) {
+                .ul-nwsltr-subs-form .row {
+                    flex-direction: column;
+                }
+                .ul-nwsltr-subs-form .col-12,
+                .ul-nwsltr-subs-form .col-md-6,
+                .ul-nwsltr-subs-form .col-md-3 {
+                    width: 100%;
+                    max-width: 100%;
+                }
+            }
+        </style>
+        <script>
+            // Send Home Contact Us form data to WhatsApp
+            document.addEventListener('DOMContentLoaded', function () {
+                var form = document.querySelector('.ul-nwsltr-subs-form');
+                if (!form) return;
+
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    if (!form.checkValidity()) {
+                        form.classList.add('was-validated');
+                        return;
+                    }
+
+                    form.classList.add('was-validated');
+                    var name = document.getElementById('nwsltr-name')?.value?.trim() || '';
+                    var email = document.getElementById('nwsltr-email')?.value?.trim() || '';
+                    var phone = document.getElementById('nwsltr-phone')?.value?.trim() || '';
+                    var priority = document.getElementById('nwsltr-priority')?.value || '';
+                    var category = document.getElementById('nwsltr-category')?.value || '';
+                    var message = document.getElementById('nwsltr-message')?.value?.trim() || '';
+
+                    var whatsappNumber = "{{ (company_phone or site_content.footer_phone)|replace('+', '')|replace(' ', '')|replace('-', '') }}";
+                    var whatsappText =
+                        "New Home Page Enquiry%0A" +
+                        "Name: " + encodeURIComponent(name) + "%0A" +
+                        "Email: " + encodeURIComponent(email) + "%0A" +
+                        "Phone: " + encodeURIComponent(phone) + "%0A" +
+                        "Priority: " + encodeURIComponent(priority) + "%0A" +
+                        "Category: " + encodeURIComponent(category) + "%0A" +
+                        "Message: " + encodeURIComponent(message);
+
+                    window.open("https://wa.me/" + whatsappNumber + "?text=" + whatsappText, "_blank");
+                });
+            });
+        </script></div>
+    </main>
+
+    {% include 'footer.html' %}
+
+    <script src="{{ url_for('static', filename='vendor/bootstrap/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/splide/splide.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/splide/splide-extension-auto-scroll.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/slim-select/slimselect.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/animate-wow/wow.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/splittype/index.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/mixitup/mixitup.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/fslightbox/fslightbox.js') }}"></script>
+
+    <!-- custom JS -->
+    <script src="/static/js/main_v2.js?v=6"></script>
+    <script src="/static/js/countdown.js?v=2"></script>
+
+</body>
+</html>
+

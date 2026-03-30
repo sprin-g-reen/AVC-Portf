@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  strapi:
+    image: strapi/strapi:latest
+    container_name: avc-strapi
+    ports:
+      - "1337:1337"
+    environment:
+      DATABASE_CLIENT: sqlite
+      NODE_ENV: development
+    volumes:
+      - ./data:/srv/app

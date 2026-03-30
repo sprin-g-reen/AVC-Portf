@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- libraries CSS -->
+    <link rel="stylesheet" href="/static/icon/flaticon_glamer.css">
+    <link rel="stylesheet" href="/static/vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/vendor/splide/splide.min.css">
+    <link rel="stylesheet" href="/static/vendor/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="/static/vendor/slim-select/slimselect.css">
+    <link rel="stylesheet" href="/static/vendor/animate-wow/animate.min.css">
+
+    <!-- custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    <!-- FontAwesome for social icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <!-- SIDEBAR SECTION START -->
+    {% include 'header.html' %}
+    <!-- HEADER SECTION END -->
+
+    <main>
+        <!-- BREADCRUMB SECTION START -->
+        <div class="ul-container">
+            <div class="ul-breadcrumb">
+                <h2 class="ul-breadcrumb-title">Contact Us</h2>
+                <div class="ul-breadcrumb-nav">
+                    <a href="/"><i class="flaticon-home"></i> Home</a>
+                    <i class="flaticon-arrow-point-to-right"></i>
+                    <span class="current-page">Contact Us</span>
+                </div>
+            </div>
+        </div>
+        <div class="ul-container mb-4 mt-4 contact-page-container">
+            <section class="ul-nwsltr-subs">
+                <div class="ul-inner-container">
+                    <div class="ul-section-heading justify-content-center text-center">
+                        <div>
+                            <span class="ul-section-sub-title text-white">Get in Touch</span>
+                            <h2 class="ul-section-title text-white">Contact Us</h2>
+                            <p class="text-white-50 mb-0">Have a question or need assistance? Fill out the form below
+                                and our team will respond as soon as possible.</p>
+                        </div>
+                    </div>
+
+                    <div class="ul-nwsltr-subs-form-wrapper">
+                        <div class="icon"><i class="flaticon-airplane"></i></div>
+                        <form action="#" method="post" class="ul-nwsltr-subs-form needs-validation" novalidate
+                            autocomplete="off">
+                            <div class="row g-2">
+                                <div class="col-12 col-md-6">
+                                    <input type="text" name="name" id="nwsltr-name" placeholder="Your Name" required
+                                        aria-label="Your Name">
+                                    <div class="invalid-feedback">Please enter your name.</div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <input type="email" name="email" id="nwsltr-email" placeholder="Your Email" required
+                                        aria-label="Your Email">
+                                    <div class="invalid-feedback">Please enter a valid email.</div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <input type="tel" name="phone" id="nwsltr-phone" placeholder="Phone Number" required
+                                        aria-label="Phone Number" pattern="^[\d\s\-\+\(\)]{7,}$">
+                                    <div class="invalid-feedback">Please enter a valid phone number.</div>
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <select name="priority" id="nwsltr-priority" required aria-label="Priority">
+                                        <option value="" disabled selected>Priority</option>
+                                        <option value="Low">Low</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="High">High</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select a priority.</div>
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <select name="category" id="nwsltr-category" required aria-label="Category">
+                                        <option value="" disabled selected>Category</option>
+                                        <option value="Sales">Sales</option>
+                                        <option value="Support Request">Support Request</option>
+                                        <option value="Product Inquiry">Product Inquiry</option>
+                                        <option value="Partnership">Partnership</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select a category.</div>
+                                </div>
+                                <div class="col-12">
+                                    <textarea name="message" id="nwsltr-message" rows="3" placeholder="Your Message"
+                                        required aria-label="Your Message"></textarea>
+                                    <div class="invalid-feedback">Please enter your message.</div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">Send Message <i
+                                            class="flaticon-up-right-arrow"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="ul-nwsltr-success alert alert-success mt-3 d-none" role="alert">
+                            Thank you for your enquiry! We'll be in touch soon.
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- Force newsletter form vertical layout on all screen sizes for this page only -->
+        <style>
+            .contact-page-container {
+                max-width: 980px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .contact-page-container .ul-inner-container {
+                max-width: 860px;
+                margin-left: auto !important;
+                margin-right: auto !important;
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .ul-nwsltr-subs-form {
+                display: flex;
+                flex-direction: column !important;
+                height: auto !important;
+                border-radius: 20px !important;
+                gap: 12px;
+                padding: 16px;
+                background: rgba(255, 255, 255, 0.95);
+                box-shadow: 0 2px 16px rgba(30, 58, 138, 0.07);
+                transition: box-shadow 0.2s;
+            }
+
+            .ul-nwsltr-subs-form input,
+            .ul-nwsltr-subs-form select,
+            .ul-nwsltr-subs-form textarea {
+                width: 100%;
+                padding: 10px 16px;
+                border-radius: 8px;
+                border: 1px solid #e0e0e0;
+                background: #f9f9f9;
+                transition: border-color 0.2s;
+            }
+
+            .ul-nwsltr-subs-form input:focus,
+            .ul-nwsltr-subs-form select:focus,
+            .ul-nwsltr-subs-form textarea:focus {
+                border-color: var(--ul-primary, #1e3a8a);
+                outline: none;
+                background: #fff;
+            }
+
+            .ul-nwsltr-subs-form button {
+                width: 100%;
+                height: 44px;
+                border-radius: 8px;
+                font-weight: 600;
+                letter-spacing: 0.02em;
+                background: var(--ul-primary, #1e3a8a);
+                border: none;
+                color: #fff;
+                transition: background 0.2s;
+            }
+
+            .ul-nwsltr-subs-form button:hover,
+            .ul-nwsltr-subs-form button:focus {
+                background: #16306b;
+            }
+
+            .ul-nwsltr-subs-form-wrapper .icon {
+                text-align: center;
+                font-size: 2.5rem;
+                color: var(--ul-primary, #1e3a8a);
+                margin-bottom: 12px;
+            }
+
+            .ul-nwsltr-success {
+                text-align: center;
+                font-size: 1.1rem;
+            }
+
+            /* Responsive: stack fields on small screens */
+            @media (max-width: 768px) {
+                .ul-nwsltr-subs-form .row {
+                    flex-direction: column;
+                }
+
+                .ul-nwsltr-subs-form .col-12,
+                .ul-nwsltr-subs-form .col-md-6,
+                .ul-nwsltr-subs-form .col-md-3 {
+                    width: 100%;
+                    max-width: 100%;
+                }
+            }
+        </style>
+        <section class="ul-contact-infos">
+            <div class="contact-grid">
+                <div class="ul-contact-info address">
+                    <div class="icon"><i class="flaticon-location"></i></div>
+                    <div class="txt">
+                        <h6 class="title">Our Address</h6>
+                        <p class="descr mb-0">{{ content.address }}</p>
+                    </div>
+                </div>
+
+                <div class="ul-contact-info email">
+                    <div class="icon"><i class="flaticon-email"></i></div>
+                    <div class="txt">
+                        <h6 class="title">Email Address</h6>
+                        <p class="descr mb-0">
+                            <a href="mailto:{{ content.email }}" class="contact-link">{{ content.email | safe }}</a>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="ul-contact-info hours">
+                    <div class="icon"><i class="flaticon-stop-watch-1"></i></div>
+                    <div class="txt">
+                        <h6 class="title">Hours of Operation</h6>
+                        <p class="descr mb-0">
+                            <span>{{ content.hours | safe }}</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="ul-contact-info whatsapp">
+                    <div class="icon"><i class="fa-brands fa-whatsapp"></i></div>
+                    <div class="txt">
+                        <h6 class="title">WhatsApp</h6>
+                        <p class="descr mb-0">
+                            <a href="https://wa.me/{{ content.whatsapp }}" target="_blank" class="contact-button">Chat
+                                with us <i class="flaticon-arrow-point-to-right"></i></a>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="ul-contact-info instagram">
+                    <div class="icon"><i class="flaticon-instagram"></i></div>
+                    <div class="txt">
+                        <h6 class="title">Instagram</h6>
+                        <p class="descr mb-0">
+                            <a href="{{ content.instagram }}" target="_blank" class="contact-button">Follow us <i
+                                    class="flaticon-arrow-point-to-right"></i></a>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="ul-contact-info facebook">
+                    <div class="icon"><i class="fa-brands fa-facebook"></i></div>
+                    <div class="txt">
+                        <h6 class="title">Facebook</h6>
+                        <p class="descr mb-0">
+                            <a href="{{ content.facebook }}" target="_blank" class="contact-button">Like us <i
+                                    class="flaticon-arrow-point-to-right"></i></a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                .ul-contact-infos {
+                    padding: 4rem 0;
+                    background: var(--bg-1, #f8f9fa);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    min-height: 70vh;
+                }
+
+                .contact-grid {
+                    display: grid;
+                    grid-template-columns: repeat(3, minmax(300px, 350px));
+                    gap: 2rem;
+                    width: 100%;
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 0 2rem;
+                    justify-content: center;
+                }
+
+                .ul-contact-info {
+                    padding: 2.5rem;
+                    background: #ffffff;
+                    border-radius: 16px;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+                    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+                    text-align: center;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    border: 1px solid rgba(0, 0, 0, 0.05);
+                    position: relative;
+                    overflow: hidden;
+                }
+
+                .ul-contact-info::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 4px;
+                    background: var(--primary-color, #007bff);
+                    transform: scaleX(0);
+                    transition: transform 0.3s ease;
+                }
+
+                .ul-contact-info:hover::before {
+                    transform: scaleX(1);
+                }
+
+                .ul-contact-info:hover {
+                    transform: translateY(-10px);
+                    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+                }
+
+                .ul-contact-info .icon {
+                    width: 85px;
+                    height: 85px;
+                    margin: 0 auto 1.5rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 50%;
+                    background: var(--bg-1, #f8f9fa);
+                    transition: all 0.3s ease;
+                    border: 2px solid transparent;
+                }
+
+                .ul-contact-info .icon i {
+                    font-size: 35px;
+                    transition: all 0.3s ease;
+                }
+
+                /* Specific icon colors */
+                .whatsapp .icon i {
+                    color: #25D366;
+                }
+
+                .facebook .icon i {
+                    color: #4267B2;
+                }
+
+                .instagram .icon i {
+                    background: -webkit-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+                    -webkit-background-clip: text;
+                    background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+
+                .email .icon i {
+                    color: var(--primary-color, #007bff);
+                }
+
+                .address .icon i {
+                    color: var(--primary-color, #007bff);
+                }
+
+                .hours .icon i {
+                    color: var(--primary-color, #007bff);
+                }
+
+                /* Hover effects for icons */
+                .ul-contact-info:hover .icon {
+                    background: #fff;
+                    border-color: currentColor;
+                    transform: scale(1.1);
+                }
+
+                .whatsapp:hover .icon {
+                    border-color: #25D366;
+                }
+
+                .facebook:hover .icon {
+                    border-color: #4267B2;
+                }
+
+                .instagram:hover .icon {
+                    border-color: #e1306c;
+                }
+
+                .email:hover .icon,
+                .address:hover .icon,
+                .hours:hover .icon {
+                    border-color: var(--primary-color, #007bff);
+                }
+
+                /* Button styles */
+                .contact-button {
+                    display: inline-flex;
+                    align-items: center;
+                    padding: 0.875rem 1.75rem;
+                    border-radius: 50px;
+                    text-decoration: none;
+                    font-weight: 600;
+                    transition: all 0.3s ease;
+                    gap: 12px;
+                    margin-top: 1rem;
+                    text-transform: uppercase;
+                    font-size: 0.9rem;
+                    letter-spacing: 0.5px;
+                }
+
+                .contact-button i {
+                    font-size: 1.2rem;
+                    transition: transform 0.3s ease;
+                }
+
+                .contact-button:hover i {
+                    transform: translateX(4px);
+                }
+
+                .whatsapp-btn {
+                    background: var(--primary-color, #007bff);
+                    color: white;
+                    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+                }
+
+                .instagram-btn {
+                    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+                    color: white;
+                    box-shadow: 0 4px 15px rgba(225, 48, 108, 0.2);
+                }
+
+                .facebook-btn {
+                    background: #4267B2;
+                    color: white;
+                    box-shadow: 0 4px 15px rgba(66, 103, 178, 0.2);
+                }
+
+                .contact-button:hover {
+                    transform: translateY(-2px);
+                    filter: brightness(1.1);
+                    color: white;
+                }
+
+                /* Update icon size in buttons */
+                .contact-button i.flaticon-whatsapp,
+                .contact-button i.flaticon-facebook,
+                .contact-button i.flaticon-instagram {
+                    font-size: 1.2rem;
+                    margin-left: 4px;
+                }
+
+                .contact-link {
+                    color: var(--primary-color, #007bff);
+                    text-decoration: none;
+                    transition: color 0.3s ease;
+                    font-weight: 500;
+                }
+
+                .contact-link:hover {
+                    color: var(--primary-hover, #0056b3);
+                    text-decoration: underline;
+                }
+
+                @media (max-width: 1200px) {
+                    .contact-grid {
+                        grid-template-columns: repeat(3, minmax(250px, 300px));
+                    }
+                }
+
+                @media (max-width: 992px) {
+                    .contact-grid {
+                        grid-template-columns: repeat(2, minmax(280px, 1fr));
+                        gap: 1.5rem;
+                    }
+                }
+
+                @media (max-width: 768px) {
+                    .contact-grid {
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 1.5rem;
+                        padding: 0 1rem;
+                    }
+                }
+
+                @media (max-width: 576px) {
+                    .contact-grid {
+                        grid-template-columns: 1fr;
+                        gap: 1rem;
+                    }
+
+                    .ul-contact-info {
+                        padding: 2rem;
+                    }
+                }
+
+                @media (max-width: 991px) {
+                    .ul-nwsltr-subs-form .row {
+                        display: flex;
+                        flex-wrap: wrap;
+                    }
+
+                    .ul-nwsltr-subs-form .col-md-6 {
+                        flex: 0 0 100%;
+                        max-width: 100%;
+                    }
+
+                    .ul-nwsltr-subs-form .col-md-3 {
+                        flex: 0 0 50%;
+                        max-width: 50%;
+                    }
+                }
+            </style>
+            <script>
+                // Send Contact Us message directly to WhatsApp
+                document.addEventListener('DOMContentLoaded', function () {
+                    var form = document.querySelector('.ul-nwsltr-subs-form');
+                    if (form) {
+                        form.addEventListener('submit', function (e) {
+                            e.preventDefault();
+                            if (form.checkValidity()) {
+                                form.classList.add('was-validated');
+                                var name = document.getElementById('nwsltr-name')?.value?.trim() || '';
+                                var email = document.getElementById('nwsltr-email')?.value?.trim() || '';
+                                var phone = document.getElementById('nwsltr-phone')?.value?.trim() || '';
+                                var priority = document.getElementById('nwsltr-priority')?.value || '';
+                                var category = document.getElementById('nwsltr-category')?.value || '';
+                                var message = document.getElementById('nwsltr-message')?.value?.trim() || '';
+
+                                var whatsappNumber = "{{ content.whatsapp }}".replace(/\D/g, '');
+                                var whatsappText =
+                                    "New Contact Us Enquiry%0A" +
+                                    "Name: " + encodeURIComponent(name) + "%0A" +
+                                    "Email: " + encodeURIComponent(email) + "%0A" +
+                                    "Phone: " + encodeURIComponent(phone) + "%0A" +
+                                    "Priority: " + encodeURIComponent(priority) + "%0A" +
+                                    "Category: " + encodeURIComponent(category) + "%0A" +
+                                    "Message: " + encodeURIComponent(message);
+
+                                window.open("https://wa.me/" + whatsappNumber + "?text=" + whatsappText, "_blank");
+                            } else {
+                                form.classList.add('was-validated');
+                            }
+                        });
+                    }
+                });
+            </script>
+        </section>
+
+    </main>
+
+    <!-- FOOTER SECTION START -->
+    {% include 'footer.html' %}
+    <!-- FOOTER SECTION END -->
+
+    <!-- libraries JS -->
+    <script src="/static/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="/static/vendor/splide/splide.min.js"></script>
+    <script src="/static/vendor/splide/splide-extension-auto-scroll.min.js"></script>
+    <script src="/static/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="/static/vendor/slim-select/slimselect.min.js"></script>
+    <script src="/static/vendor/animate-wow/wow.min.js"></script>
+    <script src="/static/vendor/splittype/index.min.js"></script>
+    <script src="/static/vendor/mixitup/mixitup.min.js"></script>
+    <script src="/static/vendor/fslightbox/fslightbox.js"></script>
+
+    <!-- custom JS -->
+    <script src="/static/js/main_v2.js?v=6"></script>
+</body>
+
+</html>
